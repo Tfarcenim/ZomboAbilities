@@ -1,5 +1,7 @@
 package tfar.zomboabilities;
 
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tfar.zomboabilities.platform.Services;
@@ -29,4 +31,16 @@ public class ZomboAbilities {
         // the platform specific approach.
 
     }
+
+    static void onDeath(LivingEntity entity) {
+        if (entity instanceof ServerPlayer player) {
+            PlayerDuck playerDuck = PlayerDuck.of(player);
+            int lives = playerDuck.getLives();
+            playerDuck.loseLife();
+            if (lives<=1) {
+
+            }
+        }
+    }
+
 }
