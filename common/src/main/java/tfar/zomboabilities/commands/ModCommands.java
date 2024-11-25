@@ -9,6 +9,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.server.level.ServerPlayer;
 import tfar.zomboabilities.PlayerDuck;
+import tfar.zomboabilities.ZomboAbilities;
 
 import java.util.Collection;
 
@@ -20,7 +21,7 @@ public class ModCommands {
                 .then(Commands.literal("take"))
         );
 
-        dispatcher.register(Commands.literal("lives")
+        dispatcher.register(Commands.literal("lives").requires(commandSourceStack -> commandSourceStack.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("add")
                         .then(Commands.argument("lives", IntegerArgumentType.integer())
                                 .then(Commands.argument("players", EntityArgument.players())
@@ -33,6 +34,11 @@ public class ModCommands {
                                 .then(Commands.argument("players", EntityArgument.players())
                                         .executes(ModCommands::setLives)
                                 )
+                        )
+                )
+                .then(Commands.literal("get")
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes(ModCommands::getLives)
                         )
                 )
         );
@@ -55,5 +61,21 @@ public class ModCommands {
         }
         return players.size();
     }
+
+    static int getSelfLives(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        Collection<ServerPlayer> players = EntityArgument.getPlayers(context, "player");
+        int lives = IntegerArgumentType.getInteger(context, "lives");
+        for (ServerPlayer player : players) {
+            PlayerDuck.of(player).setLives(lives);
+        }
+        return players.size();
+    }
+
+    static int getLives(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(context, "player");
+        context.getSource().sendSuccess(() -> ZomboAbilities.getLivesInfo(player), false);
+        return 1;
+    }
+
 
 }

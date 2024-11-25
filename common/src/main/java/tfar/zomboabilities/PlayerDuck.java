@@ -1,5 +1,6 @@
 package tfar.zomboabilities;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 public interface PlayerDuck {
@@ -15,5 +16,10 @@ public interface PlayerDuck {
     }
     default void loseLife() {
         addLives(-1);
+    }
+
+    default void copyFrom(ServerPlayer oldPlayer) {
+        PlayerDuck old = of(oldPlayer);
+        setLives(old.getLives());
     }
 }

@@ -1,7 +1,17 @@
 package tfar.zomboabilities;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.DimensionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tfar.zomboabilities.platform.Services;
@@ -17,6 +27,13 @@ public class ZomboAbilities {
     public static final String MOD_ID = "zomboabilities";
     public static final String MOD_NAME = "ZomboAbilities";
     public static final Logger LOG = LoggerFactory.getLogger(MOD_NAME);
+
+    public static final ResourceKey<DimensionType> DEATH_DIM_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE,id("death"));
+    public static final ResourceKey<Level> DEATH_DIM = ResourceKey.create(Registries.DIMENSION,id("death"));
+
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID,"death");
+    }
 
     // The loader specific projects are able to import and use any code from the common project. This allows you to
     // write the majority of your code here and load it from your loader specific projects. This example has some
@@ -38,8 +55,37 @@ public class ZomboAbilities {
             int lives = playerDuck.getLives();
             playerDuck.loseLife();
             if (lives<=1) {
-
+                MinecraftServer server = player.server;
+                //ServerLevel level = server.getLevel(DEATH_DIM);
+                player.setRespawnPosition(DEATH_DIM,new BlockPos(0,2,0),0,true,false);
+                //player.teleportTo(level,0,2,0,player.getYRot(),player.getXRot());
+                player.setGameMode(GameType.CREATIVE);
             }
+        }
+    }
+
+    static void onClone(ServerPlayer oldPlayer,ServerPlayer newPlayer,boolean alive) {
+        PlayerDuck.of(newPlayer).copyFrom(oldPlayer);
+    }
+
+    static void onRespawn(ServerPlayer player,boolean fromEnd) {
+        if (!fromEnd) {
+            player.displayClientMessage(getLivesInfo(player),false);
+        }
+    }
+
+
+
+    public static Component getLivesInfo(ServerPlayer player) {
+        int lives = PlayerDuck.of(player).getLives();
+        if (lives >0) {
+            if (lives == 1) {
+                return Component.literal("1 life remaining");
+            } else {
+                return Component.literal(lives+" lives remaining");
+            }
+        } else {
+            return Component.literal("No lives remaining");
         }
     }
 

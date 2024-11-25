@@ -20,7 +20,8 @@ public class info {
 //
 ///Lifeaddon [Username} {Amount}
 //
-//When player loses are there lives, they will be trapped in a pitch black dimension, the floor would be pure Grass, They will be in Creative Mode aswell. This dimension will be called the Death Dimension
+//When player loses are there lives, they will be trapped in a pitch black dimension, the floor would be pure Grass,
+// They will be in Creative Mode aswell. This dimension will be called the Death Dimension
 //
 //First Ability
 //
