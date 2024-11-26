@@ -1,7 +1,9 @@
 package tfar.zomboabilities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -9,6 +11,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -89,4 +95,17 @@ public class ZomboAbilities {
         }
     }
 
+    public static void saveBedItems(Player player) {
+        if (player instanceof ServerPlayer) {
+            Inventory inventory = player.getInventory();
+            SavedInventory savedInventory = ((PlayerDuck) player).getSavedInventory();
+            for (int i = 0; i < inventory.getContainerSize(); i++) {
+                ItemStack stack = inventory.getItem(i);
+                if (player.getRandom().nextBoolean()) {
+                    savedInventory.setItem(i, stack);
+                    inventory.setItem(i, ItemStack.EMPTY);
+                }
+            }
+        }
+    }
 }
