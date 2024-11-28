@@ -4,13 +4,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import tfar.zomboabilities.abilities.Ability;
+
+import java.util.Optional;
 
 public interface PlayerDuck {
 
     static PlayerDuck of(Player player) {
         return (PlayerDuck) player;
     }
-    default Player cast() {
+    default Player as() {
         return (Player) this;
     }
 
@@ -23,10 +26,28 @@ public interface PlayerDuck {
         addLives(-1);
     }
 
+    void setAbility(Ability ability);
+
+    Optional<Ability> getAbility();
+    int[] getCooldowns();
+
+    default void tickCooldowns() {
+        int[] cooldowns = getCooldowns();
+        for (int i = 0; i < cooldowns.length;i++) {
+            if (cooldowns[i] > 0) {
+                cooldowns[i]--;
+            }
+        }
+    }
+
+    default void setCooldown(int slot, int value) {
+        getCooldowns()[slot] = value;
+    }
+
     default void copyFrom(ServerPlayer oldPlayer) {
         PlayerDuck old = of(oldPlayer);
         setLives(old.getLives());
-        Inventory newInventory = cast().getInventory();
+        Inventory newInventory = as().getInventory();
         SavedInventory oldSavedInventory = old.getSavedInventory();
         for (int i = 0; i < newInventory.getContainerSize(); i++) {
             ItemStack stack = newInventory.getItem(i);
@@ -38,7 +59,7 @@ public interface PlayerDuck {
             }
         }
         oldSavedInventory.clearContent();
-
+        old.getAbility().ifPresent(this::setAbility);
     }
 
     SavedInventory getSavedInventory();

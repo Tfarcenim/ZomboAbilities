@@ -10,6 +10,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tfar.zomboabilities.init.ModMobEffects;
 import tfar.zomboabilities.platform.Services;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Items;
@@ -38,7 +43,7 @@ public class ZomboAbilities {
     public static final ResourceKey<Level> DEATH_DIM = ResourceKey.create(Registries.DIMENSION,id("death"));
 
     public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID,"death");
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID,path);
     }
 
     // The loader specific projects are able to import and use any code from the common project. This allows you to
@@ -52,7 +57,6 @@ public class ZomboAbilities {
         // your own abstraction layer. You can learn more about this in our provided services class. In this example
         // we have an interface in the common code and use a loader specific implementation to delegate our call to
         // the platform specific approach.
-
     }
 
     static void onDeath(LivingEntity entity) {
@@ -66,6 +70,7 @@ public class ZomboAbilities {
                 player.setRespawnPosition(DEATH_DIM,new BlockPos(0,2,0),0,true,false);
                 //player.teleportTo(level,0,2,0,player.getYRot(),player.getXRot());
                 player.setGameMode(GameType.CREATIVE);
+                playerDuck.setAbility(null);
             }
         }
     }
@@ -106,6 +111,16 @@ public class ZomboAbilities {
                     inventory.setItem(i, ItemStack.EMPTY);
                 }
             }
+        }
+    }
+
+    static void playerTick(ServerPlayer player) {
+        PlayerDuck.of(player).tickCooldowns();
+    }
+
+    static void interactMob(Player player, Entity entity){
+        if (player.hasEffect(ModMobEffects.FLOATING_TOUCH) && entity instanceof LivingEntity living) {
+            living.addEffect(new MobEffectInstance(MobEffects.LEVITATION,200));
         }
     }
 }
