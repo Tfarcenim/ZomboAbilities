@@ -3,6 +3,7 @@ package tfar.zomboabilities.mixin;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -14,8 +15,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tfar.zomboabilities.*;
 import tfar.zomboabilities.abilities.Ability;
+import tfar.zomboabilities.abilities.CopyAbility;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
@@ -24,7 +27,9 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     SavedInventory savedInventory = new SavedInventory();
 
     Optional<Ability> ability = Optional.empty();
+    Ability copied_ability;
     final int[] cooldowns = new int[4];
+    Consumer<ServerPlayer> mobAbility;
 
     @Override
     public void setLives(int lives) {
@@ -47,8 +52,28 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     }
 
     @Override
+    public void setMobAbility(Consumer<ServerPlayer> mobAbility) {
+        this.mobAbility = mobAbility;
+    }
+
+    @Override
+    public Consumer<ServerPlayer> getMobAbility() {
+        return mobAbility;
+    }
+
+    @Override
     public int[] getCooldowns() {
         return cooldowns;
+    }
+
+    @Override
+    public void setCopiedAbility(Ability copied_ability) {
+        this.copied_ability = copied_ability;
+    }
+
+    @Override
+    public Ability getCopiedAbility() {
+        return copied_ability;
     }
 
     @Override
@@ -78,6 +103,11 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
         if (compound.contains("Ability")) {
             ability = Optional.ofNullable(Abilities.ABILITIES_BY_NAME.get(compound.getString("Ability")));
         }
+    }
+
+    @Override
+    public boolean isSensitiveToWater() {
+        return mobAbility == CopyAbility.ENDERMAN;
     }
 
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {

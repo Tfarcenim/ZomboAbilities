@@ -39,6 +39,6 @@ public class AntiGravityAbility extends Ability{
     @Override
     public void quaternary(ServerPlayer player) {
         player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,200));
-        applyCooldown(2,300,player);
+        applyCooldown(3,300,player);
     }
 }

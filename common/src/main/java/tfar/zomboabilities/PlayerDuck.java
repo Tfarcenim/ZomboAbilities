@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import tfar.zomboabilities.abilities.Ability;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public interface PlayerDuck {
 
@@ -29,6 +30,12 @@ public interface PlayerDuck {
     void setAbility(Ability ability);
 
     Optional<Ability> getAbility();
+
+    void setCopiedAbility(Ability ability);
+    Ability getCopiedAbility();
+    Consumer<ServerPlayer> getMobAbility();
+    void setMobAbility(Consumer<ServerPlayer> mobAbility);
+
     int[] getCooldowns();
 
     default void tickCooldowns() {
