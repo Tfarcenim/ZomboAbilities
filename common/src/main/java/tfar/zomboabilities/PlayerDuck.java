@@ -37,6 +37,8 @@ public interface PlayerDuck {
     void setMobAbility(Consumer<ServerPlayer> mobAbility);
 
     int[] getCooldowns();
+    boolean isLaserActive();
+    void setLaserActive(boolean laserActive);
 
     default void tickCooldowns() {
         int[] cooldowns = getCooldowns();

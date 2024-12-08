@@ -30,6 +30,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     Ability copied_ability;
     final int[] cooldowns = new int[4];
     Consumer<ServerPlayer> mobAbility;
+    boolean laserActive;
 
     @Override
     public void setLives(int lives) {
@@ -64,6 +65,19 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     @Override
     public int[] getCooldowns() {
         return cooldowns;
+    }
+
+    @Override
+    public void setLaserActive(boolean laserActive) {
+        if (laserActive != this.laserActive && !level().isClientSide) {
+
+        }
+        this.laserActive = laserActive;
+    }
+
+    @Override
+    public boolean isLaserActive() {
+        return laserActive;
     }
 
     @Override

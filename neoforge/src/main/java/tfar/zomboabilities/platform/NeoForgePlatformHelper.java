@@ -4,6 +4,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import tfar.zomboabilities.PacketHandlerNeoForge;
 import tfar.zomboabilities.network.C2SModPacket;
@@ -54,4 +56,8 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
         PacketHandlerNeoForge.sendToServer(msg);
     }
 
+    @Override
+    public void sendToTracking(S2CModPacket<?> msg, Entity entity) {
+        PacketDistributor.sendToPlayersTrackingEntity(entity,msg);
+    }
 }
