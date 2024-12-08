@@ -4,8 +4,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.IronGolem;
-import tfar.zomboabilities.PlayerDuck;
 import tfar.zomboabilities.init.ModMobEffects;
 
 import java.util.HashMap;

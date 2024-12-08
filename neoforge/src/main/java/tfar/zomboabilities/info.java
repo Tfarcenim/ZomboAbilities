@@ -79,7 +79,8 @@ public class info {
 //
 //Laser Eyes
 //
-//Holding R - 2 Red beams will come out of your eyes and Damage anything it is pointing at, it will do about 1 heart per second no matter what Armor your wearing. It will last up to 10 seconds.
+//Holding R - 2 Red beams will come out of your eyes and Damage anything it is pointing at, it will do about 1 heart per
+// second no matter what Armor your wearing. It will last up to 10 seconds.
 //Cooldown - 15 Seconds
 //-
 //Passives - If the Player has there shield up, it will only rapidly lower the Shields durability.
