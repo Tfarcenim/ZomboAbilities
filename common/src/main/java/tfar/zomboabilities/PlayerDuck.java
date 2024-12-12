@@ -1,10 +1,13 @@
 package tfar.zomboabilities;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.EntityHitResult;
 import tfar.zomboabilities.abilities.Ability;
+import tfar.zomboabilities.abilities.AbilityControls;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -40,6 +43,37 @@ public interface PlayerDuck {
     boolean isLaserActive();
     void setLaserActive(boolean laserActive);
 
+    int getLaserActiveDuration();
+    void setLaserActiveDuration(int duration);
+
+    int MAX = 200;
+
+    default void tickServer() {
+        ServerPlayer player = (ServerPlayer) as();
+        if (isLaserActive()) {
+            EntityHitResult pick = Utils.pick(player, player.blockInteractionRange(), player.entityInteractionRange(), 0);
+            if (pick != null && player.tickCount %20 ==0) {
+                Entity entity = pick.getEntity();
+                if (entity.isAttackable()) {
+                    entity.hurt(player.damageSources().indirectMagic(player,null),2);
+                }
+            }
+            int laserDuration = getLaserActiveDuration();
+            laserDuration++;
+            boolean stayActive = getControls().holding_primary && laserDuration <= MAX;
+            if (stayActive) {
+                setLaserActiveDuration(laserDuration);
+            } else {
+                setLaserActive(false);
+                setLaserActiveDuration(0);
+                if (ZomboAbilities.ENABLE_LOG) {
+                    System.out.println("Laser Disabled");
+                }
+            }
+        }
+        tickCooldowns();
+    }
+
     default void tickCooldowns() {
         int[] cooldowns = getCooldowns();
         for (int i = 0; i < cooldowns.length;i++) {
@@ -72,5 +106,6 @@ public interface PlayerDuck {
     }
 
     SavedInventory getSavedInventory();
+    AbilityControls getControls();
 
 }

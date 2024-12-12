@@ -9,7 +9,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import tfar.zomboabilities.abilities.LaserEyesAbility;
+import tfar.zomboabilities.PlayerDuck;
 
 public class ModClientForge {
 
@@ -23,7 +23,7 @@ public class ModClientForge {
     static void layers(EntityRenderersEvent.AddLayers event) {
     //    for (var skin : event.getSkins()) {
     //        PlayerRenderer skin1 = event.getSkin(skin);
-    //        skin1.addLayer(new LaserEyesAbility(skin1));
+    //        skin1.addLayer(new LaserEyesRenderer(skin1));
      //   }
     }
 
@@ -36,7 +36,9 @@ public class ModClientForge {
 
     static void renderAfter(RenderPlayerEvent.Post event) {
         Player player = event.getEntity();
-        PlayerRenderer renderer = event.getRenderer();
-        LaserEyesAbility.renderBean(event.getPoseStack(),event.getMultiBufferSource(), (AbstractClientPlayer) player,event.getPartialTick());
+        if (PlayerDuck.of(player).isLaserActive()) {
+            PlayerRenderer renderer = event.getRenderer();
+            LaserEyesRenderer.renderBean(event.getPoseStack(), event.getMultiBufferSource(), (AbstractClientPlayer) player, event.getPartialTick());
+        }
     }
 }

@@ -15,7 +15,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tfar.zomboabilities.*;
 import tfar.zomboabilities.abilities.Ability;
+import tfar.zomboabilities.abilities.AbilityControls;
 import tfar.zomboabilities.abilities.CopyAbility;
+import tfar.zomboabilities.network.S2CSetLaserActivePacket;
+import tfar.zomboabilities.platform.Services;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -31,6 +34,9 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     final int[] cooldowns = new int[4];
     Consumer<ServerPlayer> mobAbility;
     boolean laserActive;
+    final AbilityControls controls = new AbilityControls();
+
+    int laserActiveDuration;
 
     @Override
     public void setLives(int lives) {
@@ -69,8 +75,9 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
 
     @Override
     public void setLaserActive(boolean laserActive) {
-        if (laserActive != this.laserActive && !level().isClientSide) {
-
+        if (!level().isClientSide) {
+            ServerPlayer player = (ServerPlayer)(Object)this;
+            Services.PLATFORM.sendToTracking(new S2CSetLaserActivePacket(player.getUUID(),laserActive),player);
         }
         this.laserActive = laserActive;
     }
@@ -78,6 +85,16 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     @Override
     public boolean isLaserActive() {
         return laserActive;
+    }
+
+    @Override
+    public int getLaserActiveDuration() {
+        return laserActiveDuration;
+    }
+
+    @Override
+    public void setLaserActiveDuration(int laserActiveDuration) {
+        this.laserActiveDuration = laserActiveDuration;
     }
 
     @Override
@@ -98,6 +115,11 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     @Override
     public SavedInventory getSavedInventory() {
         return savedInventory;
+    }
+
+    @Override
+    public AbilityControls getControls() {
+        return controls;
     }
 
     @Inject(method = "addAdditionalSaveData",at = @At("RETURN"))

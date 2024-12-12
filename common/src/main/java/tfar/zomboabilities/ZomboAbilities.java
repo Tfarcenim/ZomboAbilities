@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tfar.zomboabilities.abilities.CopyAbility;
 import tfar.zomboabilities.init.ModMobEffects;
+import tfar.zomboabilities.platform.Services;
 
 import java.util.function.Consumer;
 
@@ -43,6 +44,7 @@ public class ZomboAbilities {
 
     public static final ResourceKey<DimensionType> DEATH_DIM_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE,id("death"));
     public static final ResourceKey<Level> DEATH_DIM = ResourceKey.create(Registries.DIMENSION,id("death"));
+    public static final boolean ENABLE_LOG = Services.PLATFORM.isDevelopmentEnvironment();
 
     public static ResourceLocation id(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID,path);
@@ -118,7 +120,7 @@ public class ZomboAbilities {
 
     static void playerTick(ServerPlayer player) {
         PlayerDuck playerDuck = PlayerDuck.of(player);
-        playerDuck.tickCooldowns();
+        playerDuck.tickServer();
         if (!player.isRemoved() && player.hasEffect(ModMobEffects.COPY_ABILITY)) {
             if (playerDuck.getMobAbility() == CopyAbility.ZOMBIE || playerDuck.getMobAbility() == CopyAbility.DROWNED) {
                 boolean flag = Utils.isSunBurnTick(player);

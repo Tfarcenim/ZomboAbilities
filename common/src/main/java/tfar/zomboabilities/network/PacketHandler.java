@@ -16,6 +16,7 @@ public class PacketHandler {
     public static void registerPackets()
     {
         Services.PLATFORM.registerServerPlayPacket(C2SAbilityPacket.TYPE, C2SAbilityPacket.STREAM_CODEC);
+        Services.PLATFORM.registerServerPlayPacket(C2SHoldAbilityPacket.TYPE, C2SHoldAbilityPacket.STREAM_CODEC);
         Services.PLATFORM.registerClientPlayPacket(S2CSetLaserActivePacket.TYPE, S2CSetLaserActivePacket.STREAM_CODEC);
 
 
