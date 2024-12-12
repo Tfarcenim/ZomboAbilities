@@ -1,11 +1,17 @@
 package tfar.zomboabilities;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.abilities.AbilityControls;
 
@@ -51,11 +57,24 @@ public interface PlayerDuck {
     default void tickServer() {
         ServerPlayer player = (ServerPlayer) as();
         if (isLaserActive()) {
-            EntityHitResult pick = Utils.pick(player, player.blockInteractionRange(), player.entityInteractionRange(), 0);
-            if (pick != null && player.tickCount %20 ==0) {
-                Entity entity = pick.getEntity();
-                if (entity.isAttackable()) {
-                    entity.hurt(player.damageSources().indirectMagic(player,null),2);
+            HitResult pick = Utils.pickEither(player, player.blockInteractionRange(), player.entityInteractionRange(), 0);
+            if (pick.getType() != HitResult.Type.MISS) {
+                if (player.tickCount % 1 == 20) {
+                    if (pick instanceof EntityHitResult entityPick) {
+                        Entity entity = entityPick.getEntity();
+                        if (entity.isAttackable()) {
+                            entity.hurt(player.damageSources().indirectMagic(player, null), 2);
+                            if (entity.getRandom().nextBoolean()) {
+                                entity.igniteForSeconds(2);
+                            }
+                        }
+                    } else if (pick instanceof BlockHitResult blockPick) {
+                        BlockPos pos = blockPick.getBlockPos();
+                        BlockPos offset = pos.relative(blockPick.getDirection());
+                        if (player.level().isEmptyBlock(offset)) {
+                            player.level().setBlock(offset,Blocks.FIRE.defaultBlockState(),3);
+                        }
+                    }
                 }
             }
             int laserDuration = getLaserActiveDuration();
@@ -76,10 +95,15 @@ public interface PlayerDuck {
 
     default void tickCooldowns() {
         int[] cooldowns = getCooldowns();
+        boolean update = false;
         for (int i = 0; i < cooldowns.length;i++) {
             if (cooldowns[i] > 0) {
                 cooldowns[i]--;
+                update = true;
             }
+        }
+        if (update && ZomboAbilities.ENABLE_LOG) {
+            as().displayClientMessage(Component.literal("Cooldowns: "+cooldowns[0] +" | "+cooldowns[1] +" | "+cooldowns[2] +" | "+cooldowns[3] ),true);
         }
     }
 

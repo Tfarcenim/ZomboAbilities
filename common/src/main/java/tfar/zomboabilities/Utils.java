@@ -45,5 +45,12 @@ public class Utils {
         );
         return entityhitresult;
     }
+
+    public static HitResult pickEither(Entity pEntity, double pBlockInteractionRange, double pEntityInteractionRange, float pPartialTick) {
+        EntityHitResult entityHitResult = pick(pEntity,pBlockInteractionRange,pEntityInteractionRange,pPartialTick);
+        if (entityHitResult != null) return entityHitResult;
+
+        return pEntity.pick(pEntityInteractionRange, pPartialTick, true);
+    }
     
 }
