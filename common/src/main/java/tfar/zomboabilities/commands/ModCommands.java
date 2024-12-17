@@ -21,7 +21,7 @@ public class ModCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("ability")
-                .then(Commands.literal("give")
+                .then(Commands.literal("give").requires(commandSourceStack -> commandSourceStack.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .then(Commands.argument("players",EntityArgument.players())
                                 .then(Commands.argument("ability", StringArgumentType.string())
                                         .suggests(Suggestions.ALL_ABILITIES)
@@ -29,10 +29,17 @@ public class ModCommands {
                                 )
                         )
                 )
-                .then(Commands.literal("take")
+                .then(Commands.literal("take").requires(commandSourceStack -> commandSourceStack.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .then(Commands.argument("players",EntityArgument.players())
                                         .executes(ModCommands::removeAbility)
                         )
+                )
+                .then(Commands.literal("query")
+                        .then(Commands.argument("player",EntityArgument.player())
+                                .requires(commandSourceStack -> commandSourceStack.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                                .executes(ModCommands::queryAbility)
+                        )
+                        .executes(ModCommands::queryAbilitySelf)
                 )
         );
 
@@ -71,6 +78,20 @@ public class ModCommands {
             PlayerDuck.of(player).setAbility(ability);
         }
         return players.size();
+    }
+
+    static int queryAbility(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(context,"player");
+        PlayerDuck playerDuck = PlayerDuck.of(player);
+        context.getSource().sendSuccess(() -> Component.literal("Ability: "+playerDuck.getAbility()),false);
+        return 1;
+    }
+
+    static int queryAbilitySelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        PlayerDuck playerDuck = PlayerDuck.of(player);
+        context.getSource().sendSuccess(() -> Component.literal("Ability: "+playerDuck.getAbility()),false);
+        return 1;
     }
 
     static int removeAbility(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {

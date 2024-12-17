@@ -9,11 +9,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.abilities.AbilityControls;
+import tfar.zomboabilities.init.Tags;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -57,9 +59,9 @@ public interface PlayerDuck {
     default void tickServer() {
         ServerPlayer player = (ServerPlayer) as();
         if (isLaserActive()) {
-            HitResult pick = Utils.pickEither(player, player.blockInteractionRange(), player.entityInteractionRange(), 0);
+            HitResult pick = Utils.pickEither(player, player.blockInteractionRange() * 5, player.entityInteractionRange() * 5, 0);
             if (pick.getType() != HitResult.Type.MISS) {
-                if (player.tickCount % 1 == 20) {
+                if (player.tickCount % 1 == 0) {
                     if (pick instanceof EntityHitResult entityPick) {
                         Entity entity = entityPick.getEntity();
                         if (entity.isAttackable()) {
@@ -71,7 +73,11 @@ public interface PlayerDuck {
                     } else if (pick instanceof BlockHitResult blockPick) {
                         BlockPos pos = blockPick.getBlockPos();
                         BlockPos offset = pos.relative(blockPick.getDirection());
-                        if (player.level().isEmptyBlock(offset)) {
+                        BlockState state = player.level().getBlockState(pos);
+
+                        if (state.is(Tags.GLASS_BLOCKS_CHEAP)) {
+                            player.hurt(player.damageSources().indirectMagic(player, null), 2);
+                        } else if (player.level().isEmptyBlock(offset)) {
                             player.level().setBlock(offset,Blocks.FIRE.defaultBlockState(),3);
                         }
                     }
