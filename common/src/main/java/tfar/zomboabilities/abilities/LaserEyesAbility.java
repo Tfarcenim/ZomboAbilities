@@ -13,7 +13,7 @@ public class LaserEyesAbility extends Ability{
         PlayerDuck duck = PlayerDuck.of(player);
         duck.setLaserActive(true);
         System.out.println("Laser Active");
-        applyCooldown(0,15 * 20,player);
+        //applyCooldown(0,15 * 20,player);
     }
 
     @Override
