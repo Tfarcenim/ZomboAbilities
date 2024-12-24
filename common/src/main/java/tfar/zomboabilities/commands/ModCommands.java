@@ -75,9 +75,20 @@ public class ModCommands {
             return 0;
         }
         for (ServerPlayer player : players) {
+            Ability previous = PlayerDuck.of(player).getAbility().orElse(null);
             PlayerDuck.of(player).setAbility(ability);
+            updateAbility(player,previous,ability);
         }
         return players.size();
+    }
+
+    public static void updateAbility(ServerPlayer player,Ability prev,Ability next) {
+        if (prev != null) {
+            prev.removePassive(player);
+        }
+        if (next != null) {
+            next.applyPassive(player);
+        }
     }
 
     static int queryAbility(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -98,7 +109,9 @@ public class ModCommands {
         Collection<ServerPlayer> players = EntityArgument.getPlayers(context, "players");
 
         for (ServerPlayer player : players) {
+            Ability previous = PlayerDuck.of(player).getAbility().orElse(null);
             PlayerDuck.of(player).setAbility(null);
+            updateAbility(player,previous,null);
         }
         return players.size();
     }

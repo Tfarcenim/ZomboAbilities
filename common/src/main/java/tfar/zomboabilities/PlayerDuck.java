@@ -63,6 +63,11 @@ public interface PlayerDuck {
 
     default void tickServer() {
         ServerPlayer player = (ServerPlayer) as();
+        getAbility().ifPresent(ability -> {
+            if (player.tickCount %20 == 0) {
+                ability.tickPassive(player);
+            }
+        });
         if (isLaserActive()) {
             HitResult pick = Utils.pickEither(player, player.blockInteractionRange() * 5, player.entityInteractionRange() * 5, 0);
             if (pick.getType() != HitResult.Type.MISS) {

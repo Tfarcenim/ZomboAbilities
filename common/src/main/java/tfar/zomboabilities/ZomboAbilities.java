@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tfar.zomboabilities.abilities.CopyAbility;
+import tfar.zomboabilities.commands.ModCommands;
 import tfar.zomboabilities.init.ModMobEffects;
 import tfar.zomboabilities.platform.Services;
 
@@ -86,6 +87,7 @@ public class ZomboAbilities {
     static void onRespawn(ServerPlayer player,boolean fromEnd) {
         if (!fromEnd) {
             player.displayClientMessage(getLivesInfo(player),false);
+            ModCommands.updateAbility(player,null,PlayerDuck.of(player).getAbility().orElse(null));
         }
     }
 

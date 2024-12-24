@@ -2,18 +2,19 @@ package tfar.zomboabilities.abilities;
 
 import net.minecraft.server.level.ServerPlayer;
 import tfar.zomboabilities.PlayerDuck;
+import tfar.zomboabilities.ZomboAbilities;
 
 public class LaserEyesAbility extends Ability{
-    public LaserEyesAbility(String name) {
-        super(name);
+    public LaserEyesAbility() {
+        super();
     }
 
     @Override
     public void primary(ServerPlayer player) {
         PlayerDuck duck = PlayerDuck.of(player);
         duck.setLaserActive(true);
-        System.out.println("Laser Active");
-        //applyCooldown(0,15 * 20,player);
+        if (ZomboAbilities.ENABLE_LOG) System.out.println("Laser Active");
+        applyCooldown(0,15 * 20,player);
     }
 
     @Override

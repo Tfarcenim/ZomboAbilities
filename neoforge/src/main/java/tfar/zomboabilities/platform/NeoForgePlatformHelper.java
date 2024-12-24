@@ -1,10 +1,14 @@
 package tfar.zomboabilities.platform;
 
+import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import tfar.zomboabilities.PacketHandlerNeoForge;
@@ -59,5 +63,10 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public void sendToTracking(S2CModPacket<?> msg, Entity entity) {
         PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity,msg);
+    }
+
+    @Override
+    public Holder<Attribute> getSwimSpeed() {
+        return NeoForgeMod.SWIM_SPEED;
     }
 }

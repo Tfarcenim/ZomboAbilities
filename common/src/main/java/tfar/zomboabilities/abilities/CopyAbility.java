@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class CopyAbility extends Ability {
-    public CopyAbility(String name) {
-        super(name);
+    public CopyAbility() {
+        super();
     }
 
     //Pressing R - Pressing R while hitting a Player within 10 seconds, will give you the Abilities of that player for 10 minutes

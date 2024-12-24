@@ -1,21 +1,28 @@
 package tfar.zomboabilities.abilities;
 
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import tfar.zomboabilities.PlayerDuck;
 
 public abstract class Ability {
-    private final String name;
+    private String name;
 
-    public Ability(String name) {
-        this.name = name;
+    public Ability() {
     }
 
     public String getName() {
         return name;
     }
 
-    public final void tryUseAbility(ServerPlayer player,int key) {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public final void tryUseAbility(ServerPlayer player, int key) {
         int cooldown = PlayerDuck.of(player).getCooldowns()[key];
         if (cooldown > 0) {
             player.displayClientMessage(Component.literal("Ability on cooldown"),true);
@@ -27,6 +34,18 @@ public abstract class Ability {
                 case 3 -> quaternary(player);
             }
         }
+    }
+
+    public void applyPassive(ServerPlayer player) {
+
+    }
+
+    public void removePassive(ServerPlayer player) {
+
+    }
+
+    public void tickPassive(ServerPlayer player) {
+
     }
 
     /**
@@ -56,4 +75,14 @@ public abstract class Ability {
         PlayerDuck.of(player).setCooldown(slot,amount);
     }
 
+    protected void applyAttributeSafely(ServerPlayer player, Holder<Attribute> attribute, AttributeModifier modifier) {
+        AttributeInstance instance = player.getAttribute(attribute);
+        if (instance != null) {
+            AttributeModifier existing = instance.getModifier(modifier.id());
+            if (existing != null) {
+                instance.removeModifier(existing);
+            }
+            instance.addPermanentModifier(modifier);//stays until death
+        }
+    }
 }

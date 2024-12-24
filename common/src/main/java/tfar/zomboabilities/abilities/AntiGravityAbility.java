@@ -6,8 +6,8 @@ import net.minecraft.world.effect.MobEffects;
 import tfar.zomboabilities.init.ModMobEffects;
 
 public class AntiGravityAbility extends Ability{
-    public AntiGravityAbility(String name) {
-        super(name);
+    public AntiGravityAbility() {
+        super();
     }
 
     //Pressing T - By Pressing this, You will have 10 Seconds of Levitation.
