@@ -1,6 +1,9 @@
 package tfar.zomboabilities;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -11,6 +14,23 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class Utils {
+
+    public static final StreamCodec<ByteBuf,AABB> AABB_STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.DOUBLE,
+            aabb -> aabb.minX,
+            ByteBufCodecs.DOUBLE,
+            aabb -> aabb.minY,
+            ByteBufCodecs.DOUBLE,
+            aabb -> aabb.minZ,
+
+            ByteBufCodecs.DOUBLE,
+            aabb -> aabb.maxX,
+            ByteBufCodecs.DOUBLE,
+            aabb -> aabb.maxY,
+            ByteBufCodecs.DOUBLE,
+            aabb -> aabb.maxZ,
+            AABB::new
+    );
 
     public static boolean isSunBurnTick(Player player) {
         if (player.level().isDay() && !player.level().isClientSide) {

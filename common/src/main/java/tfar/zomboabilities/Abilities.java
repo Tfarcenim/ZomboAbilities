@@ -12,6 +12,11 @@ public class Abilities {
     public static final Ability MIMIC = register(new CopyAbility(),"mimic");
     public static final Ability LASER_EYES = register(new LaserEyesAbility(),"laser_eyes");
     public static final Ability MERMAN = register(new MermanAbility(),"merman");
+    public static final Ability BOOGIE_WOOGIE = register(new BoogieWoogieAbility(),"boogie_woogie");
+    public static final Ability CONSTRUCTION = register(new ConstructionAbility(),"construction");
+    public static final Ability OBJECT_DUPLICATION = register(new ObjectDuplicationAbility(),"object_duplication");
+    public static final Ability DUPLICATE_CLONES = register(new DuplicateClonesAbility(),"duplicate_clones");
+
 
     static Ability register(Ability ability,String name) {
         ability.setName(name);

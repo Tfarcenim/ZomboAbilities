@@ -1,6 +1,8 @@
 package tfar.zomboabilities.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import tfar.zomboabilities.network.C2SAbilityPacket;
 import tfar.zomboabilities.network.C2SHoldAbilityPacket;
 import tfar.zomboabilities.platform.Services;
@@ -25,4 +27,9 @@ public class ModClient {
             Services.PLATFORM.sendToServer(new C2SHoldAbilityPacket(holding_p, false, false, false));
         }
     }
+
+    public static Player getClientPlayer() {
+        return Minecraft.getInstance().player;
+    }
+
 }
