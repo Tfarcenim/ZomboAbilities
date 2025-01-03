@@ -16,15 +16,17 @@ public class ModClientForge {
     public static void init(IEventBus bus) {
         bus.addListener(ModClientForge::keybinds);
         bus.addListener(ModClientForge::layers);
+        bus.addListener(ModClientForge::renderers);
         NeoForge.EVENT_BUS.addListener(((ClientTickEvent.Post event) -> ModClient.clientTick()));
         NeoForge.EVENT_BUS.addListener(ModClientForge::renderAfter);
     }
 
+    public static void renderers(EntityRenderersEvent.RegisterRenderers event) {
+        ModClient.registerRenderers(event::registerEntityRenderer);
+    }
+
     static void layers(EntityRenderersEvent.AddLayers event) {
-    //    for (var skin : event.getSkins()) {
-    //        PlayerRenderer skin1 = event.getSkin(skin);
-    //        skin1.addLayer(new LaserEyesRenderer(skin1));
-     //   }
+
     }
 
     static void keybinds(RegisterKeyMappingsEvent event) {

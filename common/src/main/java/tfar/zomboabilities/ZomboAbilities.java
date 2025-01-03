@@ -2,6 +2,7 @@ package tfar.zomboabilities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -28,9 +30,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tfar.zomboabilities.abilities.CopyAbility;
 import tfar.zomboabilities.commands.ModCommands;
+import tfar.zomboabilities.entity.ClonePlayerEntity;
+import tfar.zomboabilities.init.ModEntityTypes;
 import tfar.zomboabilities.init.ModMobEffects;
 import tfar.zomboabilities.platform.Services;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
@@ -55,13 +60,16 @@ public class ZomboAbilities {
     // write the majority of your code here and load it from your loader specific projects. This example has some
     // code that gets invoked by the entry point of the loader specific projects.
     public static void init() {
-
-
+        Services.PLATFORM.registerAll(ModEntityTypes.class, BuiltInRegistries.ENTITY_TYPE,dirtyCast(EntityType.class));
         // It is common for all supported loaders to provide a similar feature that can not be used directly in the
         // common code. A popular way to get around this is using Java's built-in service loader feature to create
         // your own abstraction layer. You can learn more about this in our provided services class. In this example
         // we have an interface in the common code and use a loader specific implementation to delegate our call to
         // the platform specific approach.
+    }
+
+    public static void registerAttributes(BiConsumer<EntityType<? extends LivingEntity>,AttributeSupplier> consumer) {
+        consumer.accept(ModEntityTypes.CLONE_PLAYER, ClonePlayerEntity.createAttributes().build());
     }
 
     static void onDeath(LivingEntity entity) {
@@ -78,6 +86,12 @@ public class ZomboAbilities {
                 playerDuck.setAbility(null);
             }
         }
+    }
+
+
+    @SuppressWarnings("unchecked")
+    static <T> Class<T> dirtyCast(Class<?> clazz) {
+        return (Class<T>) clazz;
     }
 
     static void onClone(ServerPlayer oldPlayer,ServerPlayer newPlayer,boolean alive) {

@@ -1,13 +1,45 @@
 package tfar.zomboabilities.client;
 
+import com.google.common.collect.ImmutableMap;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.client.resources.PlayerSkin;
+import net.minecraft.client.resources.SkinManager;
+import net.minecraft.core.UUIDUtil;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.component.ResolvableProfile;
+import tfar.zomboabilities.entity.ClonePlayerEntity;
 import tfar.zomboabilities.network.C2SAbilityPacket;
 import tfar.zomboabilities.network.C2SHoldAbilityPacket;
 import tfar.zomboabilities.platform.Services;
 
+import java.util.Map;
+import java.util.function.BiConsumer;
+
 public class ModClient {
+
+    private static final Map<PlayerSkin.Model, EntityRendererProvider<ClonePlayerEntity>> CLONE_PROVIDERS = ImmutableMap.of(
+            PlayerSkin.Model.WIDE, (context) -> new ClonePlayerEntityRenderer(context, false),
+            PlayerSkin.Model.SLIM, (context) -> new ClonePlayerEntityRenderer(context, true));
+
+    public static Map<PlayerSkin.Model, EntityRenderer<ClonePlayerEntity>> createCloneRenderers(EntityRendererProvider.Context context) {
+        ImmutableMap.Builder<PlayerSkin.Model, EntityRenderer<ClonePlayerEntity>> builder = ImmutableMap.builder();
+        CLONE_PROVIDERS.forEach((s, provider) -> {
+            try {
+                builder.put(s, provider.create(context));
+            } catch (Exception var5) {
+                throw new IllegalArgumentException("Failed to create player model for " + s, var5);
+            }
+        });
+        return builder.build();
+    }
 
     public static void clientTick() {
         if (Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused()) {
@@ -32,4 +64,12 @@ public class ModClient {
         return Minecraft.getInstance().player;
     }
 
+    public static<T extends Entity> void registerRenderers(BiConsumer<EntityType<? extends T>, EntityRendererProvider<T>> register) {
+    }
+
+
+    public static ResourceLocation getPlayerSkin(ResolvableProfile gameProfile) {
+        SkinManager skinmanager = Minecraft.getInstance().getSkinManager();
+        return skinmanager.getInsecureSkin(gameProfile.gameProfile()).texture();
+    }
 }

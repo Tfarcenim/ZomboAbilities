@@ -1,18 +1,22 @@
 package tfar.zomboabilities;
 
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -21,15 +25,25 @@ import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
+import org.apache.commons.lang3.tuple.Pair;
 import tfar.zomboabilities.client.ModClientForge;
 import tfar.zomboabilities.commands.ModCommands;
 import tfar.zomboabilities.datagen.ModDatagen;
+import tfar.zomboabilities.init.ModEntityDataSerializers;
 import tfar.zomboabilities.init.ModMobEffects;
-import tfar.zomboabilities.platform.NeoForgePlatformHelper;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 @Mod(ZomboAbilities.MOD_ID)
 public class ZomboAbilitiesNeoForge {
+
+    public static Map<Registry<?>, List<Pair<ResourceLocation, Supplier<Object>>>> registerLater = new HashMap<>();
+
 
     public ZomboAbilitiesNeoForge(IEventBus eventBus, Dist dist) {
         eventBus.addListener(PacketHandlerNeoForge::register);
@@ -61,11 +75,25 @@ public class ZomboAbilitiesNeoForge {
         NeoForge.EVENT_BUS.addListener(EventPriority.LOW,MobEffectEvent.Expired.class,event -> ZomboAbilities.onEffectRemove(event.getEntity(),event.getEffectInstance()));
         NeoForge.EVENT_BUS.addListener(EntityStruckByLightningEvent.class,event -> ZomboAbilities.onLightning(event.getEntity()));
 
-        eventBus.addListener(RegisterEvent.class,event -> ModMobEffects.boot());
+        eventBus.addListener(RegisterEvent.class, this::registerObjs);
+        eventBus.addListener(FMLCommonSetupEvent.class,fmlCommonSetupEvent -> registerLater.clear());
         eventBus.addListener(ModDatagen::gather);
+        eventBus.addListener(EntityAttributeCreationEvent.class,entityAttributeCreationEvent -> ZomboAbilities.registerAttributes(entityAttributeCreationEvent::put));
         // Use NeoForge to bootstrap the Common mod.
+        ((MappedRegistry<?>)BuiltInRegistries.ENTITY_TYPE).unfreeze();
         ZomboAbilities.init();
 
     }
 
+    public void registerObjs(RegisterEvent event) {
+        ModMobEffects.boot();
+        for (Map.Entry<Registry<?>,List<Pair<ResourceLocation, Supplier<Object>>>> entry : registerLater.entrySet()) {
+            Registry<?> registry = entry.getKey();
+            List<Pair<ResourceLocation, Supplier<Object>>> toRegister = entry.getValue();
+            for (Pair<ResourceLocation,Supplier<Object>> pair : toRegister) {
+                event.register((ResourceKey<? extends Registry<Object>>)registry.key(),pair.getLeft(), pair.getValue());
+            }
+        }
+        event.register(NeoForgeRegistries.ENTITY_DATA_SERIALIZERS.key(),ZomboAbilities.id("resolvable_profile"),() -> ModEntityDataSerializers.RESOLVABLE_PROFILE);
+    }
 }

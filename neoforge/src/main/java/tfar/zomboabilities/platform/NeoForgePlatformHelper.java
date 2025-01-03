@@ -1,9 +1,11 @@
 package tfar.zomboabilities.platform;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -11,12 +13,20 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import org.apache.commons.lang3.tuple.Pair;
 import tfar.zomboabilities.PacketHandlerNeoForge;
+import tfar.zomboabilities.ZomboAbilities;
+import tfar.zomboabilities.ZomboAbilitiesNeoForge;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
 import tfar.zomboabilities.platform.services.IPlatformHelper;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class NeoForgePlatformHelper implements IPlatformHelper {
 
@@ -37,6 +47,15 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 
         return !FMLLoader.isProduction();
     }
+
+    @Override
+    public <F> void registerAll(Map<String, ? extends F> map, Registry<F> registry, Class<? extends F> filter) {
+        List<Pair<ResourceLocation, Supplier<Object>>> list = ZomboAbilitiesNeoForge.registerLater.computeIfAbsent(registry, k -> new ArrayList<>());
+        for (Map.Entry<String, ? extends F> entry : map.entrySet()) {
+            list.add(Pair.of(ZomboAbilities.id(entry.getKey()), entry::getValue));
+        }
+    }
+
     public static PayloadRegistrar registrar;
 
     @Override

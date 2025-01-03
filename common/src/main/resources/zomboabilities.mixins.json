@@ -11,6 +11,7 @@
     "PlayerMixin"
   ],
   "client": [
+    "EntityRenderDispatcherMixin"
   ],
   "server": [],
   "injectors": {
