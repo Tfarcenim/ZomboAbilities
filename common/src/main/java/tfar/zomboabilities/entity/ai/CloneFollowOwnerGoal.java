@@ -9,9 +9,9 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
-import tfar.mineanything.entity.ClonePlayerEntity;
+import tfar.zomboabilities.entity.ClonePlayerEntity;
 
 import java.util.EnumSet;
 
@@ -41,7 +41,7 @@ public class CloneFollowOwnerGoal extends Goal {
         this.canFly = pCanFly;
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         if (!(pTamable.getNavigation() instanceof GroundPathNavigation) && !(pTamable.getNavigation() instanceof FlyingPathNavigation)) {
-            throw new IllegalArgumentException("Unsupported mob type for FollowOwnerGoal");
+            throw new IllegalArgumentException("Unsupported mob type for CloneFollowOwnerGoal");
         }
     }
 
@@ -56,9 +56,9 @@ public class CloneFollowOwnerGoal extends Goal {
             return false;
         } else if (livingentity.isSpectator()) {
             return false;
-        } else if (this.unableToMove()) {
+        } else if (this.clonePlayer.unableToMoveToOwner()) {
             return false;
-        } else if (this.clonePlayer.distanceToSqr(livingentity) < (double) (this.startDistance * this.startDistance)) {
+        } else if (this.clonePlayer.distanceToSqr(livingentity) < this.startDistance * this.startDistance) {
             return false;
         } else {
             this.owner = livingentity;
@@ -73,16 +73,13 @@ public class CloneFollowOwnerGoal extends Goal {
     public boolean canContinueToUse() {
         if (this.navigation.isDone()) {
             return false;
-        } else if (this.unableToMove()) {
+        } else if (this.clonePlayer.unableToMoveToOwner()) {
             return false;
         } else {
-            return !(this.clonePlayer.distanceToSqr(this.owner) <= (double) (this.stopDistance * this.stopDistance));
+            return !(this.clonePlayer.distanceToSqr(this.owner) <= this.stopDistance * this.stopDistance);
         }
     }
 
-    private boolean unableToMove() {
-        return this.clonePlayer.isPassenger() || this.clonePlayer.isLeashed();
-    }
 
     /**
      * Execute a one shot task or start executing a continuous task
@@ -90,8 +87,8 @@ public class CloneFollowOwnerGoal extends Goal {
     @Override
     public void start() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.clonePlayer.getPathfindingMalus(BlockPathTypes.WATER);
-        this.clonePlayer.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.oldWaterCost = this.clonePlayer.getPathfindingMalus(PathType.WATER);
+        this.clonePlayer.setPathfindingMalus(PathType.WATER, 0.0F);
     }
 
     /**
@@ -101,7 +98,7 @@ public class CloneFollowOwnerGoal extends Goal {
     public void stop() {
         this.owner = null;
         this.navigation.stop();
-        this.clonePlayer.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+        this.clonePlayer.setPathfindingMalus(PathType.WATER, this.oldWaterCost);
     }
 
     /**
@@ -109,7 +106,7 @@ public class CloneFollowOwnerGoal extends Goal {
      */
     @Override
     public void tick() {
-        this.clonePlayer.getLookControl().setLookAt(this.owner, 10.0F, (float) this.clonePlayer.getMaxHeadXRot());
+        this.clonePlayer.getLookControl().setLookAt(this.owner, 10.0F, this.clonePlayer.getMaxHeadXRot());
         if (--this.timeToRecalcPath <= 0) {
             this.timeToRecalcPath = this.adjustedTickDelay(10);
             if (this.clonePlayer.distanceToSqr(this.owner) >= 144.0D) {
@@ -137,20 +134,20 @@ public class CloneFollowOwnerGoal extends Goal {
     }
 
     private boolean maybeTeleportTo(int pX, int pY, int pZ) {
-        if (Math.abs((double) pX - this.owner.getX()) < 2.0D && Math.abs((double) pZ - this.owner.getZ()) < 2.0D) {
+        if (Math.abs(pX - this.owner.getX()) < 2.0D && Math.abs(pZ - this.owner.getZ()) < 2.0D) {
             return false;
         } else if (!this.canTeleportTo(new BlockPos(pX, pY, pZ))) {
             return false;
         } else {
-            this.clonePlayer.moveTo((double) pX + 0.5D, (double) pY, (double) pZ + 0.5D, this.clonePlayer.getYRot(), this.clonePlayer.getXRot());
+            this.clonePlayer.moveTo(pX + 0.5D, pY, pZ + 0.5D, this.clonePlayer.getYRot(), this.clonePlayer.getXRot());
             this.navigation.stop();
             return true;
         }
     }
 
     private boolean canTeleportTo(BlockPos pPos) {
-        BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, pPos.mutable());
-        if (blockpathtypes != BlockPathTypes.WALKABLE) {
+        PathType blockpathtypes = WalkNodeEvaluator.getPathTypeStatic(clonePlayer, pPos.mutable());
+        if (blockpathtypes != PathType.WALKABLE) {
             return false;
         } else {
             BlockState blockstate = this.level.getBlockState(pPos.below());

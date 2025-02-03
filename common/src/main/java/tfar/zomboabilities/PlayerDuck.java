@@ -19,6 +19,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.abilities.AbilityControls;
+import tfar.zomboabilities.abilities.DuplicateClonesAbility;
 import tfar.zomboabilities.ducks.AbstractFurnaceBlockEntityDuck;
 import tfar.zomboabilities.init.Tags;
 
@@ -58,6 +59,20 @@ public interface PlayerDuck {
 
     int getLaserActiveDuration();
     void setLaserActiveDuration(int duration);
+
+    int getCloneCount();
+    void setCloneCount(int cloneCount);
+    default boolean tooManyClones() {
+        return getCloneCount() >= DuplicateClonesAbility.MAX;
+    }
+
+    default void incrementClone() {
+        setCloneCount(getCloneCount()+1);
+    }
+
+    default void decrementClone() {
+        setCloneCount(getCloneCount()-1);
+    }
 
     int MAX = 200;
 

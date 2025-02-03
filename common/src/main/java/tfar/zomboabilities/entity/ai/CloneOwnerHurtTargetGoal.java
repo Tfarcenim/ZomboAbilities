@@ -3,7 +3,7 @@ package tfar.zomboabilities.entity.ai;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import tfar.mineanything.entity.ClonePlayerEntity;
+import tfar.zomboabilities.entity.ClonePlayerEntity;
 
 import java.util.EnumSet;
 
@@ -23,7 +23,7 @@ public class CloneOwnerHurtTargetGoal extends TargetGoal {
      * method as well.
      */
     public boolean canUse() {
-        if (/* !this.clonePlayer.isOrderedToSit()*/true) {
+        if ( !this.clonePlayer.isOrderedToSit()) {
             LivingEntity livingentity = this.clonePlayer.getOwner();
             if (livingentity == null) {
                 return false;

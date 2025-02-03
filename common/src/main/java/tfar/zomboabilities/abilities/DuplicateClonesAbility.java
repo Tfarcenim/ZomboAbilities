@@ -1,8 +1,13 @@
 package tfar.zomboabilities.abilities;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.component.ResolvableProfile;
+import net.minecraft.world.phys.EntityHitResult;
+import tfar.zomboabilities.PlayerDuck;
+import tfar.zomboabilities.Utils;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
 import tfar.zomboabilities.init.ModEntityTypes;
 
@@ -18,12 +23,20 @@ public class DuplicateClonesAbility extends Ability{
 //You can give you clones Weapons and armor to fight with
 //You can only spawn up to 25 Clones at a time, 25+ clones cannot exist.
 
+    public static final int MAX = 25;
     @Override
     public void primary(ServerPlayer player) {
         if (player.totalExperience >0) {
+            PlayerDuck playerDuck = PlayerDuck.of(player);
+            if (playerDuck.tooManyClones()) {
+                player.displayClientMessage(Component.literal("Too many clones"),false);
+                return;
+            }
+            playerDuck.incrementClone();
             ClonePlayerEntity clone = ModEntityTypes.CLONE_PLAYER.spawn(player.serverLevel(), player.blockPosition(), MobSpawnType.MOB_SUMMONED);
             if (clone != null) {
                 clone.setClone(new ResolvableProfile(player.getGameProfile()));
+                clone.setOwnerUUID(player.getUUID());
                 clone.setCustomName(player.getDisplayName());
                 player.giveExperiencePoints(-1);
             }
@@ -32,7 +45,14 @@ public class DuplicateClonesAbility extends Ability{
 
     @Override
     public void secondary(ServerPlayer player) {
-
+        EntityHitResult result = Utils.pick(player,player.blockInteractionRange(),player.entityInteractionRange(),0);
+        if (result != null) {
+            Entity entity = result.getEntity();
+            if (entity instanceof ClonePlayerEntity clonePlayerEntity && clonePlayerEntity.getOwner() == player) {
+                clonePlayerEntity.setOrderedToSit(!clonePlayerEntity.isOrderedToSit());
+                player.displayClientMessage(Component.literal("Clone set to stay: "+clonePlayerEntity.isOrderedToSit()),true);
+            }
+        }
     }
 
     @Override

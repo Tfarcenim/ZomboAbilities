@@ -37,6 +37,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     final AbilityControls controls = new AbilityControls();
 
     int laserActiveDuration;
+    int cloneCount;
 
     @Override
     public void setLives(int lives) {
@@ -113,6 +114,16 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     }
 
     @Override
+    public int getCloneCount() {
+        return cloneCount;
+    }
+
+    @Override
+    public void setCloneCount(int cloneCount) {
+        this.cloneCount = cloneCount;
+    }
+
+    @Override
     public SavedInventory getSavedInventory() {
         return savedInventory;
     }
@@ -127,6 +138,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
         compound.putInt("lives",lives);
         compound.put("SavedInventory", savedInventory.save(new ListTag(),this.registryAccess()));
         ability.ifPresent(ability1 -> compound.putString("Ability",ability1.getName()));
+        compound.putInt("cloneCount",cloneCount);
     }
 
     @Inject(method = "readAdditionalSaveData",at = @At("RETURN"))
@@ -139,6 +151,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
         if (compound.contains("Ability")) {
             ability = Optional.ofNullable(Abilities.ABILITIES_BY_NAME.get(compound.getString("Ability")));
         }
+        cloneCount = compound.getInt("cloneCount");
     }
 
     @Override

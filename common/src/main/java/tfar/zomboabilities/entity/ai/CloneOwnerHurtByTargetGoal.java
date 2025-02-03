@@ -3,7 +3,7 @@ package tfar.zomboabilities.entity.ai;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import tfar.mineanything.entity.ClonePlayerEntity;
+import tfar.zomboabilities.entity.ClonePlayerEntity;
 
 import java.util.EnumSet;
 

@@ -15,6 +15,8 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
+import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
+import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
@@ -43,6 +45,8 @@ import java.util.function.Supplier;
 public class ZomboAbilitiesNeoForge {
 
     public static Map<Registry<?>, List<Pair<ResourceLocation, Supplier<Object>>>> registerLater = new HashMap<>();
+
+    public static final TicketController TICKET_CONTROLLER = new TicketController(ZomboAbilities.id( "chunk_loader"), null);
 
 
     public ZomboAbilitiesNeoForge(IEventBus eventBus, Dist dist) {
@@ -80,6 +84,7 @@ public class ZomboAbilitiesNeoForge {
         eventBus.addListener(ModDatagen::gather);
         eventBus.addListener(EntityAttributeCreationEvent.class,entityAttributeCreationEvent -> ZomboAbilities.registerAttributes(entityAttributeCreationEvent::put));
         // Use NeoForge to bootstrap the Common mod.
+        eventBus.addListener(RegisterTicketControllersEvent.class,event -> event.register(TICKET_CONTROLLER));
         ((MappedRegistry<?>)BuiltInRegistries.ENTITY_TYPE).unfreeze();
         ZomboAbilities.init();
 
@@ -87,10 +92,10 @@ public class ZomboAbilitiesNeoForge {
 
     public void registerObjs(RegisterEvent event) {
         ModMobEffects.boot();
-        for (Map.Entry<Registry<?>,List<Pair<ResourceLocation, Supplier<Object>>>> entry : registerLater.entrySet()) {
-            Registry<?> registry = entry.getKey();
-            List<Pair<ResourceLocation, Supplier<Object>>> toRegister = entry.getValue();
-            for (Pair<ResourceLocation,Supplier<Object>> pair : toRegister) {
+        Registry<?> registry = event.getRegistry();
+        List<Pair<ResourceLocation,Supplier<Object>>> list = registerLater.get(registry);
+        if (list != null) {
+            for (Pair<ResourceLocation,Supplier<Object>> pair : list) {
                 event.register((ResourceKey<? extends Registry<Object>>)registry.key(),pair.getLeft(), pair.getValue());
             }
         }
