@@ -2,6 +2,7 @@ package tfar.zomboabilities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -9,6 +10,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,8 +22,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -29,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tfar.zomboabilities.abilities.CopyAbility;
+import tfar.zomboabilities.abilities.EndermanGeneticsAbility;
 import tfar.zomboabilities.commands.ModCommands;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
 import tfar.zomboabilities.init.ModEntityTypes;
@@ -227,5 +233,23 @@ public class ZomboAbilities {
                 player.addEffect(new MobEffectInstance(MobEffects.GLOWING,400,0));
             }
         }
+    }
+
+    public static boolean onIncomingDamage(LivingEntity entity, DamageSource source, float amount) {
+        if (entity instanceof Player player) {
+            boolean enderman = PlayerDuck.of(player).getAbility().map(ability -> ability == Abilities.ENDERMAN_GENETICS).orElse(false);
+            if (enderman) {
+                boolean isPotion = source.getDirectEntity() instanceof ThrownPotion;
+                if (source.is(DamageTypeTags.IS_PROJECTILE) && !isPotion) {
+                    for (int i = 0; i < 64; i++) {
+                        if (EndermanGeneticsAbility.randomTeleport((ServerPlayer) player)) {
+                            return true;
+                        }
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

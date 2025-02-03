@@ -156,7 +156,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
 
     @Override
     public boolean isSensitiveToWater() {
-        return mobAbility == CopyAbility.ENDERMAN;
+        return mobAbility == CopyAbility.ENDERMAN || (ability.isPresent() && ability.get() == Abilities.ENDERMAN_GENETICS);
     }
 
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {

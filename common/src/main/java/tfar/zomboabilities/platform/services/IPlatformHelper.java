@@ -7,7 +7,10 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.tuple.Pair;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
 
@@ -75,5 +78,7 @@ public interface IPlatformHelper {
     void sendToTracking(S2CModPacket<?> msg, Entity entity);
 
     Holder<Attribute> getSwimSpeed();
+
+    Pair<Boolean, Vec3> teleportEvent(LivingEntity entity, double targetX, double targetY, double targetZ);
 
 }

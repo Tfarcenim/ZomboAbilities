@@ -22,6 +22,7 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -74,6 +75,7 @@ public class ZomboAbilitiesNeoForge {
                 event.setCanPickup(TriState.FALSE);
             }
         });
+        NeoForge.EVENT_BUS.addListener(LivingIncomingDamageEvent.class, event -> event.setCanceled(ZomboAbilities.onIncomingDamage(event.getEntity(),event.getSource(),event.getAmount())));
         NeoForge.EVENT_BUS.addListener(LivingDamageEvent.Post.class,event -> ZomboAbilities.onHit(event.getEntity(),event.getSource()));
         NeoForge.EVENT_BUS.addListener(MobEffectEvent.Remove.class,event -> ZomboAbilities.onEffectRemove(event.getEntity(),event.getEffectInstance()));
         NeoForge.EVENT_BUS.addListener(EventPriority.LOW,MobEffectEvent.Expired.class,event -> ZomboAbilities.onEffectRemove(event.getEntity(),event.getEffectInstance()));

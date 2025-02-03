@@ -8,9 +8,11 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.apache.commons.lang3.tuple.Pair;
@@ -87,5 +89,12 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public Holder<Attribute> getSwimSpeed() {
         return NeoForgeMod.SWIM_SPEED;
+    }
+
+    @Override
+    public Pair<Boolean, Vec3> teleportEvent(LivingEntity entity, double targetX, double targetY, double targetZ) {
+        EntityTeleportEvent.EnderEntity event = net.neoforged.neoforge.event.EventHooks.onEnderTeleport(entity, targetX, targetY, targetZ);
+
+        return Pair.of(event.isCanceled(),new Vec3(event.getTargetX(),event.getTargetY(),event.getTargetZ()));
     }
 }

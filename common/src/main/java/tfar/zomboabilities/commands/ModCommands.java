@@ -93,15 +93,18 @@ public class ModCommands {
 
     static int queryAbility(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = EntityArgument.getPlayer(context,"player");
-        PlayerDuck playerDuck = PlayerDuck.of(player);
-        context.getSource().sendSuccess(() -> Component.literal("Ability: "+playerDuck.getAbility()),false);
+        context.getSource().sendSuccess(() -> Component.literal("Ability: "+query(player)),false);
         return 1;
+    }
+
+    static String query(ServerPlayer player) {
+        PlayerDuck playerDuck = PlayerDuck.of(player);
+        return playerDuck.getAbility().map(Ability::getName).orElse(null);
     }
 
     static int queryAbilitySelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
-        PlayerDuck playerDuck = PlayerDuck.of(player);
-        context.getSource().sendSuccess(() -> Component.literal("Ability: "+playerDuck.getAbility()),false);
+        context.getSource().sendSuccess(() -> Component.literal("Ability: "+query(player)),false);
         return 1;
     }
 

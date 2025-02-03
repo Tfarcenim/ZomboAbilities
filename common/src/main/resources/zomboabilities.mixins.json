@@ -7,6 +7,7 @@
   "mixins": [
     "AbstractFurnaceBlockEntityMixin",
     "ItemEntityMixin",
+    "LivingEntityMixin",
     "NearestAttackableTargetGoalMixin",
     "PlayerMixin"
   ],
