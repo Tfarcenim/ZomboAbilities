@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -26,18 +27,30 @@ import java.util.function.Consumer;
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
 
+    @Unique
     int lives = 10;
+    @Unique
     SavedInventory savedInventory = new SavedInventory();
 
+    @Unique
     Optional<Ability> ability = Optional.empty();
+    @Unique
     Ability copied_ability;
+    @Unique
     final int[] cooldowns = new int[4];
+    @Unique
     Consumer<ServerPlayer> mobAbility;
+    @Unique
     boolean laserActive;
+    @Unique
     final AbilityControls controls = new AbilityControls();
 
+    @Unique
     int laserActiveDuration;
+    @Unique
     int cloneCount;
+    @Unique
+    int explosionImmunityTimer;
 
     @Override
     public void setLives(int lives) {
@@ -96,6 +109,16 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     @Override
     public void setLaserActiveDuration(int laserActiveDuration) {
         this.laserActiveDuration = laserActiveDuration;
+    }
+
+    @Override
+    public int getExplosionImmunityTimer() {
+        return explosionImmunityTimer;
+    }
+
+    @Override
+    public void setExplosionImmunityTimer(int explosionImmunityTimer) {
+        this.explosionImmunityTimer = explosionImmunityTimer;
     }
 
     @Override

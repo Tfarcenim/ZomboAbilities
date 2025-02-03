@@ -232,6 +232,9 @@ public class ZomboAbilities {
                 player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST,400,2));
                 player.addEffect(new MobEffectInstance(MobEffects.GLOWING,400,0));
             }
+            if (playerDuck.getAbility().map(ability -> ability == Abilities.EXPLOSION).orElse(false)) {
+                playerDuck.setExplosionImmunityTimer(200);
+            }
         }
     }
 

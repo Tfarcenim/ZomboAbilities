@@ -17,6 +17,8 @@ public class Abilities {
     public static final Ability OBJECT_DUPLICATION = register(new ObjectDuplicationAbility(),"object_duplication");
     public static final Ability DUPLICATE_CLONES = register(new DuplicateClonesAbility(),"duplicate_clones");
     public static final Ability ENDERMAN_GENETICS = register(new EndermanGeneticsAbility(),"enderman_genetics");
+    public static final Ability EXPLOSION = register(new ExplosionAbility(),"explosion");
+    public static final Ability FIRE_MANIPULATION = register(new FireManipulationAbility(),"fire_manipulation");
 
 
     static Ability register(Ability ability,String name) {

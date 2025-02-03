@@ -60,6 +60,9 @@ public interface PlayerDuck {
     int getLaserActiveDuration();
     void setLaserActiveDuration(int duration);
 
+    int getExplosionImmunityTimer();
+    void setExplosionImmunityTimer(int duration);
+
     int getCloneCount();
     void setCloneCount(int cloneCount);
     default boolean tooManyClones() {
@@ -125,6 +128,9 @@ public interface PlayerDuck {
             }
         }
         tickCooldowns();
+        if (getExplosionImmunityTimer() > 0) {
+            setExplosionImmunityTimer(getExplosionImmunityTimer() - 1);
+        }
     }
 
     default void tickCooldowns() {

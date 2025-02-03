@@ -58,7 +58,7 @@ public class info {
 //
 //This Ability will also work for Mobs, Here are the things you’ll get from Hitting certain mobs.
 //
-//Make sure in chat it will say “Ability Obtained” Or if the Mob or player doesnt have an ability it’ll say “No Ability Found”
+//Make sure in chat it will say "Ability Obtained" Or if the Mob or player doesnt have an ability it’ll say “No Ability Found”
 //
 //Zombie - Slowness 2, Hunger 3, Weakness 2, Player will burn in day.
 //Spider - Night Vision, Player will have Weakness 2 in the Day
@@ -154,7 +154,6 @@ public class info {
 //You can only spawn up to 25 Clones at a time, 25+ clones cannot exist.
 //
 //-
-////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
 //Enderman Genetics
@@ -166,7 +165,6 @@ public class info {
 //You can the Golden apple effect when you eat a chorus fruit, the regular golden apple effect,
 //You Will automatically Dodge Arrows with your teleport
 //-
-//
 //-
 //
 //Explosion
@@ -179,7 +177,7 @@ public class info {
 //Passive - If you are Struck by Lightning, you will be able to explode without dying for 10 seconds
 //You have Silent foot steps
 //
-//-
+//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Fire Manipulation (You can get creative with this if you want)
 //
