@@ -4,6 +4,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.phys.Vec3;
+import tfar.zomboabilities.PlayerDuck;
+import tfar.zomboabilities.ZomboAbilities;
 
 //Pressing R - This ability allows you to shoot a Fire Ball
 //Cooldown - 8 Seconds
@@ -28,8 +30,7 @@ public class FireManipulationAbility extends Ability{
 
     @Override
     public void secondary(ServerPlayer player) {
-        ServerLevel level = player.serverLevel();
-        level.sendParticles()
+
     }
 
     @Override

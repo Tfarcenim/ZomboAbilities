@@ -1,15 +1,11 @@
 package tfar.zomboabilities.client;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.client.resources.SkinManager;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -44,6 +40,9 @@ public class ModClient {
     public static void clientTick() {
         if (Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused()) {
             boolean holding_p = ModKeybinds.BIND_1.isDown();
+            boolean holding_s = ModKeybinds.BIND_2.isDown();
+            boolean holding_t = ModKeybinds.BIND_3.isDown();
+            boolean holding_q = ModKeybinds.BIND_4.isDown();
             while (ModKeybinds.BIND_1.consumeClick()) {
                 Services.PLATFORM.sendToServer(new C2SAbilityPacket(0));
             }
@@ -53,10 +52,10 @@ public class ModClient {
             while (ModKeybinds.BIND_3.consumeClick()) {
                 Services.PLATFORM.sendToServer(new C2SAbilityPacket(2));
             }
-            while (ModKeybinds.BIND_2.consumeClick()) {
+            while (ModKeybinds.BIND_4.consumeClick()) {
                 Services.PLATFORM.sendToServer(new C2SAbilityPacket(3));
             }
-            Services.PLATFORM.sendToServer(new C2SHoldAbilityPacket(holding_p, false, false, false));
+            Services.PLATFORM.sendToServer(new C2SHoldAbilityPacket(holding_p, holding_s, holding_t, holding_q));
         }
     }
 

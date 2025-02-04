@@ -9,15 +9,16 @@ import tfar.zomboabilities.client.ClientPacketHandler;
 
 import java.util.UUID;
 
-public record S2CSetLaserActivePacket(UUID uuid,boolean active) implements S2CModPacket<RegistryFriendlyByteBuf>{
+public record S2CSetKeyActivePacket(UUID uuid, boolean active,int slot) implements S2CModPacket<RegistryFriendlyByteBuf>{
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, S2CSetLaserActivePacket> STREAM_CODEC =
+    public static final StreamCodec<RegistryFriendlyByteBuf, S2CSetKeyActivePacket> STREAM_CODEC =
             StreamCodec.composite(
-                    UUIDUtil.STREAM_CODEC,S2CSetLaserActivePacket::uuid,
-                    ByteBufCodecs.BOOL,S2CSetLaserActivePacket::active,
-                    S2CSetLaserActivePacket::new);
+                    UUIDUtil.STREAM_CODEC, S2CSetKeyActivePacket::uuid,
+                    ByteBufCodecs.BOOL, S2CSetKeyActivePacket::active,
+                    ByteBufCodecs.INT, S2CSetKeyActivePacket::slot,
+                    S2CSetKeyActivePacket::new);
 
-    public static final CustomPacketPayload.Type<S2CSetLaserActivePacket> TYPE = ModPacket.type(S2CSetLaserActivePacket.class);
+    public static final CustomPacketPayload.Type<S2CSetKeyActivePacket> TYPE = ModPacket.type(S2CSetKeyActivePacket.class);
 
     @Override
     public void handleClient() {

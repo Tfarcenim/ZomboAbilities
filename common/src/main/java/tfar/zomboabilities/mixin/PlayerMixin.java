@@ -18,7 +18,7 @@ import tfar.zomboabilities.*;
 import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.abilities.AbilityControls;
 import tfar.zomboabilities.abilities.CopyAbility;
-import tfar.zomboabilities.network.S2CSetLaserActivePacket;
+import tfar.zomboabilities.network.S2CSetKeyActivePacket;
 import tfar.zomboabilities.platform.Services;
 
 import java.util.Optional;
@@ -38,10 +38,13 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     Ability copied_ability;
     @Unique
     final int[] cooldowns = new int[4];
+
+    @Unique
+    final boolean[] activeButtons = new boolean[4];
+
     @Unique
     Consumer<ServerPlayer> mobAbility;
-    @Unique
-    boolean laserActive;
+
     @Unique
     final AbilityControls controls = new AbilityControls();
 
@@ -88,17 +91,32 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     }
 
     @Override
-    public void setLaserActive(boolean laserActive) {
-        if (!level().isClientSide) {
-            ServerPlayer player = (ServerPlayer)(Object)this;
-            Services.PLATFORM.sendToTracking(new S2CSetLaserActivePacket(player.getUUID(),laserActive),player);
-        }
-        this.laserActive = laserActive;
+    public void setPrimaryActive(boolean active) {
+        sendActive(active,0);
+        activeButtons[0] = active;
     }
 
     @Override
-    public boolean isLaserActive() {
-        return laserActive;
+    public boolean isPrimaryActive() {
+        return activeButtons[0];
+    }
+
+    @Override
+    public void setFunctionActive(boolean active, int b) {
+        sendActive(active,b);
+        activeButtons[b] = active;
+    }
+
+    @Override
+    public boolean isFunctionActive(int b) {
+        return activeButtons[1];
+    }
+
+    void sendActive(boolean active, int slot) {
+        if (!level().isClientSide) {
+            ServerPlayer player = (ServerPlayer)(Object)this;
+            Services.PLATFORM.sendToTracking(new S2CSetKeyActivePacket(player.getUUID(), active,slot),player);
+        }
     }
 
     @Override

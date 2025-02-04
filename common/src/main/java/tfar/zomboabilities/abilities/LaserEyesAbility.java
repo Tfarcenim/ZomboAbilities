@@ -12,7 +12,7 @@ public class LaserEyesAbility extends Ability{
     @Override
     public void primary(ServerPlayer player) {
         PlayerDuck duck = PlayerDuck.of(player);
-        duck.setLaserActive(true);
+        duck.setPrimaryActive(true);
         if (ZomboAbilities.ENABLE_LOG) System.out.println("Laser Active");
         applyCooldown(0,15 * 20,player);
     }

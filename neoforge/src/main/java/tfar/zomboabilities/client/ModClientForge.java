@@ -38,7 +38,7 @@ public class ModClientForge {
 
     static void renderAfter(RenderPlayerEvent.Post event) {
         Player player = event.getEntity();
-        if (PlayerDuck.of(player).isLaserActive()) {
+        if (PlayerDuck.of(player).isPrimaryActive()) {
             PlayerRenderer renderer = event.getRenderer();
             LaserEyesRenderer.renderBean(event.getPoseStack(), event.getMultiBufferSource(), (AbstractClientPlayer) player, event.getPartialTick());
         }

@@ -1,7 +1,9 @@
 package tfar.zomboabilities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -10,13 +12,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.abilities.AbilityControls;
 import tfar.zomboabilities.abilities.DuplicateClonesAbility;
@@ -48,14 +50,21 @@ public interface PlayerDuck {
 
     Optional<Ability> getAbility();
 
+    default boolean hasAbility(Ability ability) {
+        return getAbility().map(ability1 -> ability1 == ability).orElse(false);
+    }
+
     void setCopiedAbility(Ability ability);
     Ability getCopiedAbility();
     Consumer<ServerPlayer> getMobAbility();
     void setMobAbility(Consumer<ServerPlayer> mobAbility);
 
     int[] getCooldowns();
-    boolean isLaserActive();
-    void setLaserActive(boolean laserActive);
+    boolean isPrimaryActive();
+    void setPrimaryActive(boolean active);
+
+    boolean isFunctionActive(int b);
+    void setFunctionActive(boolean active, int b);
 
     int getLaserActiveDuration();
     void setLaserActiveDuration(int duration);
@@ -86,7 +95,7 @@ public interface PlayerDuck {
                 ability.tickPassive(player);
             }
         });
-        if (isLaserActive()) {
+        if (isPrimaryActive() && hasAbility(Abilities.LASER_EYES)) {
             HitResult pick = Utils.pickEither(player, player.blockInteractionRange() * 5, player.entityInteractionRange() * 5, 0);
             if (pick.getType() != HitResult.Type.MISS) {
                 if (player.tickCount % 10 == 0) {
@@ -120,13 +129,20 @@ public interface PlayerDuck {
             if (stayActive) {
                 setLaserActiveDuration(laserDuration);
             } else {
-                setLaserActive(false);
+                setPrimaryActive(false);
                 setLaserActiveDuration(0);
                 if (ZomboAbilities.ENABLE_LOG) {
                     System.out.println("Laser Disabled");
                 }
             }
         }
+
+        if (getControls().holding_secondary && hasAbility(Abilities.FIRE_MANIPULATION)) {
+            ServerLevel serverLevel = player.serverLevel();
+            Vec3 look = player.getLookAngle();
+            serverLevel.sendParticles(ParticleTypes.FLAME,player.getX(),player.getEyeY(),player.getZ(),0,look.x,look.y,look.z,1);
+        }
+
         tickCooldowns();
         if (getExplosionImmunityTimer() > 0) {
             setExplosionImmunityTimer(getExplosionImmunityTimer() - 1);
