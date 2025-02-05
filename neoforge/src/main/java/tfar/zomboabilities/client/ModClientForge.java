@@ -22,7 +22,7 @@ public class ModClientForge {
     }
 
     public static void renderers(EntityRenderersEvent.RegisterRenderers event) {
-        ModClient.registerRenderers(event::registerEntityRenderer);
+        ModClient.registerRenderers();
     }
 
     static void layers(EntityRenderersEvent.AddLayers event) {

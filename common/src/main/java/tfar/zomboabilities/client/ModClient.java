@@ -4,20 +4,20 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.component.ResolvableProfile;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
+import tfar.zomboabilities.init.ModEntityTypes;
 import tfar.zomboabilities.network.C2SAbilityPacket;
 import tfar.zomboabilities.network.C2SHoldAbilityPacket;
 import tfar.zomboabilities.platform.Services;
 
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 public class ModClient {
 
@@ -63,7 +63,8 @@ public class ModClient {
         return Minecraft.getInstance().player;
     }
 
-    public static<T extends Entity> void registerRenderers(BiConsumer<EntityType<? extends T>, EntityRendererProvider<T>> register) {
+    public static<T extends Entity> void registerRenderers() {
+        EntityRenderers.register(ModEntityTypes.FIRE_BREATH, FireBreathRenderer::new);
     }
 
 

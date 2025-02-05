@@ -255,4 +255,14 @@ public class ZomboAbilities {
         }
         return false;
     }
+
+    public static boolean checkInvulnerable(Entity entity, DamageSource source, boolean isInvulnerable) {
+        if (isInvulnerable) return true;
+
+        if (entity instanceof Player player) {
+            return PlayerDuck.of(player).hasAbility(Abilities.FIRE_MANIPULATION) && source.is(DamageTypeTags.IS_FIRE);
+        }
+
+        return false;
+    }
 }

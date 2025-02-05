@@ -2,7 +2,10 @@ package tfar.zomboabilities.abilities;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.projectile.LargeFireball;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.phys.Vec3;
 import tfar.zomboabilities.PlayerDuck;
 import tfar.zomboabilities.ZomboAbilities;
@@ -33,9 +36,16 @@ public class FireManipulationAbility extends Ability{
 
     }
 
+    private final RecipeManager.CachedCheck<SingleRecipeInput, SmeltingRecipe> quickCheck = RecipeManager.createCheck(RecipeType.SMELTING);
+
     @Override
     public void tertiary(ServerPlayer player) {
-
+        ItemStack stack = player.getMainHandItem();
+        RecipeHolder<SmeltingRecipe> recipeholder = quickCheck.getRecipeFor(new SingleRecipeInput(stack), player.serverLevel()).orElse(null);
+        if (recipeholder != null) {
+            ItemStack cooked = recipeholder.value().assemble(new SingleRecipeInput(stack), player.registryAccess());
+            player.setItemInHand(InteractionHand.MAIN_HAND,cooked.copyWithCount(stack.getCount() * cooked.getCount()));
+        }
     }
 
     @Override

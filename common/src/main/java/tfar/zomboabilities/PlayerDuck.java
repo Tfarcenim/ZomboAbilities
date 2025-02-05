@@ -23,6 +23,8 @@ import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.abilities.AbilityControls;
 import tfar.zomboabilities.abilities.DuplicateClonesAbility;
 import tfar.zomboabilities.ducks.AbstractFurnaceBlockEntityDuck;
+import tfar.zomboabilities.entity.FireBreathEntity;
+import tfar.zomboabilities.init.ModEntityTypes;
 import tfar.zomboabilities.init.Tags;
 
 import java.util.Optional;
@@ -140,7 +142,8 @@ public interface PlayerDuck {
         if (getControls().holding_secondary && hasAbility(Abilities.FIRE_MANIPULATION)) {
             ServerLevel serverLevel = player.serverLevel();
             Vec3 look = player.getLookAngle();
-            serverLevel.sendParticles(ParticleTypes.FLAME,player.getX(),player.getEyeY(),player.getZ(),0,look.x,look.y,look.z,1);
+            FireBreathEntity fireBreathEntity = FireBreathEntity.shootFromEyes(player,look,serverLevel);
+            serverLevel.addFreshEntity(fireBreathEntity);
         }
 
         tickCooldowns();
