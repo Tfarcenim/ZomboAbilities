@@ -19,6 +19,7 @@ public class Abilities {
     public static final Ability ENDERMAN_GENETICS = register(new EndermanGeneticsAbility(),"enderman_genetics");
     public static final Ability EXPLOSION = register(new ExplosionAbility(),"explosion");
     public static final Ability FIRE_MANIPULATION = register(new FireManipulationAbility(),"fire_manipulation");
+    public static final Ability FLIGHT = register(new FlightAbility(),"flight");
 
 
     static Ability register(Ability ability,String name) {

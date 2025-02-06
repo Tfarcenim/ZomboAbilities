@@ -58,7 +58,7 @@ public class info {
 //
 //This Ability will also work for Mobs, Here are the things you’ll get from Hitting certain mobs.
 //
-//Make sure in chat it will say "Ability Obtained" Or if the Mob or player doesnt have an ability it’ll say “No Ability Found”
+//Make sure in chat it will say "Ability Obtained" Or if the Mob or player doesnt have an ability it’ll say "No Ability Found"
 //
 //Zombie - Slowness 2, Hunger 3, Weakness 2, Player will burn in day.
 //Spider - Night Vision, Player will have Weakness 2 in the Day
@@ -147,7 +147,7 @@ public class info {
 //
 //Duplicate Clones
 //
-//Pressing R - Doing this will Spawn Clones of the player, Each clone Will have a number depending on the order you spawned them in, Clone 1,2,3,4,etc, This requires 1 Exp per clone, You can give the Clones Items, if the clone dies then the items will drop from that clone. If you ask your clone to do something, the Ai will actually do it, like for example, “Clone protect me from any mob while I mine” Or “Clone Protect my base”
+//Pressing R - Doing this will Spawn Clones of the player, Each clone Will have a number depending on the order you spawned them in, Clone 1,2,3,4,etc, This requires 1 Exp per clone, You can give the Clones Items, if the clone dies then the items will drop from that clone. If you ask your clone to do something, the Ai will actually do it, like for example, "Clone protect me from any mob while I mine" Or "Clone Protect my base"
 //
 //Passives - Whenever your attacked or you hit something, your clones will automatically Fight that Player/Mob, If you want your clones to turn passive and not attack anything Press T.
 //You can give you clones Weapons and armor to fight with
@@ -177,7 +177,6 @@ public class info {
 //Passive - If you are Struck by Lightning, you will be able to explode without dying for 10 seconds
 //You have Silent foot steps
 //
-//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Fire Manipulation (You can get creative with this if you want)
 //
@@ -196,7 +195,7 @@ public class info {
 //-
 //
 //Flight
-//
+////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Double Click Space - This ability allows you to be able to fly, this will last for 15 seconds
 //Cooldown - 25 Seconds
 //
@@ -377,7 +376,7 @@ public class info {
 //
 //-Magnetism
 //
-//Pressing R - This Ability allows all Nearby Objects within 300 Blocks made out of Iron that arent Placed, to attract fast to the Player, It will say “Magnet On” In chat for the player and Pressing R again will deactivate it. Iron Golems will be attracted towards the player
+//Pressing R - This Ability allows all Nearby Objects within 300 Blocks made out of Iron that arent Placed, to attract fast to the Player, It will say "Magnet On" In chat for the player and Pressing R again will deactivate it. Iron Golems will be attracted towards the player
 //
 //Examples
 //
@@ -479,7 +478,7 @@ public class info {
 //
 //Pocket Dimension
 //
-//Pressing R - The Player will go into a Pitch black pocket dimension, there floor will be made out of Oak Planks, the Wall will be Made out of White Concrete and The Ceiling will be made out of white concrete, it will be a 23x25 Area Basically it’ll look like a little hotel room, everytime the player does this, they leave a glowstone from the area they teleported from, if someone else does right clicks on that Glowstone, they will be able to enter the pocket dimension, if the player with the ability Presses Y, they will leave the pocket Dimension and go back to the area they teleported from, they will have to break the glowstone, the Glowstone will not drop anything tho. If the player stays in this pocket dimension for more than 300 Seconds, they will get the Wither effect it will say in chat for them “You are running out of Oxygen” It will go away once they come out
+//Pressing R - The Player will go into a Pitch black pocket dimension, there floor will be made out of Oak Planks, the Wall will be Made out of White Concrete and The Ceiling will be made out of white concrete, it will be a 23x25 Area Basically it’ll look like a little hotel room, everytime the player does this, they leave a glowstone from the area they teleported from, if someone else does right clicks on that Glowstone, they will be able to enter the pocket dimension, if the player with the ability Presses Y, they will leave the pocket Dimension and go back to the area they teleported from, they will have to break the glowstone, the Glowstone will not drop anything tho. If the player stays in this pocket dimension for more than 300 Seconds, they will get the Wither effect it will say in chat for them "You are running out of Oxygen" It will go away once they come out
 //
 //Players cannot do /tpa while in this Pocket Dimension
 //
@@ -646,7 +645,7 @@ public class info {
 //
 // Time Acceleration
 //
-//Pressing R - Anything that you touch within 10 seconds, will be accelerated, for example, if you a touch a baby version of any animal, they will grow in about 5 seconds, if you touch another player, they will have Faster regen, but will lose hunger faster, and they will have Speed 1,  For the Player that has the “Infinity” Ability, there Infinity will Constantly lose 2 Exp a second  if that player has there infinity active. This will also add a glowing effect to the mob, All players effected by this will have No cooldowns on there abilities.
+//Pressing R - Anything that you touch within 10 seconds, will be accelerated, for example, if you a touch a baby version of any animal, they will grow in about 5 seconds, if you touch another player, they will have Faster regen, but will lose hunger faster, and they will have Speed 1,  For the Player that has the "Infinity" Ability, there Infinity will Constantly lose 2 Exp a second  if that player has there infinity active. This will also add a glowing effect to the mob, All players effected by this will have No cooldowns on there abilities.
 //
 //Pressing Y - Anything Currently in your hand will rapidly age, for example, Cobble stone will become moss cobble stone, Any Tool like sword, pickaxe, flint and steel, that has durability, the durability will slowly go down, copper block will turn into moss block, etc.
 //
@@ -724,7 +723,7 @@ public class info {
 //
 //Bomb Touch
 //
-//Shifting + Right clicking - Doing this on a block will make it a bomb, in chat it will say “Block has been turned into a bomb” To activate the bomb the player will have to press R, once that happens the block will make the tnt sound and blow up,
+//Shifting + Right clicking - Doing this on a block will make it a bomb, in chat it will say "Block has been turned into a bomb" To activate the bomb the player will have to press R, once that happens the block will make the tnt sound and blow up,
 //
 //By Pressing Y - And hitting any Mob within 10 seconds, all the Mobs will turn into bombs, to blow up the mobs at any given time, you’ll have to press C
 //
@@ -829,7 +828,7 @@ public class info {
 //
 //Appearence - A Golden Pickaxe
 //
-//Ability - Anything this pickaxes mines will be a random item/block, This pickaxe takes 0.6 Exp from the player for every block mined, if player has 0 exp, it will say in chat “ You do not have the Energy to use this pickaxe.”
+//Ability - Anything this pickaxes mines will be a random item/block, This pickaxe takes 0.6 Exp from the player for every block mined, if player has 0 exp, it will say in chat " You do not have the Energy to use this pickaxe."
 //
 //-
 //

@@ -7,6 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -79,9 +80,15 @@ public class ZomboAbilitiesNeoForge {
         NeoForge.EVENT_BUS.addListener(EntityInvulnerabilityCheckEvent.class, event -> event.setInvulnerable(ZomboAbilities.checkInvulnerable(event.getEntity(),event.getSource(),event.isInvulnerable())));
         NeoForge.EVENT_BUS.addListener(LivingIncomingDamageEvent.class, event -> event.setCanceled(ZomboAbilities.onIncomingDamage(event.getEntity(),event.getSource(),event.getAmount())));
         NeoForge.EVENT_BUS.addListener(LivingDamageEvent.Post.class,event -> ZomboAbilities.onHit(event.getEntity(),event.getSource()));
-        NeoForge.EVENT_BUS.addListener(MobEffectEvent.Remove.class,event -> ZomboAbilities.onEffectRemove(event.getEntity(),event.getEffectInstance()));
-        NeoForge.EVENT_BUS.addListener(EventPriority.LOW,MobEffectEvent.Expired.class,event -> ZomboAbilities.onEffectRemove(event.getEntity(),event.getEffectInstance()));
+        NeoForge.EVENT_BUS.addListener(MobEffectEvent.Remove.class,event -> ZomboAbilities.onEffectRemove(event.getEntity(),event.getEffect()));
+        NeoForge.EVENT_BUS.addListener(EventPriority.LOW,MobEffectEvent.Expired.class,event -> ZomboAbilities.onEffectExpire(event.getEntity(),event.getEffectInstance()));
         NeoForge.EVENT_BUS.addListener(EntityStruckByLightningEvent.class,event -> ZomboAbilities.onLightning(event.getEntity()));
+        NeoForge.EVENT_BUS.addListener(PlayerInteractEvent.RightClickItem.class,event -> {
+            InteractionResult interactionResult = ZomboAbilities.onRightClickItem(event.getLevel(), event.getEntity(), event.getHand(), event.getItemStack());
+            if (interactionResult != null) {
+                event.setCancellationResult(interactionResult);
+            }
+        });
 
         eventBus.addListener(RegisterEvent.class, this::registerObjs);
         eventBus.addListener(FMLCommonSetupEvent.class,fmlCommonSetupEvent -> registerLater.clear());
