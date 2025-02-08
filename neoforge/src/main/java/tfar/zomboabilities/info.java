@@ -201,7 +201,7 @@ public class info {
 //Passives - You you are Hit while your in the Air, your Ability will cancel and you’ll fall from the sky
 //If you have Fireworks in your other hand and you right click while your in the air you will fly faster.
 //
-//-////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //
 //Force Field
 //
@@ -211,7 +211,7 @@ public class info {
 //
 //By pressing Y - The Force Field will be taken down
 //
-//
+////-////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //-
 //
 //Genis (Personally Talk to me on discord for this one)
@@ -226,11 +226,6 @@ public class info {
 //This probably isnt possible but, Is there a way to make a in-game hologram for Redstone builds, in chat the player will be able to do /Build (Name) And it will show a hologram on the materials and where to place everything.
 //
 //-
-//
-//
-//
-//
-//
 //
 //
 //

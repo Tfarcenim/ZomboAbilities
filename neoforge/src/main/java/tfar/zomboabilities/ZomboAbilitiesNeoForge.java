@@ -102,6 +102,7 @@ public class ZomboAbilitiesNeoForge {
         ((MappedRegistry<?>)BuiltInRegistries.BLOCK).unfreeze();
         ((MappedRegistry<?>)BuiltInRegistries.ITEM).unfreeze();
         ((MappedRegistry<?>)BuiltInRegistries.ENTITY_TYPE).unfreeze();
+        ((MappedRegistry<?>)BuiltInRegistries.RECIPE_SERIALIZER).unfreeze();
         Services.PLATFORM.registerAll(ModAttachmentTypes.class,NeoForgeRegistries.ATTACHMENT_TYPES,ZomboAbilities.dirtyCast(AttachmentType.class));
         ZomboAbilities.init();
 

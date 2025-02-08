@@ -21,6 +21,7 @@ public class Abilities {
     public static final Ability FIRE_MANIPULATION = register(new FireManipulationAbility(),"fire_manipulation");
     public static final Ability FLIGHT = register(new FlightAbility(),"flight");
     public static final Ability FORCE_FIELD = register(new ForceFieldAbility(),"force_field");
+    public static final Ability GENIUS = register(new GeniusAbility(),"genius");
 
 
     static Ability register(Ability ability,String name) {

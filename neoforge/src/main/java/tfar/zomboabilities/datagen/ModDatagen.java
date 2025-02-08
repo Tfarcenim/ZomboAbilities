@@ -20,5 +20,6 @@ public class ModDatagen {
         generator.addProvider(true,ModLootTableProvider.create(output,provider));
         generator.addProvider(true,new ModBlockStateProvider(output,helper));
         generator.addProvider(true,new ModItemModelProvider(output,helper));
+        generator.addProvider(true,new ModRecipeProvider(output,provider));
     }
 }

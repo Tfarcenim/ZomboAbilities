@@ -1,4 +1,4 @@
-package tfar.zomboabilities;
+package tfar.zomboabilities.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

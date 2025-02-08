@@ -16,7 +16,7 @@ import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.apache.commons.lang3.tuple.Pair;
-import tfar.zomboabilities.ForceFieldData;
+import tfar.zomboabilities.data.ForceFieldData;
 import tfar.zomboabilities.PacketHandlerNeoForge;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.ZomboAbilitiesNeoForge;
