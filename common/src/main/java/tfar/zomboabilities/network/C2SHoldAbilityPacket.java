@@ -7,6 +7,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import tfar.zomboabilities.PlayerDuck;
 import tfar.zomboabilities.ZomboAbilities;
+import tfar.zomboabilities.abilities.AbilityControls;
 
 public record C2SHoldAbilityPacket(boolean p,boolean s,boolean t,boolean q) implements C2SModPacket<RegistryFriendlyByteBuf> {
 
@@ -24,7 +25,7 @@ public record C2SHoldAbilityPacket(boolean p,boolean s,boolean t,boolean q) impl
 
     @Override
     public void handleServer(ServerPlayer player) {
-        PlayerDuck.of(player).getControls().updateControls(p,s,t,q);
+        AbilityControls.updateControls(player,p,s,t,q);
         if (ZomboAbilities.ENABLE_LOG) {
             //System.out.println(PlayerDuck.of(player).getControls());
         }

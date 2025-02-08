@@ -1,13 +1,11 @@
 package tfar.zomboabilities.abilities;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import tfar.zomboabilities.Utils;
+import tfar.zomboabilities.utils.Utils;
 import tfar.zomboabilities.network.S2CParticleAABBPacket;
 import tfar.zomboabilities.platform.Services;
 

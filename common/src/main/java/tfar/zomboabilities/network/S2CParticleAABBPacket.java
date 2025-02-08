@@ -10,7 +10,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import tfar.zomboabilities.Utils;
+import tfar.zomboabilities.utils.Utils;
 import tfar.zomboabilities.client.ModClient;
 
 public record S2CParticleAABBPacket(ParticleOptions particle,AABB aabb,int count) implements S2CModPacket<RegistryFriendlyByteBuf> {

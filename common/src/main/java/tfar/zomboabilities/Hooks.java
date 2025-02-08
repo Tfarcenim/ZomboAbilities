@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import tfar.zomboabilities.ducks.AbstractFurnaceBlockEntityDuck;
 import tfar.zomboabilities.init.Tags;
+import tfar.zomboabilities.utils.AbilityUtils;
 
 import java.util.function.Predicate;
 
@@ -44,6 +45,6 @@ public class Hooks {
     }
 
     static boolean isMerman(Player player) {
-        return PlayerDuck.of(player).getAbility().map(ability -> ability == Abilities.MERMAN).orElse(false);
+        return AbilityUtils.hasAbility(player,Abilities.MERMAN);
     }
 }

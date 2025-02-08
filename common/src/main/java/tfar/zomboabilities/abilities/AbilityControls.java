@@ -1,5 +1,8 @@
 package tfar.zomboabilities.abilities;
 
+import net.minecraft.world.entity.Entity;
+import tfar.zomboabilities.platform.Services;
+
 import java.util.Objects;
 
 public class AbilityControls {
@@ -14,6 +17,11 @@ public class AbilityControls {
         holding_secondary = secondary;
         holding_tertiary = tertiary;
         holding_quaternary = quaternary;
+    }
+
+
+    public static void updateControls(Entity entity, boolean p, boolean s, boolean t, boolean q) {
+        Services.PLATFORM.getControls(entity).updateControls(p,s,t,q);
     }
 
     @Override

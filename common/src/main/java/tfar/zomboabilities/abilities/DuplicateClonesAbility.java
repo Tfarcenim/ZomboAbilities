@@ -7,7 +7,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.phys.EntityHitResult;
 import tfar.zomboabilities.PlayerDuck;
-import tfar.zomboabilities.Utils;
+import tfar.zomboabilities.utils.Utils;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
 import tfar.zomboabilities.init.ModEntityTypes;
 

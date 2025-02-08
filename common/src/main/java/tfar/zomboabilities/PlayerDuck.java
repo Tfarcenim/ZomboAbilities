@@ -1,7 +1,6 @@
 package tfar.zomboabilities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,10 +23,11 @@ import tfar.zomboabilities.abilities.AbilityControls;
 import tfar.zomboabilities.abilities.DuplicateClonesAbility;
 import tfar.zomboabilities.ducks.AbstractFurnaceBlockEntityDuck;
 import tfar.zomboabilities.entity.FireBreathEntity;
-import tfar.zomboabilities.init.ModEntityTypes;
 import tfar.zomboabilities.init.Tags;
+import tfar.zomboabilities.platform.Services;
+import tfar.zomboabilities.utils.AbilityUtils;
+import tfar.zomboabilities.utils.Utils;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public interface PlayerDuck {
@@ -37,23 +37,6 @@ public interface PlayerDuck {
     }
     default Player as() {
         return (Player) this;
-    }
-
-    void setLives(int lives);
-    int getLives();
-    default void addLives(int lives) {
-        setLives(getLives() + lives);
-    }
-    default void loseLife() {
-        addLives(-1);
-    }
-
-    void setAbility(Ability ability);
-
-    Optional<Ability> getAbility();
-
-    default boolean hasAbility(Ability ability) {
-        return getAbility().map(ability1 -> ability1 == ability).orElse(false);
     }
 
     void setCopiedAbility(Ability ability);
@@ -92,12 +75,12 @@ public interface PlayerDuck {
 
     default void tickServer() {
         ServerPlayer player = (ServerPlayer) as();
-        getAbility().ifPresent(ability -> {
+        AbilityUtils.getAbility(player).ifPresent(ability -> {
             if (player.tickCount %20 == 0) {
                 ability.tickPassive(player);
             }
         });
-        if (isPrimaryActive() && hasAbility(Abilities.LASER_EYES)) {
+        if (isPrimaryActive() && AbilityUtils.hasAbility(as(),Abilities.LASER_EYES)) {
             HitResult pick = Utils.pickEither(player, player.blockInteractionRange() * 5, player.entityInteractionRange() * 5, 0);
             if (pick.getType() != HitResult.Type.MISS) {
                 if (player.tickCount % 10 == 0) {
@@ -127,7 +110,7 @@ public interface PlayerDuck {
             }
             int laserDuration = getLaserActiveDuration();
             laserDuration++;
-            boolean stayActive = getControls().holding_primary && laserDuration <= MAX;
+            boolean stayActive = Services.PLATFORM.getControls(player).holding_primary && laserDuration <= MAX;
             if (stayActive) {
                 setLaserActiveDuration(laserDuration);
             } else {
@@ -139,7 +122,7 @@ public interface PlayerDuck {
             }
         }
 
-        if (getControls().holding_secondary && hasAbility(Abilities.FIRE_MANIPULATION)) {
+        if (Services.PLATFORM.getControls(player).holding_secondary && AbilityUtils.hasAbility(as(),Abilities.FIRE_MANIPULATION)) {
             ServerLevel serverLevel = player.serverLevel();
             Vec3 look = player.getLookAngle();
             FireBreathEntity fireBreathEntity = FireBreathEntity.shootFromEyes(player,look,serverLevel);
@@ -172,7 +155,6 @@ public interface PlayerDuck {
 
     default void copyFrom(ServerPlayer oldPlayer) {
         PlayerDuck old = of(oldPlayer);
-        setLives(old.getLives());
         Inventory newInventory = as().getInventory();
         SavedInventory oldSavedInventory = old.getSavedInventory();
         for (int i = 0; i < newInventory.getContainerSize(); i++) {
@@ -185,10 +167,7 @@ public interface PlayerDuck {
             }
         }
         oldSavedInventory.clearContent();
-        old.getAbility().ifPresent(this::setAbility);
     }
 
     SavedInventory getSavedInventory();
-    AbilityControls getControls();
-
 }

@@ -11,9 +11,11 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import tfar.zomboabilities.Abilities;
+import tfar.zomboabilities.utils.AbilityUtils;
 import tfar.zomboabilities.PlayerDuck;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.abilities.Ability;
+import tfar.zomboabilities.utils.LivesUtils;
 
 import java.util.Collection;
 
@@ -61,7 +63,7 @@ public class ModCommands {
                 .then(Commands.literal("get")
                         .then(Commands.argument("player", EntityArgument.player())
                                 .executes(ModCommands::getLives)
-                        )
+                        ).executes(ModCommands::getSelfLives)
                 )
         );
     }
@@ -75,8 +77,8 @@ public class ModCommands {
             return 0;
         }
         for (ServerPlayer player : players) {
-            Ability previous = PlayerDuck.of(player).getAbility().orElse(null);
-            PlayerDuck.of(player).setAbility(ability);
+            Ability previous = AbilityUtils.getAbility(player).orElse(null);
+            AbilityUtils.setAbility(player,ability);
             updateAbility(player,previous,ability);
         }
         return players.size();
@@ -98,8 +100,7 @@ public class ModCommands {
     }
 
     static String query(ServerPlayer player) {
-        PlayerDuck playerDuck = PlayerDuck.of(player);
-        return playerDuck.getAbility().map(Ability::getName).orElse(null);
+        return AbilityUtils.getAbility(player).map(Ability::getName).orElse(null);
     }
 
     static int queryAbilitySelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -112,8 +113,8 @@ public class ModCommands {
         Collection<ServerPlayer> players = EntityArgument.getPlayers(context, "players");
 
         for (ServerPlayer player : players) {
-            Ability previous = PlayerDuck.of(player).getAbility().orElse(null);
-            PlayerDuck.of(player).setAbility(null);
+            Ability previous = AbilityUtils.getAbility(player).orElse(null);
+            AbilityUtils.removeAbility(player);
             updateAbility(player,previous,null);
         }
         return players.size();
@@ -124,7 +125,7 @@ public class ModCommands {
         Collection<ServerPlayer> players = EntityArgument.getPlayers(context, "players");
         int lives = IntegerArgumentType.getInteger(context, "lives");
         for (ServerPlayer player : players) {
-            PlayerDuck.of(player).addLives(lives);
+            LivesUtils.addLives(player,lives);
         }
         return players.size();
     }
@@ -133,18 +134,15 @@ public class ModCommands {
         Collection<ServerPlayer> players = EntityArgument.getPlayers(context, "players");
         int lives = IntegerArgumentType.getInteger(context, "lives");
         for (ServerPlayer player : players) {
-            PlayerDuck.of(player).setLives(lives);
+            LivesUtils.setLives(player,lives);
         }
         return players.size();
     }
 
     static int getSelfLives(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        Collection<ServerPlayer> players = EntityArgument.getPlayers(context, "player");
-        int lives = IntegerArgumentType.getInteger(context, "lives");
-        for (ServerPlayer player : players) {
-            PlayerDuck.of(player).setLives(lives);
-        }
-        return players.size();
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        context.getSource().sendSuccess(() -> ZomboAbilities.getLivesInfo(player), false);
+        return 1;
     }
 
     static int getLives(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {

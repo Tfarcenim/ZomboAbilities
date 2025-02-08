@@ -1,4 +1,4 @@
-package tfar.zomboabilities;
+package tfar.zomboabilities.utils;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;

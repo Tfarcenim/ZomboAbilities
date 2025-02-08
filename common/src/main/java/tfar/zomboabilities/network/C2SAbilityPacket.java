@@ -5,6 +5,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import tfar.zomboabilities.utils.AbilityUtils;
 import tfar.zomboabilities.PlayerDuck;
 import tfar.zomboabilities.init.ModMobEffects;
 
@@ -23,7 +24,7 @@ public record C2SAbilityPacket(int key) implements C2SModPacket<RegistryFriendly
             playerDuck.getCopiedAbility().tryUseAbility(player,key);
         }
         else {
-            playerDuck.getAbility().ifPresent(ability -> ability.tryUseAbility(player, key));
+            AbilityUtils.getAbility(player).ifPresent(ability -> ability.tryUseAbility(player,key));
         }
     }
 

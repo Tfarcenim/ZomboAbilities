@@ -11,7 +11,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
+import tfar.zomboabilities.abilities.AbilityControls;
+import tfar.zomboabilities.data.AbilityData;
 import tfar.zomboabilities.data.ForceFieldData;
+import tfar.zomboabilities.data.LivesData;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
 
@@ -84,5 +87,13 @@ public interface IPlatformHelper {
 
     void setFFData(Entity entity, ForceFieldData data);
     ForceFieldData getFFData(Entity entity);
+
+    void setAData(Entity entity, AbilityData data);
+    AbilityData getAData(Entity entity);
+
+    void setLData(Entity entity, LivesData data);
+    LivesData getLData(Entity entity);
+
+    AbilityControls getControls(Entity entity);
 
 }

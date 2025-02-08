@@ -16,10 +16,14 @@ import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.apache.commons.lang3.tuple.Pair;
+import tfar.zomboabilities.abilities.AbilityControls;
+import tfar.zomboabilities.data.AbilityData;
 import tfar.zomboabilities.data.ForceFieldData;
 import tfar.zomboabilities.PacketHandlerNeoForge;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.ZomboAbilitiesNeoForge;
+import tfar.zomboabilities.data.LivesData;
+import tfar.zomboabilities.datagen.ModDatagen;
 import tfar.zomboabilities.init.ModAttachmentTypes;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
@@ -108,5 +112,32 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public ForceFieldData getFFData(Entity entity) {
         return entity.getData(ModAttachmentTypes.FORCE_FIELD_DATA);
+    }
+
+    @Override
+    public void setAData(Entity entity, AbilityData data) {
+        entity.setData(ModAttachmentTypes.ABILITY_DATA,data);
+    }
+
+    @Override
+    public AbilityData getAData(Entity entity) {
+        return entity.getData(ModAttachmentTypes.ABILITY_DATA);
+    }
+
+    @Override
+    public LivesData getLData(Entity entity) {
+        return entity.getData(ModAttachmentTypes.LIVES_DATA);
+    }
+
+    @Override
+    public void setLData(Entity entity, LivesData data) {
+        entity.setData(ModAttachmentTypes.LIVES_DATA,data);
+    }
+
+
+
+    @Override
+    public AbilityControls getControls(Entity entity) {
+        return entity.getData(ModAttachmentTypes.ABILITY_CONTROLS);
     }
 }
