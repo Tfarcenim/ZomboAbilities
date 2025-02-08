@@ -14,6 +14,7 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
@@ -33,11 +34,13 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
-import tfar.zomboabilities.client.ModClientForge;
+import tfar.zomboabilities.client.ModClientNeoForge;
 import tfar.zomboabilities.commands.ModCommands;
 import tfar.zomboabilities.datagen.ModDatagen;
+import tfar.zomboabilities.init.ModAttachmentTypes;
 import tfar.zomboabilities.init.ModEntityDataSerializers;
 import tfar.zomboabilities.init.ModMobEffects;
+import tfar.zomboabilities.platform.Services;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +58,7 @@ public class ZomboAbilitiesNeoForge {
     public ZomboAbilitiesNeoForge(IEventBus eventBus, Dist dist) {
         eventBus.addListener(PacketHandlerNeoForge::register);
         if (dist.isClient()) {
-            ModClientForge.init(eventBus);
+            ModClientNeoForge.init(eventBus);
         }
         NeoForge.EVENT_BUS.addListener(RegisterCommandsEvent.class,event -> ModCommands.register(event.getDispatcher()));
         // This method is invoked by the NeoForge mod loader when it is ready
@@ -96,7 +99,10 @@ public class ZomboAbilitiesNeoForge {
         eventBus.addListener(EntityAttributeCreationEvent.class,entityAttributeCreationEvent -> ZomboAbilities.registerAttributes(entityAttributeCreationEvent::put));
         // Use NeoForge to bootstrap the Common mod.
         eventBus.addListener(RegisterTicketControllersEvent.class,event -> event.register(TICKET_CONTROLLER));
+        ((MappedRegistry<?>)BuiltInRegistries.BLOCK).unfreeze();
+        ((MappedRegistry<?>)BuiltInRegistries.ITEM).unfreeze();
         ((MappedRegistry<?>)BuiltInRegistries.ENTITY_TYPE).unfreeze();
+        Services.PLATFORM.registerAll(ModAttachmentTypes.class,NeoForgeRegistries.ATTACHMENT_TYPES,ZomboAbilities.dirtyCast(AttachmentType.class));
         ZomboAbilities.init();
 
     }

@@ -1,0 +1,6 @@
+{
+  "parent": "zomboabilities:item/baked_shield_blocking",
+  "textures": {
+    "1": "zomboabilities:item/force_shield"
+  }
+}

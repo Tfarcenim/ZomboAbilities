@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
+import tfar.zomboabilities.ForceFieldData;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
 
@@ -80,5 +81,8 @@ public interface IPlatformHelper {
     Holder<Attribute> getSwimSpeed();
 
     Pair<Boolean, Vec3> teleportEvent(LivingEntity entity, double targetX, double targetY, double targetZ);
+
+    void setFFData(Entity entity, ForceFieldData data);
+    ForceFieldData getFFData(Entity entity);
 
 }

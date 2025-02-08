@@ -16,9 +16,11 @@ import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.apache.commons.lang3.tuple.Pair;
+import tfar.zomboabilities.ForceFieldData;
 import tfar.zomboabilities.PacketHandlerNeoForge;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.ZomboAbilitiesNeoForge;
+import tfar.zomboabilities.init.ModAttachmentTypes;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
 import tfar.zomboabilities.platform.services.IPlatformHelper;
@@ -96,5 +98,15 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
         EntityTeleportEvent.EnderEntity event = net.neoforged.neoforge.event.EventHooks.onEnderTeleport(entity, targetX, targetY, targetZ);
 
         return Pair.of(event.isCanceled(),new Vec3(event.getTargetX(),event.getTargetY(),event.getTargetZ()));
+    }
+
+    @Override
+    public void setFFData(Entity entity, ForceFieldData data) {
+        entity.setData(ModAttachmentTypes.FORCE_FIELD_DATA,data);
+    }
+
+    @Override
+    public ForceFieldData getFFData(Entity entity) {
+        return entity.getData(ModAttachmentTypes.FORCE_FIELD_DATA);
     }
 }

@@ -31,6 +31,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.dimension.DimensionType;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -39,7 +40,9 @@ import tfar.zomboabilities.abilities.CopyAbility;
 import tfar.zomboabilities.abilities.EndermanGeneticsAbility;
 import tfar.zomboabilities.commands.ModCommands;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
+import tfar.zomboabilities.init.ModBlocks;
 import tfar.zomboabilities.init.ModEntityTypes;
+import tfar.zomboabilities.init.ModItems;
 import tfar.zomboabilities.init.ModMobEffects;
 import tfar.zomboabilities.platform.Services;
 
@@ -68,6 +71,8 @@ public class ZomboAbilities {
     // write the majority of your code here and load it from your loader specific projects. This example has some
     // code that gets invoked by the entry point of the loader specific projects.
     public static void init() {
+        Services.PLATFORM.registerAll(ModBlocks.class, BuiltInRegistries.BLOCK, Block.class);
+        Services.PLATFORM.registerAll(ModItems.class, BuiltInRegistries.ITEM,Item.class);
         Services.PLATFORM.registerAll(ModEntityTypes.class, BuiltInRegistries.ENTITY_TYPE,dirtyCast(EntityType.class));
         // It is common for all supported loaders to provide a similar feature that can not be used directly in the
         // common code. A popular way to get around this is using Java's built-in service loader feature to create

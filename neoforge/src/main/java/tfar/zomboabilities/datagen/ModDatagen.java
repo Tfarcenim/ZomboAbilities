@@ -17,5 +17,8 @@ public class ModDatagen {
         CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
         generator.addProvider(true,new ModDataPackProvider(output,provider));
         generator.addProvider(true,new ModEntityTypeTagsProvider(output,provider,helper));
+        generator.addProvider(true,ModLootTableProvider.create(output,provider));
+        generator.addProvider(true,new ModBlockStateProvider(output,helper));
+        generator.addProvider(true,new ModItemModelProvider(output,helper));
     }
 }

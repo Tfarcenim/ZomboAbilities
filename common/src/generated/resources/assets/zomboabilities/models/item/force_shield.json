@@ -1,0 +1,14 @@
+{
+  "parent": "zomboabilities:item/baked_shield",
+  "overrides": [
+    {
+      "model": "zomboabilities:item/force_shield_blocking",
+      "predicate": {
+        "minecraft:blocking": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "1": "zomboabilities:item/force_shield"
+  }
+}

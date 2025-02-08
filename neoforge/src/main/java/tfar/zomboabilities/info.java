@@ -195,14 +195,13 @@ public class info {
 //-
 //
 //Flight
-////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Double Click Space - This ability allows you to be able to fly, this will last for 15 seconds
 //Cooldown - 25 Seconds
 //
 //Passives - You you are Hit while your in the Air, your Ability will cancel and you’ll fall from the sky
 //If you have Fireworks in your other hand and you right click while your in the air you will fly faster.
 //
-//-
+//-////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Force Field
 //
