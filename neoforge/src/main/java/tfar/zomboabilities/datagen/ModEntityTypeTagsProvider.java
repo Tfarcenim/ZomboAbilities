@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import tfar.zomboabilities.ZomboAbilities;
-import tfar.zomboabilities.init.Tags;
+import tfar.zomboabilities.init.ModTags;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -19,6 +19,6 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
     ////Dolphins, Guardians, Elder Guardians, Drowned Zombies, Will not attack the player.
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(Tags.MERMAN_FRIENDLY).add(EntityType.DOLPHIN,EntityType.GUARDIAN,EntityType.ELDER_GUARDIAN,EntityType.DROWNED);
+        tag(ModTags.MERMAN_FRIENDLY).add(EntityType.DOLPHIN,EntityType.GUARDIAN,EntityType.ELDER_GUARDIAN,EntityType.DROWNED);
     }
 }

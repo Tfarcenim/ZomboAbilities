@@ -1,0 +1,22 @@
+{
+  "type": "zomboabilities:genius",
+  "category": "misc",
+  "group": "genius",
+  "key": {
+    "L": {
+      "item": "minecraft:gold_block"
+    },
+    "p": {
+      "item": "minecraft:golden_apple"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "LpL",
+    "LLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:enchanted_golden_apple"
+  }
+}

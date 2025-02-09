@@ -1,0 +1,19 @@
+{
+  "type": "zomboabilities:genius",
+  "category": "equipment",
+  "group": "genius",
+  "key": {
+    "c": {
+      "item": "minecraft:chain"
+    }
+  },
+  "pattern": [
+    "c c",
+    "ccc",
+    "ccc"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:chainmail_chestplate"
+  }
+}

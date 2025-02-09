@@ -211,7 +211,6 @@ public class info {
 //
 //By pressing Y - The Force Field will be taken down
 //
-////-////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //-
 //
 //Genis (Personally Talk to me on discord for this one)
@@ -219,14 +218,13 @@ public class info {
 //Pressing C - This Ability allows you to open a Crafting table at any time.
 //
 //Passive - You will get 2x the Exp from Breakng/Killing anything
-//You are able to craft unCraftable items like Totems, Saddles, Name Tags, Etc, Talk to me on Discord for the recipes.
+//You are able to craft unCraftable items like Totems, Saddles, Name ModTags, Etc, Talk to me on Discord for the recipes.
 //
 //Optional Ability
 //
 //This probably isnt possible but, Is there a way to make a in-game hologram for Redstone builds, in chat the player will be able to do /Build (Name) And it will show a hologram on the materials and where to place everything.
 //
 //-
-//
 //
 //
 //
@@ -265,7 +263,7 @@ public class info {
 //Any kind of Basic Tools will turn into Gold tools
 //Arrows will turn into Spectral arrows
 //Any kind of Pressure Plate will turn into a Gold Pressure Plate
-//
+////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //-
 //Ice Manipulation (You can also get creative with this one)
 //

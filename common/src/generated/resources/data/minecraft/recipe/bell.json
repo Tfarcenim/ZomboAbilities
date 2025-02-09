@@ -1,0 +1,25 @@
+{
+  "type": "zomboabilities:genius",
+  "category": "misc",
+  "group": "genius",
+  "key": {
+    "L": {
+      "item": "minecraft:gold_ingot"
+    },
+    "c": {
+      "item": "minecraft:stick"
+    },
+    "p": {
+      "item": "minecraft:gold_nugget"
+    }
+  },
+  "pattern": [
+    "ccc",
+    "LLL",
+    "LpL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:bell"
+  }
+}

@@ -16,7 +16,6 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -29,7 +28,7 @@ public class GeniusCraftingMenu extends RecipeBookMenu<CraftingInput, CraftingRe
     private static final int INV_SLOT_END = 37;
     private static final int USE_ROW_SLOT_START = 37;
     private static final int USE_ROW_SLOT_END = 46;
-    private final CraftingContainer craftSlots = new TransientCraftingContainer(this, 3, 3);
+    private final GeniusCraftingContainer craftSlots = new GeniusCraftingContainer(this, 3, 3);
     private final ResultContainer resultSlots = new ResultContainer();
     private final ContainerLevelAccess access;
     private final Player player;

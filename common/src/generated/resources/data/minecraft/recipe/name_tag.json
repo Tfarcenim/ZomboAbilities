@@ -1,0 +1,25 @@
+{
+  "type": "zomboabilities:genius",
+  "category": "misc",
+  "group": "genius",
+  "key": {
+    "i": {
+      "item": "minecraft:ink_sac"
+    },
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "s": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "s  ",
+    " i ",
+    "  p"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:name_tag"
+  }
+}

@@ -19,11 +19,10 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import tfar.zomboabilities.abilities.Ability;
-import tfar.zomboabilities.abilities.AbilityControls;
 import tfar.zomboabilities.abilities.DuplicateClonesAbility;
 import tfar.zomboabilities.ducks.AbstractFurnaceBlockEntityDuck;
 import tfar.zomboabilities.entity.FireBreathEntity;
-import tfar.zomboabilities.init.Tags;
+import tfar.zomboabilities.init.ModTags;
 import tfar.zomboabilities.platform.Services;
 import tfar.zomboabilities.utils.AbilityUtils;
 import tfar.zomboabilities.utils.Utils;
@@ -97,7 +96,7 @@ public interface PlayerDuck {
                         BlockPos offset = pos.relative(blockPick.getDirection());
                         BlockState state = player.level().getBlockState(pos);
                         BlockEntity be = player.level().getBlockEntity(pos);
-                        if (state.is(Tags.GLASS_BLOCKS_CHEAP)) {
+                        if (state.is(ModTags.GLASS_BLOCKS_CHEAP)) {
                             player.hurt(player.damageSources().indirectMagic(player, null), 2);
                         } else if (be instanceof AbstractFurnaceBlockEntity abstractFurnaceBlockEntity) {
                             ((AbstractFurnaceBlockEntityDuck)abstractFurnaceBlockEntity).setLaserTimer(40);

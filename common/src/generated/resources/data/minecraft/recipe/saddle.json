@@ -1,0 +1,25 @@
+{
+  "type": "zomboabilities:genius",
+  "category": "misc",
+  "group": "genius",
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "p": {
+      "item": "minecraft:leather"
+    },
+    "s": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "ppp",
+    "s s",
+    "i i"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:saddle"
+  }
+}

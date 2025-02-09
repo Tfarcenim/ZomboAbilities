@@ -1,0 +1,22 @@
+{
+  "type": "zomboabilities:genius",
+  "category": "misc",
+  "group": "genius",
+  "key": {
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "l": {
+      "item": "minecraft:leather"
+    }
+  },
+  "pattern": [
+    "  d",
+    "dld",
+    "ddd"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:diamond_horse_armor"
+  }
+}

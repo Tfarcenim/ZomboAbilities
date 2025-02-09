@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import tfar.zomboabilities.ducks.AbstractFurnaceBlockEntityDuck;
-import tfar.zomboabilities.init.Tags;
+import tfar.zomboabilities.init.ModTags;
 import tfar.zomboabilities.utils.AbilityUtils;
 
 import java.util.function.Predicate;
@@ -41,7 +41,7 @@ public class Hooks {
     }
 
     static boolean isMermanFriendly(Mob mob) {
-        return mob.getType().is(Tags.MERMAN_FRIENDLY);
+        return mob.getType().is(ModTags.MERMAN_FRIENDLY);
     }
 
     static boolean isMerman(Player player) {

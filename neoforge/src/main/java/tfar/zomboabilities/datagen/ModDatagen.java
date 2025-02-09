@@ -3,6 +3,7 @@ package tfar.zomboabilities.datagen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
@@ -21,5 +22,9 @@ public class ModDatagen {
         generator.addProvider(true,new ModBlockStateProvider(output,helper));
         generator.addProvider(true,new ModItemModelProvider(output,helper));
         generator.addProvider(true,new ModRecipeProvider(output,provider));
+
+        BlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(output,provider,helper);
+        generator.addProvider(true,blockTagsProvider);
+        generator.addProvider(true,new ModItemTagsProvider(output,provider,blockTagsProvider.contentsGetter(),helper));
     }
 }

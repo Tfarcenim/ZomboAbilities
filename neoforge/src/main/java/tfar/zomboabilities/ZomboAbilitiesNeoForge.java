@@ -8,6 +8,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -23,13 +26,12 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.BlockDropsEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -41,6 +43,7 @@ import tfar.zomboabilities.init.ModAttachmentTypes;
 import tfar.zomboabilities.init.ModEntityDataSerializers;
 import tfar.zomboabilities.init.ModMobEffects;
 import tfar.zomboabilities.platform.Services;
+import tfar.zomboabilities.utils.AbilityUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +96,9 @@ public class ZomboAbilitiesNeoForge {
             }
         });
 
+        NeoForge.EVENT_BUS.addListener(this::drops);
+        NeoForge.EVENT_BUS.addListener(this::xpDrops);
+
         eventBus.addListener(RegisterEvent.class, this::registerObjs);
         eventBus.addListener(FMLCommonSetupEvent.class,fmlCommonSetupEvent -> registerLater.clear());
         eventBus.addListener(ModDatagen::gather);
@@ -106,6 +112,20 @@ public class ZomboAbilitiesNeoForge {
         Services.PLATFORM.registerAll(ModAttachmentTypes.class,NeoForgeRegistries.ATTACHMENT_TYPES,ZomboAbilities.dirtyCast(AttachmentType.class));
         ZomboAbilities.init();
 
+    }
+
+    void drops(BlockDropsEvent event) {
+        Entity entity = event.getBreaker();
+        if (entity != null && AbilityUtils.hasAbility(entity,Abilities.GENIUS)) {
+            event.setDroppedExperience(event.getDroppedExperience() *2);
+        }
+    }
+
+    void xpDrops(LivingExperienceDropEvent event) {
+        Player playerAttacker = event.getAttackingPlayer();
+        if (AbilityUtils.hasAbility(playerAttacker,Abilities.GENIUS)) {
+            event.setDroppedExperience(event.getDroppedExperience() *2);
+        }
     }
 
     public void registerObjs(RegisterEvent event) {

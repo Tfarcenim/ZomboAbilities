@@ -1,0 +1,28 @@
+{
+  "type": "zomboabilities:genius",
+  "category": "misc",
+  "group": "genius",
+  "key": {
+    "G": {
+      "item": "minecraft:gold_block"
+    },
+    "b": {
+      "item": "minecraft:blaze_powder"
+    },
+    "e": {
+      "item": "minecraft:emerald_block"
+    },
+    "g": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    "beb",
+    "GGG",
+    " g "
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:totem_of_undying"
+  }
+}

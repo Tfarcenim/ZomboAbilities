@@ -29,6 +29,7 @@ import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.FireworkRocketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
@@ -39,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tfar.zomboabilities.abilities.CopyAbility;
 import tfar.zomboabilities.abilities.EndermanGeneticsAbility;
+import tfar.zomboabilities.abilities.GoldTouchAbility;
 import tfar.zomboabilities.commands.ModCommands;
 import tfar.zomboabilities.data.AbilityData;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
@@ -48,6 +50,8 @@ import tfar.zomboabilities.utils.AbilityUtils;
 import tfar.zomboabilities.utils.LivesUtils;
 import tfar.zomboabilities.utils.Utils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -76,7 +80,7 @@ public class ZomboAbilities {
         Services.PLATFORM.registerAll(ModBlocks.class, BuiltInRegistries.BLOCK, Block.class);
         Services.PLATFORM.registerAll(ModItems.class, BuiltInRegistries.ITEM,Item.class);
         Services.PLATFORM.registerAll(ModEntityTypes.class, BuiltInRegistries.ENTITY_TYPE,dirtyCast(EntityType.class));
-        Services.PLATFORM.registerAll(ModEntityTypes.class, BuiltInRegistries.RECIPE_SERIALIZER,dirtyCast(RecipeSerializer.class));
+        Services.PLATFORM.registerAll(ModRecipeSerializers.class, BuiltInRegistries.RECIPE_SERIALIZER,dirtyCast(RecipeSerializer.class));
 
         ModGameRules.init();
         // It is common for all supported loaders to provide a similar feature that can not be used directly in the
@@ -105,6 +109,18 @@ public class ZomboAbilities {
         }
     }
 
+    public static ItemStack onItemPickedUp(Inventory inventory, ItemStack stack) {
+        Player player = inventory.player;
+        if (AbilityUtils.hasAbility(player,Abilities.GOLD_TOUCH)) {
+            if (!stack.is(ModTags.Items.MIDAS_IMMUNE)) {
+                ItemStack transform = GoldTouchAbility.MIDAS_TRANSFORM.getOrDefault(stack.getItem(),Items.GOLD_INGOT).getDefaultInstance().copyWithCount(stack.getCount());
+                stack.setCount(0);
+                return transform;
+            }
+            return stack;
+        }
+        return stack;
+    }
 
     @SuppressWarnings("unchecked")
     static <T> Class<T> dirtyCast(Class<?> clazz) {
