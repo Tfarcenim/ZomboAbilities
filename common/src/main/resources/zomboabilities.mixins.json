@@ -6,6 +6,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AbstractFurnaceBlockEntityMixin",
+    "EnchantmentHelperMixin",
     "InventoryMixin",
     "ItemEntityMixin",
     "LivingEntityMixin",

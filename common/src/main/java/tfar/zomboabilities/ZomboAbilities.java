@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.DamageTypeTags;
@@ -31,6 +32,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.enchantment.EnchantedItemInUse;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -50,8 +54,6 @@ import tfar.zomboabilities.utils.AbilityUtils;
 import tfar.zomboabilities.utils.LivesUtils;
 import tfar.zomboabilities.utils.Utils;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -333,5 +335,11 @@ public class ZomboAbilities {
             return InteractionResult.sidedSuccess(level.isClientSide());
         }
         return null;
+    }
+
+    public static void locationChanged(ServerLevel level, LivingEntity entity) {
+        Enchantment frostWalker = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(Enchantments.FROST_WALKER).get().value();
+        EnchantedItemInUse enchantediteminuse = new EnchantedItemInUse(new ItemStack(Items.NETHERITE_BOOTS), EquipmentSlot.FEET, entity);
+        frostWalker.runLocationChangedEffects(level,1,enchantediteminuse,entity);
     }
 }

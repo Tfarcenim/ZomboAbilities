@@ -22,6 +22,7 @@ import tfar.zomboabilities.data.ForceFieldData;
 import tfar.zomboabilities.PacketHandlerNeoForge;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.ZomboAbilitiesNeoForge;
+import tfar.zomboabilities.data.IceManipulationData;
 import tfar.zomboabilities.data.LivesData;
 import tfar.zomboabilities.datagen.ModDatagen;
 import tfar.zomboabilities.init.ModAttachmentTypes;
@@ -134,7 +135,15 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
         entity.setData(ModAttachmentTypes.LIVES_DATA,data);
     }
 
+    @Override
+    public void setIMData(Entity entity, IceManipulationData data) {
+        entity.setData(ModAttachmentTypes.ICE_MANIPULATION_DATA,data);
+    }
 
+    @Override
+    public IceManipulationData getIMData(Entity entity) {
+        return entity.getData(ModAttachmentTypes.ICE_MANIPULATION_DATA);
+    }
 
     @Override
     public AbilityControls getControls(Entity entity) {

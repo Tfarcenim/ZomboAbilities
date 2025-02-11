@@ -14,6 +14,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import tfar.zomboabilities.abilities.AbilityControls;
 import tfar.zomboabilities.data.AbilityData;
 import tfar.zomboabilities.data.ForceFieldData;
+import tfar.zomboabilities.data.IceManipulationData;
 import tfar.zomboabilities.data.LivesData;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
@@ -93,6 +94,9 @@ public interface IPlatformHelper {
 
     void setLData(Entity entity, LivesData data);
     LivesData getLData(Entity entity);
+
+    void setIMData(Entity entity, IceManipulationData data);
+    IceManipulationData getIMData(Entity entity);
 
     AbilityControls getControls(Entity entity);
 

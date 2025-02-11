@@ -23,6 +23,7 @@ public class Abilities {
     public static final Ability FORCE_FIELD = register(new ForceFieldAbility(),"force_field");
     public static final Ability GENIUS = register(new GeniusAbility(),"genius");
     public static final Ability GOLD_TOUCH = register(new GoldTouchAbility(),"gold_touch");
+    public static final Ability ICE_MANIPULATION = register(new IceManipulationAbility(),"ice_manipulation");
 
 
     static Ability register(Ability ability,String name) {

@@ -5,6 +5,7 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import tfar.zomboabilities.abilities.AbilityControls;
 import tfar.zomboabilities.data.AbilityData;
 import tfar.zomboabilities.data.ForceFieldData;
+import tfar.zomboabilities.data.IceManipulationData;
 import tfar.zomboabilities.data.LivesData;
 
 public class ModAttachmentTypes {
@@ -23,4 +24,6 @@ public class ModAttachmentTypes {
             .serialize(LivesData.CODEC).copyOnDeath().build();
 
     public static final AttachmentType<AbilityControls> ABILITY_CONTROLS = AttachmentType.builder(AbilityControls::new).build();
+    public static final AttachmentType<IceManipulationData> ICE_MANIPULATION_DATA = AttachmentType.builder(() -> new IceManipulationData())
+            .serialize(IceManipulationData.CODEC).build();
 }

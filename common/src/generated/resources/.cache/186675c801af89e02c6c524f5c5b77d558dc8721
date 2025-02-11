@@ -1,3 +1,14 @@
-// 1.21.1	2025-02-07T22:25:23.3096416	Block States: zomboabilities
+// 1.21.1	2025-02-10T21:38:14.5552982	Block States: zomboabilities
 64c1303c41f7f5a633ed7de1813ecc168fe07113 assets/zomboabilities/blockstates/force_field.json
+17f2914871e38bc0164f5e5e6b8a0c436486645c assets/zomboabilities/blockstates/pointed_ice.json
 4d89a36251a9bd3513e3b0077355eccdbfdff045 assets/zomboabilities/models/block/force_field.json
+c4df6035d7803c7fe022aff53ebdda7aecd48704 assets/zomboabilities/models/item/pointed_ice_down_base.json
+c4df6035d7803c7fe022aff53ebdda7aecd48704 assets/zomboabilities/models/item/pointed_ice_down_frustum.json
+c4df6035d7803c7fe022aff53ebdda7aecd48704 assets/zomboabilities/models/item/pointed_ice_down_middle.json
+c4df6035d7803c7fe022aff53ebdda7aecd48704 assets/zomboabilities/models/item/pointed_ice_down_tip.json
+c4df6035d7803c7fe022aff53ebdda7aecd48704 assets/zomboabilities/models/item/pointed_ice_down_tip_merge.json
+c4df6035d7803c7fe022aff53ebdda7aecd48704 assets/zomboabilities/models/item/pointed_ice_up_base.json
+c4df6035d7803c7fe022aff53ebdda7aecd48704 assets/zomboabilities/models/item/pointed_ice_up_frustum.json
+c4df6035d7803c7fe022aff53ebdda7aecd48704 assets/zomboabilities/models/item/pointed_ice_up_middle.json
+c4df6035d7803c7fe022aff53ebdda7aecd48704 assets/zomboabilities/models/item/pointed_ice_up_tip.json
+c4df6035d7803c7fe022aff53ebdda7aecd48704 assets/zomboabilities/models/item/pointed_ice_up_tip_merge.json
