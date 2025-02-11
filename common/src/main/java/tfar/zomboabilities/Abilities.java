@@ -24,6 +24,8 @@ public class Abilities {
     public static final Ability GENIUS = register(new GeniusAbility(),"genius");
     public static final Ability GOLD_TOUCH = register(new GoldTouchAbility(),"gold_touch");
     public static final Ability ICE_MANIPULATION = register(new IceManipulationAbility(),"ice_manipulation");
+    public static final Ability ILLUSION_CREATION = register(new IllusionCreationAbility(),"illusion_creation");
+    public static final Ability INFINITY = register(new InfinityAbility(),"infinity");
 
 
     static Ability register(Ability ability,String name) {

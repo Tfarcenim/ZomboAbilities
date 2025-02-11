@@ -263,7 +263,6 @@ public class info {
 //Any kind of Basic Tools will turn into Gold tools
 //Arrows will turn into Spectral arrows
 //Any kind of Pressure Plate will turn into a Gold Pressure Plate
-////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //-
 //Ice Manipulation (You can also get creative with this one)
 //
@@ -275,7 +274,7 @@ public class info {
 //
 //Pressing C - By pressing this, with 1 Exp you can make a arrow, (It will look light blue) It’ll be called a Ice Tipped arrow, It’ll give slowness and weakness to anybody it hits for 4 seconds.
 //–
-//
+//////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Illusion creation
 //
 //Pressing R - By pressing this you character will split into 10 clones of themselves, you will have to guess with one is real, if you hit a fake one they will just poof away,,a similar mod does this with a Totem.

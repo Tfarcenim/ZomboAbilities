@@ -48,8 +48,8 @@ public class ClonePlayerEntity extends PathfinderMob implements OwnableEntity {
 
     private boolean orderedToSit;
 
-    public ClonePlayerEntity(EntityType<? extends PathfinderMob> $$0, Level $$1) {
-        super($$0, $$1);
+    public ClonePlayerEntity(EntityType<? extends PathfinderMob> type, Level level) {
+        super(type, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -57,16 +57,6 @@ public class ClonePlayerEntity extends PathfinderMob implements OwnableEntity {
     }
 
 
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
-        //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, this::shouldAttack));
-        goalSelector.addGoal(3,new CloneFollowOwnerGoal(this,1,4,12,false));
-
-        this.targetSelector.addGoal(1, new CloneOwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new CloneOwnerHurtTargetGoal(this));
-    }
 
     boolean shouldAttack(LivingEntity living) {
         UUID uuid1 = living.getUUID();

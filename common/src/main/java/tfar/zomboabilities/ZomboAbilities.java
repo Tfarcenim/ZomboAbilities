@@ -94,6 +94,7 @@ public class ZomboAbilities {
 
     public static void registerAttributes(BiConsumer<EntityType<? extends LivingEntity>,AttributeSupplier> consumer) {
         consumer.accept(ModEntityTypes.CLONE_PLAYER, ClonePlayerEntity.createAttributes().build());
+        consumer.accept(ModEntityTypes.ILLUSION_PLAYER, ClonePlayerEntity.createAttributes().build());
     }
 
     static void onDeath(LivingEntity entity) {
