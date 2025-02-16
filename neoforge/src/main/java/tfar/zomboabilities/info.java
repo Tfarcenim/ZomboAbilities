@@ -274,7 +274,6 @@ public class info {
 //
 //Pressing C - By pressing this, with 1 Exp you can make a arrow, (It will look light blue) It’ll be called a Ice Tipped arrow, It’ll give slowness and weakness to anybody it hits for 4 seconds.
 //–
-//////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Illusion creation
 //
 //Pressing R - By pressing this you character will split into 10 clones of themselves, you will have to guess with one is real, if you hit a fake one they will just poof away,,a similar mod does this with a Totem.
@@ -286,7 +285,7 @@ public class info {
 //Pressing T - By Pressing this while holding a block, it will create a fake version of that block/item,the block wont be craftable and if placed then broke it will simply not drop anything.Or if its a Item that you can eat, it will be eatable put wont give you the hunger/effect. If its a Totem, it will simply not work (Which would be funny for scamming people Lol)
 //
 //-
-//
+////////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Infinity
 //
 //Pressing R - This ability allows you to have a force field around yourself, This ability will require to take 2 Exp every 5 seconds it is used, When you press R , it will tell you in chat if the Infinity is on or Off, The Infinity will take 2 Exp to activate and 2 Exp to deactivate, Player will be Immune to all damage, the Only thing that Would be able to Kill the player is the Void, and /kill. Whne this ability activate all armor currently on will drop out the players inventory

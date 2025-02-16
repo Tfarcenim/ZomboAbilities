@@ -1,5 +1,6 @@
 package tfar.zomboabilities.init;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import tfar.zomboabilities.abilities.AbilityControls;
@@ -26,4 +27,6 @@ public class ModAttachmentTypes {
     public static final AttachmentType<AbilityControls> ABILITY_CONTROLS = AttachmentType.builder(AbilityControls::new).build();
     public static final AttachmentType<IceManipulationData> ICE_MANIPULATION_DATA = AttachmentType.builder(() -> new IceManipulationData())
             .serialize(IceManipulationData.CODEC).build();
+
+    public static final AttachmentType<Boolean> INFINITY_ACTIVE = AttachmentType.builder(() -> false).serialize(Codec.BOOL).build();
 }

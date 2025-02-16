@@ -11,7 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.component.ResolvableProfile;
-import tfar.zomboabilities.abilities.IceSpikeRenderer;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
 import tfar.zomboabilities.init.ModEntityTypes;
 import tfar.zomboabilities.network.C2SAbilityPacket;
