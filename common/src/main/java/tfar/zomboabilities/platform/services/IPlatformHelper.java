@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
 import tfar.zomboabilities.abilities.AbilityControls;
@@ -100,4 +101,8 @@ public interface IPlatformHelper {
 
     AbilityControls getControls(Entity entity);
 
+    void setInfinityActive(Player player,boolean infinity);
+    boolean isInfinityActive(Player player);
+
+    void sendBooleanAttachment(ServerPlayer player, boolean b);
 }

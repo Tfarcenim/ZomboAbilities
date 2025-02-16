@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
@@ -27,6 +28,7 @@ import tfar.zomboabilities.data.LivesData;
 import tfar.zomboabilities.datagen.ModDatagen;
 import tfar.zomboabilities.init.ModAttachmentTypes;
 import tfar.zomboabilities.network.C2SModPacket;
+import tfar.zomboabilities.network.S2CAttachmentTypePacketBoolean;
 import tfar.zomboabilities.network.S2CModPacket;
 import tfar.zomboabilities.platform.services.IPlatformHelper;
 import net.neoforged.fml.ModList;
@@ -148,5 +150,20 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public AbilityControls getControls(Entity entity) {
         return entity.getData(ModAttachmentTypes.ABILITY_CONTROLS);
+    }
+
+    @Override
+    public void setInfinityActive(Player player, boolean infinity) {
+        player.setData(ModAttachmentTypes.INFINITY_ACTIVE,infinity);
+    }
+
+    @Override
+    public boolean isInfinityActive(Player player) {
+        return player.getData(ModAttachmentTypes.INFINITY_ACTIVE);
+    }
+
+    @Override
+    public void sendBooleanAttachment(ServerPlayer player, boolean b) {
+        Services.PLATFORM.sendToTracking(new S2CAttachmentTypePacketBoolean(ModAttachmentTypes.INFINITY_ACTIVE,player.getId(),b),player);
     }
 }
