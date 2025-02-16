@@ -1,7 +1,6 @@
 package tfar.zomboabilities.abilities;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -50,7 +49,7 @@ public abstract class Ability {
 
     }
 
-    public void tickPassive(ServerPlayer player) {
+    public void tick(ServerPlayer player) {
 
     }
 

@@ -7,8 +7,12 @@ import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.phys.Vec3;
+import tfar.zomboabilities.Abilities;
 import tfar.zomboabilities.PlayerDuck;
 import tfar.zomboabilities.ZomboAbilities;
+import tfar.zomboabilities.entity.FireBreathEntity;
+import tfar.zomboabilities.platform.Services;
+import tfar.zomboabilities.utils.AbilityUtils;
 
 //Pressing R - This ability allows you to shoot a Fire Ball
 //Cooldown - 8 Seconds
@@ -51,5 +55,16 @@ public class FireManipulationAbility extends Ability{
     @Override
     public void quaternary(ServerPlayer player) {
 
+    }
+
+    @Override
+    public void tick(ServerPlayer player) {
+        super.tick(player);
+        if (Services.PLATFORM.getControls(player).holding_secondary) {
+            ServerLevel serverLevel = player.serverLevel();
+            Vec3 look = player.getLookAngle();
+            FireBreathEntity fireBreathEntity = FireBreathEntity.shootFromEyes(player,look,serverLevel);
+            serverLevel.addFreshEntity(fireBreathEntity);
+        }
     }
 }

@@ -9,8 +9,9 @@ import tfar.zomboabilities.platform.Services;
 public class InfinityAbility extends Ability{
     @Override
     public void primary(ServerPlayer player) {
-        Services.PLATFORM.setInfinityActive(player,!Services.PLATFORM.isInfinityActive(player));
-        Services.PLATFORM.sendBooleanAttachment(player,Services.PLATFORM.isInfinityActive(player));
+        if (player.totalExperience > 1) {
+            Services.PLATFORM.setInfinityActive(player, !Services.PLATFORM.isInfinityActive(player));
+        }
     }
 
     @Override
@@ -26,5 +27,20 @@ public class InfinityAbility extends Ability{
     @Override
     public void quaternary(ServerPlayer player) {
 
+    }
+
+    static int TIME = 50;
+
+    @Override
+    public void tick(ServerPlayer player) {
+        super.tick(player);
+        if (Services.PLATFORM.isInfinityActive(player)) {
+            if (player.tickCount % TIME == 0) {
+                player.giveExperiencePoints(-1);
+                if (player.totalExperience ==0) {
+                    Services.PLATFORM.setInfinityActive(player,false);
+                }
+            }
+        }
     }
 }

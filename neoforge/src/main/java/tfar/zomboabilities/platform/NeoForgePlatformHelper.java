@@ -25,7 +25,6 @@ import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.ZomboAbilitiesNeoForge;
 import tfar.zomboabilities.data.IceManipulationData;
 import tfar.zomboabilities.data.LivesData;
-import tfar.zomboabilities.datagen.ModDatagen;
 import tfar.zomboabilities.init.ModAttachmentTypes;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CAttachmentTypePacketBoolean;
@@ -155,11 +154,14 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public void setInfinityActive(Player player, boolean infinity) {
         player.setData(ModAttachmentTypes.INFINITY_ACTIVE,infinity);
+        if (player instanceof ServerPlayer) {
+            sendBooleanAttachment((ServerPlayer) player, Services.PLATFORM.isInfinityActive(player));
+        }
     }
 
     @Override
-    public boolean isInfinityActive(Player player) {
-        return player.getData(ModAttachmentTypes.INFINITY_ACTIVE);
+    public boolean isInfinityActive(Entity entity) {
+        return entity.getData(ModAttachmentTypes.INFINITY_ACTIVE);
     }
 
     @Override

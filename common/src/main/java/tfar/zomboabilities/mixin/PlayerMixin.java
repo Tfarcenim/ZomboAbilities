@@ -68,17 +68,6 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     }
 
     @Override
-    public void setPrimaryActive(boolean active) {
-        sendActive(active,0);
-        activeButtons[0] = active;
-    }
-
-    @Override
-    public boolean isPrimaryActive() {
-        return activeButtons[0];
-    }
-
-    @Override
     public void setFunctionActive(boolean active, int b) {
         sendActive(active,b);
         activeButtons[b] = active;

@@ -315,6 +315,10 @@ public class ZomboAbilities {
     public static boolean checkInvulnerable(Entity entity, DamageSource source, boolean isInvulnerable) {
         if (isInvulnerable) return true;
 
+        if (Services.PLATFORM.isInfinityActive(entity) && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            return true;
+        }
+
         if (entity instanceof Player player) {
             return AbilityUtils.hasAbility(player,Abilities.FIRE_MANIPULATION) && source.is(DamageTypeTags.IS_FIRE);
         }

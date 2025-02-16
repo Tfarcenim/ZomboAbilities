@@ -59,7 +59,7 @@ public class ModClientNeoForge {
 
     static void renderAfter(RenderPlayerEvent.Post event) {
         Player player = event.getEntity();
-        if (PlayerDuck.of(player).isPrimaryActive()) {
+        if (PlayerDuck.of(player).isFunctionActive(0)) {
             PlayerRenderer renderer = event.getRenderer();
             LaserEyesRenderer.renderBean(event.getPoseStack(), event.getMultiBufferSource(), (AbstractClientPlayer) player, event.getPartialTick());
         }

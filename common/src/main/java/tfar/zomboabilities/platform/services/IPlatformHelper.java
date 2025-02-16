@@ -102,7 +102,7 @@ public interface IPlatformHelper {
     AbilityControls getControls(Entity entity);
 
     void setInfinityActive(Player player,boolean infinity);
-    boolean isInfinityActive(Player player);
+    boolean isInfinityActive(Entity entity);
 
     void sendBooleanAttachment(ServerPlayer player, boolean b);
 }

@@ -123,7 +123,7 @@ public class ZomboAbilitiesNeoForge {
 
     void xpDrops(LivingExperienceDropEvent event) {
         Player playerAttacker = event.getAttackingPlayer();
-        if (AbilityUtils.hasAbility(playerAttacker,Abilities.GENIUS)) {
+        if (playerAttacker != null && AbilityUtils.hasAbility(playerAttacker,Abilities.GENIUS)) {
             event.setDroppedExperience(event.getDroppedExperience() *2);
         }
     }
