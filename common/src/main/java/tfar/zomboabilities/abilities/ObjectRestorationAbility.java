@@ -1,0 +1,35 @@
+package tfar.zomboabilities.abilities;
+
+import net.minecraft.server.level.ServerPlayer;
+
+////Object Restoration
+////
+////Pressing R - This Ability will restore any object that has completely disappeared from existence within 10 minutes of it breaking,
+// For Example, Glass breaking, Breaking stone with your fist, basically any object that doesnt drop anything, it will restore,
+// Player has to be near where the object disappeared
+////
+////Holding Y - This Ability allows you to repair nearly broken tools for free Including armor to.
+////
+////Optional, Not sure if this is possible, An alternate way to do this ability, it’ll take the block out of the inventories
+// of people to repair the area.not just blocks that drop nothing
+public class ObjectRestorationAbility extends Ability {
+    @Override
+    public void primary(ServerPlayer player) {
+
+    }
+
+    @Override
+    public void secondary(ServerPlayer player) {
+
+    }
+
+    @Override
+    public void tertiary(ServerPlayer player) {
+
+    }
+
+    @Override
+    public void quaternary(ServerPlayer player) {
+
+    }
+}

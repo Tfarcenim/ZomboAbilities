@@ -26,6 +26,10 @@ public class Abilities {
     public static final Ability ICE_MANIPULATION = register(new IceManipulationAbility(),"ice_manipulation");
     public static final Ability ILLUSION_CREATION = register(new IllusionCreationAbility(),"illusion_creation");
     public static final Ability INFINITY = register(new InfinityAbility(),"infinity");
+    public static final Ability INTANGIBILITY = register(new IntangibilityAbility(),"intangibility");
+    public static final Ability INVISIBILITY = register(new InvisibilityAbility(),"invisibility");
+    public static final Ability WITHER_TOUCH = register(new WitherTouchAbility(),"wither_touch");
+    public static final Ability OBJECT_RESTORATION = register(new ObjectRestorationAbility(),"object_restoration");
 
 
     static Ability register(Ability ability,String name) {

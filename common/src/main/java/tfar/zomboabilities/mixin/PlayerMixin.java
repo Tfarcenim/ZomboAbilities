@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tfar.zomboabilities.*;
 import tfar.zomboabilities.abilities.Ability;
-import tfar.zomboabilities.abilities.AbilityControls;
 import tfar.zomboabilities.abilities.CopyAbility;
+import tfar.zomboabilities.init.ModMobEffects;
 import tfar.zomboabilities.network.S2CSetKeyActivePacket;
 import tfar.zomboabilities.platform.Services;
 import tfar.zomboabilities.utils.AbilityUtils;
@@ -143,6 +143,14 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
         savedInventory.load(listtag,this.registryAccess());
 
         cloneCount = compound.getInt("cloneCount");
+    }
+
+    @Inject(method = "tick",at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isSpectator()Z"))
+    private void overrideNoClip(CallbackInfo ci) {
+        if (hasEffect(ModMobEffects.INTANGIBILITY)) {
+            noPhysics = true;
+            setOnGround(false);
+        }
     }
 
     @Override

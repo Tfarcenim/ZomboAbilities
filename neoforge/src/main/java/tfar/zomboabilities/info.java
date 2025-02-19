@@ -285,7 +285,6 @@ public class info {
 //Pressing T - By Pressing this while holding a block, it will create a fake version of that block/item,the block wont be craftable and if placed then broke it will simply not drop anything.Or if its a Item that you can eat, it will be eatable put wont give you the hunger/effect. If its a Totem, it will simply not work (Which would be funny for scamming people Lol)
 //
 //-
-////////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Infinity
 //
 //Pressing R - This ability allows you to have a force field around yourself, This ability will require to take 2 Exp every 5 seconds it is used, When you press R , it will tell you in chat if the Infinity is on or Off, The Infinity will take 2 Exp to activate and 2 Exp to deactivate, Player will be Immune to all damage, the Only thing that Would be able to Kill the player is the Void, and /kill. Whne this ability activate all armor currently on will drop out the players inventory
@@ -293,7 +292,6 @@ public class info {
 //Watch this Video to get a better idea. https://www.youtube.com/watch?v=EtNwydjXTO0
 //
 //
-//-
 //
 //Intangibility
 //
@@ -301,13 +299,12 @@ public class info {
 //
 //-
 //
-//
 //Invisibility,
 //
 //Pressing R - This Ability allows you to go Invisible for 35 Seconds, Your armor will still show, Mobs will not attack you,.
 //Cooldown - 15 Seconds
 //
-//-
+//-////-////////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Wther Touch
 //

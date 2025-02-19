@@ -2,6 +2,7 @@ package tfar.zomboabilities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -56,6 +57,7 @@ import tfar.zomboabilities.utils.Utils;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
 // import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
@@ -238,6 +240,14 @@ public class ZomboAbilities {
                 player.getAbilities().setFlyingSpeed(.05f);
                 player.onUpdateAbilities();
             }
+        } else if (holder == ModMobEffects.INTANGIBILITY) {
+            if (living instanceof ServerPlayer player) {
+                player.getAbilities().mayfly = false;
+                player.getAbilities().flying = false;
+                player.getAbilities().setFlyingSpeed(.05f);
+                player.setNoGravity(false);
+                player.onUpdateAbilities();
+            }
         }
     }
 
@@ -319,6 +329,18 @@ public class ZomboAbilities {
             return true;
         }
 
+        if (entity instanceof LivingEntity livingEntity) {
+            if (livingEntity.hasEffect(ModMobEffects.INTANGIBILITY) && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+                return true;
+            }
+        }
+
+        if (source.getDirectEntity() instanceof LivingEntity livingEntityAttacker) {
+            if (livingEntityAttacker.hasEffect(ModMobEffects.INTANGIBILITY) && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+                return true;
+            }
+        }
+
         if (entity instanceof Player player) {
             return AbilityUtils.hasAbility(player,Abilities.FIRE_MANIPULATION) && source.is(DamageTypeTags.IS_FIRE);
         }
@@ -346,5 +368,20 @@ public class ZomboAbilities {
         Enchantment frostWalker = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(Enchantments.FROST_WALKER).get().value();
         EnchantedItemInUse enchantediteminuse = new EnchantedItemInUse(new ItemStack(Items.NETHERITE_BOOTS), EquipmentSlot.FEET, entity);
         frostWalker.runLocationChangedEffects(level,1,enchantediteminuse,entity);
+    }
+
+    public static Stream<Block> getKnownBlocks() {
+        return getKnown(BuiltInRegistries.BLOCK);
+    }
+    public static Stream<Item> getKnownItems() {
+        return getKnown(BuiltInRegistries.ITEM);
+    }
+    public static Stream<MobEffect> getKnownMobEffects() {
+        return getKnown(BuiltInRegistries.MOB_EFFECT);
+    }
+
+
+    public static <V> Stream<V> getKnown(Registry<V> registry) {
+        return registry.stream().filter(o -> registry.getKey(o).getNamespace().equals(MOD_ID));
     }
 }

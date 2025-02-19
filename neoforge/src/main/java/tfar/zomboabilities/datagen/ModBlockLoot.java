@@ -4,6 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
+import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.init.ModBlocks;
 
 import java.util.List;
@@ -20,6 +21,6 @@ public class ModBlockLoot extends BlockLootSubProvider {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return List.of(ModBlocks.FORCE_FIELD);
+        return ZomboAbilities.getKnownBlocks().toList();
     }
 }
