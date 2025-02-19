@@ -18,13 +18,10 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.apache.commons.lang3.tuple.Pair;
 import tfar.zomboabilities.abilities.AbilityControls;
-import tfar.zomboabilities.data.AbilityData;
-import tfar.zomboabilities.data.ForceFieldData;
+import tfar.zomboabilities.data.*;
 import tfar.zomboabilities.PacketHandlerNeoForge;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.ZomboAbilitiesNeoForge;
-import tfar.zomboabilities.data.IceManipulationData;
-import tfar.zomboabilities.data.LivesData;
 import tfar.zomboabilities.init.ModAttachmentTypes;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CAttachmentTypePacketBoolean;
@@ -167,5 +164,15 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public void sendBooleanAttachment(ServerPlayer player, boolean b) {
         Services.PLATFORM.sendToTracking(new S2CAttachmentTypePacketBoolean(ModAttachmentTypes.INFINITY_ACTIVE,player.getId(),b),player);
+    }
+
+    @Override
+    public void setORData(Entity entity, ObjectRestorationData data) {
+        entity.setData(ModAttachmentTypes.BLOCK_RESTORATION,data);
+    }
+
+    @Override
+    public ObjectRestorationData getORData(Entity entity) {
+        return entity.getData(ModAttachmentTypes.BLOCK_RESTORATION);
     }
 }

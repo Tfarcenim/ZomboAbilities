@@ -36,8 +36,10 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
+import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.client.ModClientNeoForge;
 import tfar.zomboabilities.commands.ModCommands;
+import tfar.zomboabilities.data.ObjectRestorationData;
 import tfar.zomboabilities.datagen.ModDatagen;
 import tfar.zomboabilities.init.ModAttachmentTypes;
 import tfar.zomboabilities.init.ModEntityDataSerializers;
@@ -98,6 +100,7 @@ public class ZomboAbilitiesNeoForge {
 
         NeoForge.EVENT_BUS.addListener(this::drops);
         NeoForge.EVENT_BUS.addListener(this::xpDrops);
+        NeoForge.EVENT_BUS.addListener(this::harvestCheck);
 
         eventBus.addListener(RegisterEvent.class, this::registerObjs);
         eventBus.addListener(FMLCommonSetupEvent.class,fmlCommonSetupEvent -> registerLater.clear());
@@ -116,8 +119,23 @@ public class ZomboAbilitiesNeoForge {
 
     void drops(BlockDropsEvent event) {
         Entity entity = event.getBreaker();
-        if (entity != null && AbilityUtils.hasAbility(entity,Abilities.GENIUS)) {
-            event.setDroppedExperience(event.getDroppedExperience() *2);
+        if (entity != null) {
+            if (AbilityUtils.hasAbility(entity, Abilities.GENIUS)) {
+                event.setDroppedExperience(event.getDroppedExperience() * 2);
+            } else if (AbilityUtils.hasAbility(entity, Abilities.OBJECT_RESTORATION)) {
+                if (event.getDrops().isEmpty()) {
+                    entity.setData(ModAttachmentTypes.BLOCK_RESTORATION,new ObjectRestorationData(event.getPos(),event.getState()));
+                }
+            }
+        }
+    }
+
+    void harvestCheck(PlayerEvent.HarvestCheck event) {
+        Entity entity = event.getEntity();
+        if (AbilityUtils.hasAbility(entity, Abilities.OBJECT_RESTORATION)) {
+            if (!event.canHarvest()) {
+                entity.setData(ModAttachmentTypes.BLOCK_RESTORATION, new ObjectRestorationData(event.getPos(), event.getTargetBlock()));
+            }
         }
     }
 

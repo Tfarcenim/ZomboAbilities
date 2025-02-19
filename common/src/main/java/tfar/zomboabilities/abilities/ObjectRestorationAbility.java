@@ -1,6 +1,14 @@
 package tfar.zomboabilities.abilities;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import tfar.zomboabilities.data.ObjectRestorationData;
+import tfar.zomboabilities.platform.Services;
 
 ////Object Restoration
 ////
@@ -15,12 +23,21 @@ import net.minecraft.server.level.ServerPlayer;
 public class ObjectRestorationAbility extends Ability {
     @Override
     public void primary(ServerPlayer player) {
-
+        ObjectRestorationData orData = Services.PLATFORM.getORData(player);
+        if (!orData.state().isAir() && player.level().getBlockState(orData.pos()).canBeReplaced()) {
+            player.level().setBlock(orData.pos(),orData.state(), Block.UPDATE_ALL);
+            Services.PLATFORM.setORData(player,new ObjectRestorationData(BlockPos.ZERO, Blocks.AIR.defaultBlockState()));
+        }
     }
 
     @Override
     public void secondary(ServerPlayer player) {
-
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack stack = player.getItemBySlot(slot);
+            if (stack.has(DataComponents.DAMAGE)) {
+                stack.set(DataComponents.DAMAGE,0);
+            }
+        }
     }
 
     @Override

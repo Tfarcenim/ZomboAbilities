@@ -13,10 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
 import tfar.zomboabilities.abilities.AbilityControls;
-import tfar.zomboabilities.data.AbilityData;
-import tfar.zomboabilities.data.ForceFieldData;
-import tfar.zomboabilities.data.IceManipulationData;
-import tfar.zomboabilities.data.LivesData;
+import tfar.zomboabilities.data.*;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
 
@@ -105,4 +102,8 @@ public interface IPlatformHelper {
     boolean isInfinityActive(Entity entity);
 
     void sendBooleanAttachment(ServerPlayer player, boolean b);
+
+    void setORData(Entity entity, ObjectRestorationData data);
+    ObjectRestorationData getORData(Entity entity);
+
 }
