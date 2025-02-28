@@ -15,12 +15,12 @@ public class PacketHandler {
 
     public static void registerPackets()
     {
-        Services.PLATFORM.registerServerPlayPacket(C2SAbilityPacket.TYPE, C2SAbilityPacket.STREAM_CODEC);
+        Services.PLATFORM.registerServerPlayPacket(C2SUseAbilityPacket.TYPE, C2SUseAbilityPacket.STREAM_CODEC);
         Services.PLATFORM.registerServerPlayPacket(C2SHoldAbilityPacket.TYPE, C2SHoldAbilityPacket.STREAM_CODEC);
         Services.PLATFORM.registerClientPlayPacket(S2CSetKeyActivePacket.TYPE, S2CSetKeyActivePacket.STREAM_CODEC);
         Services.PLATFORM.registerClientPlayPacket(S2CParticleAABBPacket.TYPE, S2CParticleAABBPacket.STREAM_CODEC);
 
-
+        Services.PLATFORM.registerClientPlayPacket(S2CAttachmentTypePacketBoolean.TYPE,S2CAttachmentTypePacketBoolean.STREAM_CODEC);
     }
 
     public static void sendToServer(C2SModPacket<?> packet) {

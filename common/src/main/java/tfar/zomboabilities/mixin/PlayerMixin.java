@@ -31,8 +31,6 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
 
     @Unique
     Ability copied_ability;
-    @Unique
-    final int[] cooldowns = new int[4];
 
     @Unique
     final boolean[] activeButtons = new boolean[4];
@@ -60,11 +58,6 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     @Override
     public Consumer<ServerPlayer> getMobAbility() {
         return mobAbility;
-    }
-
-    @Override
-    public int[] getCooldowns() {
-        return cooldowns;
     }
 
     @Override

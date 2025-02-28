@@ -10,6 +10,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.NotNull;
 import tfar.zomboabilities.Abilities;
 import tfar.zomboabilities.utils.AbilityUtils;
 import tfar.zomboabilities.PlayerDuck;
@@ -77,20 +78,16 @@ public class ModCommands {
             return 0;
         }
         for (ServerPlayer player : players) {
-            Ability previous = AbilityUtils.getAbility(player).orElse(null);
+            Ability previous = AbilityUtils.getAbility(player);
             AbilityUtils.setAbility(player,ability);
             updateAbility(player,previous,ability);
         }
         return players.size();
     }
 
-    public static void updateAbility(ServerPlayer player,Ability prev,Ability next) {
-        if (prev != null) {
-            prev.removePassive(player);
-        }
-        if (next != null) {
-            next.applyPassive(player);
-        }
+    public static void updateAbility(ServerPlayer player, @NotNull Ability prev, @NotNull Ability next) {
+        prev.removePassive(player);
+        next.applyPassive(player);
     }
 
     static int queryAbility(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -100,7 +97,7 @@ public class ModCommands {
     }
 
     static String query(ServerPlayer player) {
-        return AbilityUtils.getAbility(player).map(Ability::getName).orElse(null);
+        return String.valueOf(AbilityUtils.getAbility(player));
     }
 
     static int queryAbilitySelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -113,9 +110,9 @@ public class ModCommands {
         Collection<ServerPlayer> players = EntityArgument.getPlayers(context, "players");
 
         for (ServerPlayer player : players) {
-            Ability previous = AbilityUtils.getAbility(player).orElse(null);
+            Ability previous = AbilityUtils.getAbility(player);
             AbilityUtils.removeAbility(player);
-            updateAbility(player,previous,null);
+            updateAbility(player,previous,Abilities.NONE);
         }
         return players.size();
     }

@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.component.ResolvableProfile;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
 import tfar.zomboabilities.init.ModEntityTypes;
-import tfar.zomboabilities.network.C2SAbilityPacket;
+import tfar.zomboabilities.network.C2SUseAbilityPacket;
 import tfar.zomboabilities.network.C2SHoldAbilityPacket;
 import tfar.zomboabilities.platform.Services;
 
@@ -44,16 +44,16 @@ public class ModClient {
             boolean holding_t = ModKeybinds.BIND_3.isDown();
             boolean holding_q = ModKeybinds.BIND_4.isDown();
             while (ModKeybinds.BIND_1.consumeClick()) {
-                Services.PLATFORM.sendToServer(new C2SAbilityPacket(0));
+                Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(0));
             }
             while (ModKeybinds.BIND_2.consumeClick()) {
-                Services.PLATFORM.sendToServer(new C2SAbilityPacket(1));
+                Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(1));
             }
             while (ModKeybinds.BIND_3.consumeClick()) {
-                Services.PLATFORM.sendToServer(new C2SAbilityPacket(2));
+                Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(2));
             }
             while (ModKeybinds.BIND_4.consumeClick()) {
-                Services.PLATFORM.sendToServer(new C2SAbilityPacket(3));
+                Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(3));
             }
             Services.PLATFORM.sendToServer(new C2SHoldAbilityPacket(holding_p, holding_s, holding_t, holding_q));
         }

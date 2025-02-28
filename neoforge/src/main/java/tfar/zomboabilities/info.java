@@ -304,9 +304,8 @@ public class info {
 //Pressing R - This Ability allows you to go Invisible for 35 Seconds, Your armor will still show, Mobs will not attack you,.
 //Cooldown - 15 Seconds
 //
-//-////-////////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//Wther Touch
+//Wither Touch
 //
 //Pressing R - This Ability allows you to Destroy any item currently in your hand, Also everything you touch within 10 seconds will break, but it wont drop anything, if you have a flower in your hand, it will turn without a wither flower, if you have a skeleton head in ur hand it will turn into a wither skeleton head,Use this on a Sand and it will turn into Soul sand, use this on dirt and it will turn into Soul Soil, And type of Basic tool you try t touch will turn into the stone version, If you hit anyone also, they will gain the wither effect for 10 seconds.
 //Cooldown - 15 Seconds
@@ -328,7 +327,7 @@ public class info {
 //
 //
 //
-//
+////-////-////////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
 //

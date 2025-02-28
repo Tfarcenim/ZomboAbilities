@@ -5,17 +5,18 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.utils.AbilityUtils;
 import tfar.zomboabilities.PlayerDuck;
 import tfar.zomboabilities.init.ModMobEffects;
 
-public record C2SAbilityPacket(int key) implements C2SModPacket<RegistryFriendlyByteBuf> {
+public record C2SUseAbilityPacket(int key) implements C2SModPacket<RegistryFriendlyByteBuf> {
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, C2SAbilityPacket> STREAM_CODEC =
-            StreamCodec.composite(ByteBufCodecs.INT,C2SAbilityPacket::key,C2SAbilityPacket::new);
+    public static final StreamCodec<RegistryFriendlyByteBuf, C2SUseAbilityPacket> STREAM_CODEC =
+            StreamCodec.composite(ByteBufCodecs.INT, C2SUseAbilityPacket::key, C2SUseAbilityPacket::new);
 
 
-    public static final CustomPacketPayload.Type<C2SAbilityPacket> TYPE = ModPacket.type(C2SAbilityPacket.class);
+    public static final CustomPacketPayload.Type<C2SUseAbilityPacket> TYPE = ModPacket.type(C2SUseAbilityPacket.class);
 
     @Override
     public void handleServer(ServerPlayer player) {
@@ -24,7 +25,8 @@ public record C2SAbilityPacket(int key) implements C2SModPacket<RegistryFriendly
             playerDuck.getCopiedAbility().tryUseAbility(player,key);
         }
         else {
-            AbilityUtils.getAbility(player).ifPresent(ability -> ability.tryUseAbility(player,key));
+            Ability ability = AbilityUtils.getAbility(player);
+            ability.tryUseAbility(player, key);
         }
     }
 

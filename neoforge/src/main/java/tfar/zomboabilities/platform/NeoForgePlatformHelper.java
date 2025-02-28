@@ -5,35 +5,28 @@ import net.minecraft.core.Registry;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
-import tfar.zomboabilities.abilities.AbilityControls;
-import tfar.zomboabilities.data.*;
+import tfar.zomboabilities.attachments.CommonDataAttachment;
 import tfar.zomboabilities.PacketHandlerNeoForge;
-import tfar.zomboabilities.ZomboAbilities;
-import tfar.zomboabilities.ZomboAbilitiesNeoForge;
-import tfar.zomboabilities.init.ModAttachmentTypes;
 import tfar.zomboabilities.network.C2SModPacket;
-import tfar.zomboabilities.network.S2CAttachmentTypePacketBoolean;
 import tfar.zomboabilities.network.S2CModPacket;
 import tfar.zomboabilities.platform.services.IPlatformHelper;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class NeoForgePlatformHelper implements IPlatformHelper {
 
@@ -53,14 +46,6 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     public boolean isDevelopmentEnvironment() {
 
         return !FMLLoader.isProduction();
-    }
-
-    @Override
-    public <F> void registerAll(Map<String, ? extends F> map, Registry<F> registry, Class<? extends F> filter) {
-        List<Pair<ResourceLocation, Supplier<Object>>> list = ZomboAbilitiesNeoForge.registerLater.computeIfAbsent(registry, k -> new ArrayList<>());
-        for (Map.Entry<String, ? extends F> entry : map.entrySet()) {
-            list.add(Pair.of(ZomboAbilities.id(entry.getKey()), entry::getValue));
-        }
     }
 
     public static PayloadRegistrar registrar;
@@ -104,75 +89,30 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public void setFFData(Entity entity, ForceFieldData data) {
-        entity.setData(ModAttachmentTypes.FORCE_FIELD_DATA,data);
-    }
-
-    @Override
-    public ForceFieldData getFFData(Entity entity) {
-        return entity.getData(ModAttachmentTypes.FORCE_FIELD_DATA);
-    }
-
-    @Override
-    public void setAData(Entity entity, AbilityData data) {
-        entity.setData(ModAttachmentTypes.ABILITY_DATA,data);
-    }
-
-    @Override
-    public AbilityData getAData(Entity entity) {
-        return entity.getData(ModAttachmentTypes.ABILITY_DATA);
-    }
-
-    @Override
-    public LivesData getLData(Entity entity) {
-        return entity.getData(ModAttachmentTypes.LIVES_DATA);
-    }
-
-    @Override
-    public void setLData(Entity entity, LivesData data) {
-        entity.setData(ModAttachmentTypes.LIVES_DATA,data);
-    }
-
-    @Override
-    public void setIMData(Entity entity, IceManipulationData data) {
-        entity.setData(ModAttachmentTypes.ICE_MANIPULATION_DATA,data);
-    }
-
-    @Override
-    public IceManipulationData getIMData(Entity entity) {
-        return entity.getData(ModAttachmentTypes.ICE_MANIPULATION_DATA);
-    }
-
-    @Override
-    public AbilityControls getControls(Entity entity) {
-        return entity.getData(ModAttachmentTypes.ABILITY_CONTROLS);
-    }
-
-    @Override
-    public void setInfinityActive(Player player, boolean infinity) {
-        player.setData(ModAttachmentTypes.INFINITY_ACTIVE,infinity);
-        if (player instanceof ServerPlayer) {
-            sendBooleanAttachment((ServerPlayer) player, Services.PLATFORM.isInfinityActive(player));
+    public <T> void registerDataAttachment(CommonDataAttachment<T> attachment) {
+        AttachmentType.Builder<T> builder = AttachmentType.builder((Function<IAttachmentHolder,T>)(Object) attachment.getDefaultValueSupplier());
+        if (attachment.getCodec() != null) {
+            builder.serialize(attachment.getCodec());
         }
+        if (attachment.isCopyOnDeath()) {
+            builder.copyOnDeath();
+        }
+        AttachmentType<T> type = builder.build();
+        Registry.register(NeoForgeRegistries.ATTACHMENT_TYPES,attachment.getName(),type);
+        attachment.setAttachment(type);
     }
 
+    @SuppressWarnings({"unchecked"})
     @Override
-    public boolean isInfinityActive(Entity entity) {
-        return entity.getData(ModAttachmentTypes.INFINITY_ACTIVE);
+    public <T> T getAttachedValue(Entity entity, CommonDataAttachment<T> attachment) {
+        AttachmentType<T> type = (AttachmentType<T>) attachment.getAttachment();
+        return entity.getData(type);
     }
 
+    @SuppressWarnings({"unchecked"})
     @Override
-    public void sendBooleanAttachment(ServerPlayer player, boolean b) {
-        Services.PLATFORM.sendToTracking(new S2CAttachmentTypePacketBoolean(ModAttachmentTypes.INFINITY_ACTIVE,player.getId(),b),player);
-    }
-
-    @Override
-    public void setORData(Entity entity, ObjectRestorationData data) {
-        entity.setData(ModAttachmentTypes.BLOCK_RESTORATION,data);
-    }
-
-    @Override
-    public ObjectRestorationData getORData(Entity entity) {
-        return entity.getData(ModAttachmentTypes.BLOCK_RESTORATION);
+    public <T> void setAttachedValue(Entity entity, CommonDataAttachment<T> attachment, T value) {
+        AttachmentType<T> type = (AttachmentType<T>) attachment.getAttachment();
+        entity.setData(type,value);
     }
 }

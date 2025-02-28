@@ -4,17 +4,17 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.neoforged.neoforge.attachment.AttachmentType;
+import tfar.zomboabilities.attachments.CommonDataAttachment;
 
-public class S2CAttachmentTypePacketBoolean extends S2CAttachmentTypePacket<Boolean> {
+public class S2CAttachmentTypePacketBoolean extends S2CCommonDataAttachmentPacket<Boolean> {
 
     public static final StreamCodec<RegistryFriendlyByteBuf, S2CAttachmentTypePacketBoolean> STREAM_CODEC =
-            StreamCodec.ofMember(S2CAttachmentTypePacket::toPacket,S2CAttachmentTypePacketBoolean::new);
+            StreamCodec.ofMember(S2CCommonDataAttachmentPacket::toPacket,S2CAttachmentTypePacketBoolean::new);
 
 
     public static final Type<S2CAttachmentTypePacketBoolean> TYPE = ModPacket.type(S2CAttachmentTypePacketBoolean.class);
 
-    public S2CAttachmentTypePacketBoolean(AttachmentType<Boolean> type, int tracking, Boolean data) {
+    public S2CAttachmentTypePacketBoolean(CommonDataAttachment<Boolean> type, int tracking, Boolean data) {
         super(type, tracking, data);
     }
 

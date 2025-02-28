@@ -50,7 +50,7 @@ public class MermanAbility extends Ability{
     }
 
     @Override
-    public void tick(ServerPlayer player) {
+    public void tickAbility(ServerPlayer player) {
         if (player.tickCount %20 == 0) {
             player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 25, 0, false, false));
         }

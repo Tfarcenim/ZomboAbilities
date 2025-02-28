@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 public class LiveGiverAbility extends Ability {
     @Override
     public void primary(ServerPlayer player) {
-        
+
     }
 
     @Override

@@ -19,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import tfar.zomboabilities.entity.IceSpikeEntity;
 import tfar.zomboabilities.init.ModEntityTypes;
 import tfar.zomboabilities.platform.Services;
+import tfar.zomboabilities.utils.AbilityUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,8 +47,8 @@ public class IceManipulationAbility extends Ability{
 
     @Override
     public void secondary(ServerPlayer player) {
-        Services.PLATFORM.setIMData(player,Services.PLATFORM.getIMData(player).setFrostWalkerActive(!
-                Services.PLATFORM.getIMData(player).frostWalkerActive()));
+        AbilityUtils.setIMData(player,AbilityUtils.getIMData(player).setFrostWalkerActive(!
+                AbilityUtils.getIMData(player).frostWalkerActive()));
     }
 
     @Override

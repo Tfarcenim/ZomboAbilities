@@ -1,14 +1,8 @@
 package tfar.zomboabilities;
 
 
-import net.minecraft.core.MappedRegistry;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -16,7 +10,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
@@ -31,31 +24,20 @@ import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
-import org.apache.commons.lang3.tuple.Pair;
-import tfar.zomboabilities.abilities.Ability;
+import tfar.zomboabilities.attachments.CommonDataAttachments;
 import tfar.zomboabilities.client.ModClientNeoForge;
 import tfar.zomboabilities.commands.ModCommands;
 import tfar.zomboabilities.data.ObjectRestorationData;
 import tfar.zomboabilities.datagen.ModDatagen;
-import tfar.zomboabilities.init.ModAttachmentTypes;
-import tfar.zomboabilities.init.ModEntityDataSerializers;
-import tfar.zomboabilities.init.ModMobEffects;
-import tfar.zomboabilities.platform.Services;
+import tfar.zomboabilities.init.*;
 import tfar.zomboabilities.utils.AbilityUtils;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
 
 @Mod(ZomboAbilities.MOD_ID)
 public class ZomboAbilitiesNeoForge {
 
-    public static Map<Registry<?>, List<Pair<ResourceLocation, Supplier<Object>>>> registerLater = new HashMap<>();
 
     public static final TicketController TICKET_CONTROLLER = new TicketController(ZomboAbilities.id( "chunk_loader"), null);
 
@@ -103,16 +85,10 @@ public class ZomboAbilitiesNeoForge {
         NeoForge.EVENT_BUS.addListener(this::harvestCheck);
 
         eventBus.addListener(RegisterEvent.class, this::registerObjs);
-        eventBus.addListener(FMLCommonSetupEvent.class,fmlCommonSetupEvent -> registerLater.clear());
         eventBus.addListener(ModDatagen::gather);
         eventBus.addListener(EntityAttributeCreationEvent.class,entityAttributeCreationEvent -> ZomboAbilities.registerAttributes(entityAttributeCreationEvent::put));
         // Use NeoForge to bootstrap the Common mod.
         eventBus.addListener(RegisterTicketControllersEvent.class,event -> event.register(TICKET_CONTROLLER));
-        ((MappedRegistry<?>)BuiltInRegistries.BLOCK).unfreeze();
-        ((MappedRegistry<?>)BuiltInRegistries.ITEM).unfreeze();
-        ((MappedRegistry<?>)BuiltInRegistries.ENTITY_TYPE).unfreeze();
-        ((MappedRegistry<?>)BuiltInRegistries.RECIPE_SERIALIZER).unfreeze();
-        Services.PLATFORM.registerAll(ModAttachmentTypes.class,NeoForgeRegistries.ATTACHMENT_TYPES,ZomboAbilities.dirtyCast(AttachmentType.class));
         ZomboAbilities.init();
 
     }
@@ -124,7 +100,7 @@ public class ZomboAbilitiesNeoForge {
                 event.setDroppedExperience(event.getDroppedExperience() * 2);
             } else if (AbilityUtils.hasAbility(entity, Abilities.OBJECT_RESTORATION)) {
                 if (event.getDrops().isEmpty()) {
-                    entity.setData(ModAttachmentTypes.BLOCK_RESTORATION,new ObjectRestorationData(event.getPos(),event.getState()));
+                    entity.setData((AttachmentType<ObjectRestorationData>)CommonDataAttachments.BLOCK_RESTORATION.getAttachment(),new ObjectRestorationData(event.getPos(),event.getState()));
                 }
             }
         }
@@ -134,7 +110,7 @@ public class ZomboAbilitiesNeoForge {
         Entity entity = event.getEntity();
         if (AbilityUtils.hasAbility(entity, Abilities.OBJECT_RESTORATION)) {
             if (!event.canHarvest()) {
-                entity.setData(ModAttachmentTypes.BLOCK_RESTORATION, new ObjectRestorationData(event.getPos(), event.getTargetBlock()));
+                entity.setData((AttachmentType<ObjectRestorationData>)CommonDataAttachments.BLOCK_RESTORATION.getAttachment(), new ObjectRestorationData(event.getPos(), event.getTargetBlock()));
             }
         }
     }
@@ -148,13 +124,11 @@ public class ZomboAbilitiesNeoForge {
 
     public void registerObjs(RegisterEvent event) {
         ModMobEffects.boot();
-        Registry<?> registry = event.getRegistry();
-        List<Pair<ResourceLocation,Supplier<Object>>> list = registerLater.get(registry);
-        if (list != null) {
-            for (Pair<ResourceLocation,Supplier<Object>> pair : list) {
-                event.register((ResourceKey<? extends Registry<Object>>)registry.key(),pair.getLeft(), pair.getValue());
-            }
-        }
+        CommonDataAttachments.init();
+        ModBlocks.init();
+        ModItems.init();
+        ModEntityTypes.init();
+        ModRecipeSerializers.init();
         event.register(NeoForgeRegistries.ENTITY_DATA_SERIALIZERS.key(),ZomboAbilities.id("resolvable_profile"),() -> ModEntityDataSerializers.RESOLVABLE_PROFILE);
     }
 }

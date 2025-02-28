@@ -1,7 +1,6 @@
 package tfar.zomboabilities.platform.services;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -9,18 +8,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
-import tfar.zomboabilities.abilities.AbilityControls;
-import tfar.zomboabilities.data.*;
+import tfar.zomboabilities.attachments.CommonDataAttachment;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
-
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 public interface IPlatformHelper {
 
@@ -56,23 +48,6 @@ public interface IPlatformHelper {
         return isDevelopmentEnvironment() ? "development" : "production";
     }
 
-    default  <F> void registerAll(Class<?> clazz, Registry<F> registry, Class<? extends F> filter) {
-        Map<String, F> map = new HashMap<>();
-        for (Field field : clazz.getFields()) {
-            try {
-                Object o = field.get(null);
-                if (filter.isInstance(o)) {
-                    map.put(field.getName().toLowerCase(Locale.ROOT), (F) o);
-                }
-            } catch (IllegalAccessException illegalAccessException) {
-                illegalAccessException.printStackTrace();
-            }
-        }
-        registerAll(map, registry, filter);
-    }
-
-    <F> void registerAll(Map<String,? extends F> map, Registry<F> registry, Class<? extends F> filter);
-
     <MSG extends S2CModPacket<?>> void registerClientPlayPacket(CustomPacketPayload.Type<MSG> type, StreamCodec<RegistryFriendlyByteBuf,MSG> streamCodec);
     <MSG extends C2SModPacket<?>> void registerServerPlayPacket(CustomPacketPayload.Type<MSG> type, StreamCodec<RegistryFriendlyByteBuf,MSG> streamCodec);
 
@@ -84,26 +59,17 @@ public interface IPlatformHelper {
 
     Pair<Boolean, Vec3> teleportEvent(LivingEntity entity, double targetX, double targetY, double targetZ);
 
-    void setFFData(Entity entity, ForceFieldData data);
-    ForceFieldData getFFData(Entity entity);
 
-    void setAData(Entity entity, AbilityData data);
-    AbilityData getAData(Entity entity);
-
-    void setLData(Entity entity, LivesData data);
-    LivesData getLData(Entity entity);
-
-    void setIMData(Entity entity, IceManipulationData data);
-    IceManipulationData getIMData(Entity entity);
-
-    AbilityControls getControls(Entity entity);
-
-    void setInfinityActive(Player player,boolean infinity);
-    boolean isInfinityActive(Entity entity);
-
-    void sendBooleanAttachment(ServerPlayer player, boolean b);
-
-    void setORData(Entity entity, ObjectRestorationData data);
-    ObjectRestorationData getORData(Entity entity);
-
+    <T> void registerDataAttachment(CommonDataAttachment<T> attachment);
+    <T> T getAttachedValue(Entity entity,CommonDataAttachment<T> attachment);
+    default <T> T getOrCreateAttachedValue(Entity entity,CommonDataAttachment<T> attachment) {
+        T value = getAttachedValue(entity,attachment);
+        if (value!=null) {
+            return value;
+        }
+        setAttachedValue(entity,attachment,attachment.getDefaultValueSupplier().apply(entity));
+        T newValue = getAttachedValue(entity,attachment);
+        return newValue;
+    }
+    <T> void setAttachedValue(Entity entity,CommonDataAttachment<T> attachment,T value);
 }

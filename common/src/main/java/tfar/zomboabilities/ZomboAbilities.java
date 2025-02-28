@@ -32,7 +32,6 @@ import net.minecraft.world.item.FireworkRocketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -43,11 +42,11 @@ import net.minecraft.world.level.dimension.DimensionType;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.abilities.CopyAbility;
 import tfar.zomboabilities.abilities.EndermanGeneticsAbility;
 import tfar.zomboabilities.abilities.GoldTouchAbility;
 import tfar.zomboabilities.commands.ModCommands;
-import tfar.zomboabilities.data.AbilityData;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
 import tfar.zomboabilities.init.*;
 import tfar.zomboabilities.platform.Services;
@@ -81,11 +80,6 @@ public class ZomboAbilities {
     // write the majority of your code here and load it from your loader specific projects. This example has some
     // code that gets invoked by the entry point of the loader specific projects.
     public static void init() {
-        Services.PLATFORM.registerAll(ModBlocks.class, BuiltInRegistries.BLOCK, Block.class);
-        Services.PLATFORM.registerAll(ModItems.class, BuiltInRegistries.ITEM,Item.class);
-        Services.PLATFORM.registerAll(ModEntityTypes.class, BuiltInRegistries.ENTITY_TYPE,dirtyCast(EntityType.class));
-        Services.PLATFORM.registerAll(ModRecipeSerializers.class, BuiltInRegistries.RECIPE_SERIALIZER,dirtyCast(RecipeSerializer.class));
-
         ModGameRules.init();
         // It is common for all supported loaders to provide a similar feature that can not be used directly in the
         // common code. A popular way to get around this is using Java's built-in service loader feature to create
@@ -109,7 +103,7 @@ public class ZomboAbilities {
                 player.setRespawnPosition(DEATH_DIM,new BlockPos(0,2,0),0,true,false);
                 //player.teleportTo(level,0,2,0,player.getYRot(),player.getXRot());
                 player.setGameMode(GameType.CREATIVE);
-                Services.PLATFORM.setAData(player,new AbilityData());
+                AbilityUtils.removeAbility(player);
             }
         }
     }
@@ -127,11 +121,6 @@ public class ZomboAbilities {
         return stack;
     }
 
-    @SuppressWarnings("unchecked")
-    static <T> Class<T> dirtyCast(Class<?> clazz) {
-        return (Class<T>) clazz;
-    }
-
     static void onClone(ServerPlayer oldPlayer,ServerPlayer newPlayer,boolean alive) {
         PlayerDuck.of(newPlayer).copyFrom(oldPlayer);
     }
@@ -139,7 +128,7 @@ public class ZomboAbilities {
     static void onRespawn(ServerPlayer player,boolean fromEnd) {
         if (!fromEnd) {
             player.displayClientMessage(getLivesInfo(player),false);
-            ModCommands.updateAbility(player,null, AbilityUtils.getAbility(player).orElse(null));
+            ModCommands.updateAbility(player,Abilities.NONE, AbilityUtils.getAbility(player));
         }
     }
 
@@ -174,7 +163,11 @@ public class ZomboAbilities {
 
     static void playerTick(ServerPlayer player) {
         PlayerDuck playerDuck = PlayerDuck.of(player);
+        AbilityUtils.getAbility(player).tick(player);
         playerDuck.tickServer();
+
+
+
         if (!player.isRemoved() && player.hasEffect(ModMobEffects.COPY_ABILITY)) {
             if (playerDuck.getMobAbility() == CopyAbility.ZOMBIE || playerDuck.getMobAbility() == CopyAbility.DROWNED) {
                 boolean flag = Utils.isSunBurnTick(player);
@@ -262,13 +255,13 @@ public class ZomboAbilities {
         if (attacker instanceof ServerPlayer player) {
             if (player.hasEffect(ModMobEffects.COPY_ABILITY)) {
                 if (target instanceof ServerPlayer playerTarget) {
-                    AbilityUtils.getAbility(playerTarget).ifPresentOrElse(
-                            ability -> {
-                                PlayerDuck.of(player).setCopiedAbility(ability);
-                                player.displayClientMessage(Component.literal("ability "+ability.getName()+" copied"),false);
-                            },
-                            () -> player.displayClientMessage(Component.literal("No Ability Found"),false)
-                    );
+                    Ability targetAbility = AbilityUtils.getAbility(playerTarget);
+                    if (targetAbility != null) {
+                        PlayerDuck.of(player).setCopiedAbility(targetAbility);
+                        player.displayClientMessage(Component.literal("ability "+targetAbility.getName()+" copied"),false);
+                    } else {
+                        player.displayClientMessage(Component.literal("No Ability Found"),false);
+                    }
                 } else {
                     EntityType<?> type = target.getType();
                     Consumer<ServerPlayer> consumer = CopyAbility.MAP.get(type);
@@ -325,7 +318,7 @@ public class ZomboAbilities {
     public static boolean checkInvulnerable(Entity entity, DamageSource source, boolean isInvulnerable) {
         if (isInvulnerable) return true;
 
-        if (Services.PLATFORM.isInfinityActive(entity) && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+        if (AbilityUtils.isInfinityActive(entity) && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return true;
         }
 

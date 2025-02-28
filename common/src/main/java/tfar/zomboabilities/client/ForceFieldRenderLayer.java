@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import tfar.zomboabilities.init.ModBlocks;
 import tfar.zomboabilities.platform.Services;
+import tfar.zomboabilities.utils.AbilityUtils;
 
 public class ForceFieldRenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
     private final BlockRenderDispatcher blockRenderDispatcher;
@@ -23,7 +24,7 @@ public class ForceFieldRenderLayer extends RenderLayer<AbstractClientPlayer, Pla
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, AbstractClientPlayer livingEntity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (Services.PLATFORM.isInfinityActive(livingEntity)) {
+        if (AbilityUtils.isInfinityActive(livingEntity)) {
              poseStack.pushPose();
 
             poseStack.translate(-0.75, -0.75, -0.75);

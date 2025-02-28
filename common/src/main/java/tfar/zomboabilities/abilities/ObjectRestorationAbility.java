@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import tfar.zomboabilities.data.ObjectRestorationData;
 import tfar.zomboabilities.platform.Services;
+import tfar.zomboabilities.utils.AbilityUtils;
 
 ////Object Restoration
 ////
@@ -23,10 +24,10 @@ import tfar.zomboabilities.platform.Services;
 public class ObjectRestorationAbility extends Ability {
     @Override
     public void primary(ServerPlayer player) {
-        ObjectRestorationData orData = Services.PLATFORM.getORData(player);
+        ObjectRestorationData orData = AbilityUtils.getORData(player);
         if (!orData.state().isAir() && player.level().getBlockState(orData.pos()).canBeReplaced()) {
             player.level().setBlock(orData.pos(),orData.state(), Block.UPDATE_ALL);
-            Services.PLATFORM.setORData(player,new ObjectRestorationData(BlockPos.ZERO, Blocks.AIR.defaultBlockState()));
+            AbilityUtils.setORData(player,new ObjectRestorationData(BlockPos.ZERO, Blocks.AIR.defaultBlockState()));
         }
     }
 

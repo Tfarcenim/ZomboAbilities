@@ -14,7 +14,6 @@ public class PacketHandlerNeoForge {
     public static void register(RegisterPayloadHandlersEvent event){
         NeoForgePlatformHelper.registrar = event.registrar(ZomboAbilities.MOD_ID);
         PacketHandler.registerPackets();
-        Services.PLATFORM.registerClientPlayPacket(S2CAttachmentTypePacketBoolean.TYPE,S2CAttachmentTypePacketBoolean.STREAM_CODEC);
     }
 
     public static void sendToClient(CustomPacketPayload packet, ServerPlayer player) {

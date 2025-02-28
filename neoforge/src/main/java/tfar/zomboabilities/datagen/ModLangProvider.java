@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.codehaus.plexus.util.StringUtils;
 import tfar.zomboabilities.ZomboAbilities;
-import tfar.zomboabilities.init.ModMobEffects;
 
 import java.util.function.Supplier;
 

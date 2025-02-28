@@ -2,6 +2,7 @@ package tfar.zomboabilities.abilities;
 
 import net.minecraft.world.entity.Entity;
 import tfar.zomboabilities.platform.Services;
+import tfar.zomboabilities.utils.AbilityUtils;
 
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ public class AbilityControls {
 
 
     public static void updateControls(Entity entity, boolean p, boolean s, boolean t, boolean q) {
-        Services.PLATFORM.getControls(entity).updateControls(p,s,t,q);
+        AbilityUtils.getControls(entity).updateControls(p,s,t,q);
     }
 
     @Override

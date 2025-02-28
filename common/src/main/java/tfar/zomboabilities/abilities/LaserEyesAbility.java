@@ -17,6 +17,7 @@ import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.ducks.AbstractFurnaceBlockEntityDuck;
 import tfar.zomboabilities.init.ModTags;
 import tfar.zomboabilities.platform.Services;
+import tfar.zomboabilities.utils.AbilityUtils;
 import tfar.zomboabilities.utils.Utils;
 
 public class LaserEyesAbility extends Ability{
@@ -50,8 +51,8 @@ public class LaserEyesAbility extends Ability{
     }
 
     @Override
-    public void tick(ServerPlayer player) {
-        super.tick(player);
+    public void tickAbility(ServerPlayer player) {
+        super.tickAbility(player);
         PlayerDuck duck = PlayerDuck.of(player);
         if (duck.isFunctionActive(0)) {
             HitResult pick = Utils.pickEither(player, player.blockInteractionRange() * 5, player.entityInteractionRange() * 5, 0);
@@ -83,7 +84,7 @@ public class LaserEyesAbility extends Ability{
             }
             int laserDuration = duck.getLaserActiveDuration();
             laserDuration++;
-            boolean stayActive = Services.PLATFORM.getControls(player).holding_primary && laserDuration <= MAX;
+            boolean stayActive = AbilityUtils.getControls(player).holding_primary && laserDuration <= MAX;
             if (stayActive) {
                 duck.setLaserActiveDuration(laserDuration);
             } else {

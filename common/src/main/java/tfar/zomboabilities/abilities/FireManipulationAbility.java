@@ -58,9 +58,9 @@ public class FireManipulationAbility extends Ability{
     }
 
     @Override
-    public void tick(ServerPlayer player) {
-        super.tick(player);
-        if (Services.PLATFORM.getControls(player).holding_secondary) {
+    public void tickAbility(ServerPlayer player) {
+        super.tickAbility(player);
+        if (AbilityUtils.getControls(player).holding_secondary) {
             ServerLevel serverLevel = player.serverLevel();
             Vec3 look = player.getLookAngle();
             FireBreathEntity fireBreathEntity = FireBreathEntity.shootFromEyes(player,look,serverLevel);

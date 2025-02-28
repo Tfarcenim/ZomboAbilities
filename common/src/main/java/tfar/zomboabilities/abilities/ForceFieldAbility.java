@@ -9,6 +9,7 @@ import tfar.zomboabilities.data.ForceFieldData;
 import tfar.zomboabilities.init.ModBlocks;
 import tfar.zomboabilities.init.ModItems;
 import tfar.zomboabilities.platform.Services;
+import tfar.zomboabilities.utils.AbilityUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +34,7 @@ public class ForceFieldAbility extends Ability{
             return;
         }
 
-        ForceFieldData forceFieldData = Services.PLATFORM.getFFData(player);
+        ForceFieldData forceFieldData = AbilityUtils.getFFData(player);
         int size = forceFieldData.size();
         if (forceFieldData.size() == 0) {
             size=4;
@@ -54,7 +55,7 @@ public class ForceFieldAbility extends Ability{
             player.level().setBlock(pos, ModBlocks.FORCE_FIELD.defaultBlockState(),3);
         }
 
-        Services.PLATFORM.setFFData(player,new ForceFieldData(sphere,size));
+        AbilityUtils.setFFData(player,new ForceFieldData(sphere,size));
         long time = System.nanoTime() - start;
         System.out.println("Time taken: "+time/1_000_000d +" ms");
     }
@@ -84,11 +85,11 @@ public class ForceFieldAbility extends Ability{
 
     @Override
     public void tertiary(ServerPlayer player) {
-        Set<BlockPos> poss = Services.PLATFORM.getFFData(player).fieldPositions();
+        Set<BlockPos> poss = AbilityUtils.getFFData(player).fieldPositions();
         for (BlockPos pos : poss) {
             player.level().removeBlock(pos,false);
         }
-        Services.PLATFORM.setFFData(player,new ForceFieldData());
+        AbilityUtils.setFFData(player,new ForceFieldData());
     }
 
     @Override
