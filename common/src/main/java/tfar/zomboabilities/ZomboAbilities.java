@@ -166,9 +166,10 @@ public class ZomboAbilities {
     static void playerTick(ServerPlayer player) {
         PlayerDuck playerDuck = PlayerDuck.of(player);
         AbilityUtils.getAbility(player).tick(player);
-        playerDuck.tickServer();
 
-
+        if (AbilityUtils.getExplosionImmunityTimer(player) > 0) {
+            AbilityUtils.setExplosionImmunityTimer(player,AbilityUtils.getExplosionImmunityTimer(player) - 1);
+        }
 
         if (!player.isRemoved() && player.hasEffect(ModMobEffects.COPY_ABILITY)) {
             if (playerDuck.getMobAbility() == CopyAbility.ZOMBIE || playerDuck.getMobAbility() == CopyAbility.DROWNED) {
@@ -305,7 +306,7 @@ public class ZomboAbilities {
                 player.addEffect(new MobEffectInstance(MobEffects.GLOWING,400,0));
             }
             if (AbilityUtils.hasAbility(player,Abilities.EXPLOSION)) {
-                playerDuck.setExplosionImmunityTimer(200);
+                AbilityUtils.setExplosionImmunityTimer(player,200);
             }
         }
     }

@@ -68,6 +68,10 @@ public class CommonDataAttachments {
 
     public static final CommonDataAttachment<Integer> LIGHT_FLASH = register(CommonDataAttachment.create(o -> 0).build("light_flash"));
 
+    public static final CommonDataAttachment<Integer> LASER_ACTIVE_DURATION = register(CommonDataAttachment.create(o -> 0).build("laser_active_duration"));
+    public static final CommonDataAttachment<Integer> EXPLOSION_IMMUNITY_TIMER = register(CommonDataAttachment.create(o -> 0).build("explosion_immunity_timer"));
+
+
     public static CommonDataAttachment<?> lookup(ResourceLocation location) {
         return MAP.get(location);
     }

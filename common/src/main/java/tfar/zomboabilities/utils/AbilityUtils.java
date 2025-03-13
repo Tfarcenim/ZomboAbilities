@@ -41,6 +41,22 @@ public class AbilityUtils {
     public static int[] getCooldowns(Player player) {
         return Services.PLATFORM.getAttachedValue(player,CommonDataAttachments.COOLDOWNS);
     }
+
+    public static int getLaserActiveDuration(Player player) {
+        return Services.PLATFORM.getAttachedValue(player,CommonDataAttachments.LASER_ACTIVE_DURATION);
+    }
+
+    public static void setLaserActiveDuration(Player player,int laserActiveDuration) {
+        Services.PLATFORM.setAttachedValue(player,CommonDataAttachments.LASER_ACTIVE_DURATION,laserActiveDuration);
+    }
+
+    public static int getExplosionImmunityTimer(Player player) {
+        return Services.PLATFORM.getAttachedValue(player,CommonDataAttachments.EXPLOSION_IMMUNITY_TIMER);
+    }
+
+    public static void setExplosionImmunityTimer(Player player,int laserActiveDuration) {
+        Services.PLATFORM.setAttachedValue(player,CommonDataAttachments.EXPLOSION_IMMUNITY_TIMER,laserActiveDuration);
+    }
     
     public static void setFFData(Entity entity, ForceFieldData data) {
         Services.PLATFORM.setAttachedValue(entity,CommonDataAttachments.FORCE_FIELD_DATA,data);

@@ -39,11 +39,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
     Consumer<ServerPlayer> mobAbility;
 
     @Unique
-    int laserActiveDuration;
-    @Unique
     int cloneCount;
-    @Unique
-    int explosionImmunityTimer;
 
     @Inject(method = "dropEquipment",at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;destroyVanishingCursedItems()V"))
     private void saveBedItems(CallbackInfo ci) {
@@ -76,26 +72,6 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
             ServerPlayer player = (ServerPlayer)(Object)this;
             Services.PLATFORM.sendToTracking(new S2CSetKeyActivePacket(player.getUUID(), active,slot),player);
         }
-    }
-
-    @Override
-    public int getLaserActiveDuration() {
-        return laserActiveDuration;
-    }
-
-    @Override
-    public void setLaserActiveDuration(int laserActiveDuration) {
-        this.laserActiveDuration = laserActiveDuration;
-    }
-
-    @Override
-    public int getExplosionImmunityTimer() {
-        return explosionImmunityTimer;
-    }
-
-    @Override
-    public void setExplosionImmunityTimer(int explosionImmunityTimer) {
-        this.explosionImmunityTimer = explosionImmunityTimer;
     }
 
     @Override

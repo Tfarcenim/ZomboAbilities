@@ -82,14 +82,14 @@ public class LaserEyesAbility extends Ability{
                     player.level().playSound(null,player.getX(),player.getY(),player.getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS,1,1);
                 }
             }
-            int laserDuration = duck.getLaserActiveDuration();
+            int laserDuration = AbilityUtils.getLaserActiveDuration(player);
             laserDuration++;
             boolean stayActive = AbilityUtils.getControls(player).holding_primary && laserDuration <= MAX;
             if (stayActive) {
-                duck.setLaserActiveDuration(laserDuration);
+                AbilityUtils.setLaserActiveDuration(player,laserDuration);
             } else {
                 duck.setFunctionActive(false,0);
-                duck.setLaserActiveDuration(0);
+                AbilityUtils.setLaserActiveDuration(player,0);
                 if (ZomboAbilities.ENABLE_LOG) {
                     System.out.println("Laser Disabled");
                 }

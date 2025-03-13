@@ -46,8 +46,6 @@ public class ModClientNeoForge {
             PlayerRenderer renderer = event.getSkin(skin);
             renderer.addLayer(new ForceFieldRenderLayer(event.getContext(),renderer));
         }
-
-
     }
 
     static void keybinds(RegisterKeyMappingsEvent event) {

@@ -26,12 +26,6 @@ public interface PlayerDuck {
     boolean isFunctionActive(int b);
     void setFunctionActive(boolean active, int b);
 
-    int getLaserActiveDuration();
-    void setLaserActiveDuration(int duration);
-
-    int getExplosionImmunityTimer();
-    void setExplosionImmunityTimer(int duration);
-
     int getCloneCount();
     void setCloneCount(int cloneCount);
     default boolean tooManyClones() {
@@ -45,13 +39,6 @@ public interface PlayerDuck {
     default void decrementClone() {
         setCloneCount(getCloneCount()-1);
     }
-
-    default void tickServer() {
-        if (getExplosionImmunityTimer() > 0) {
-            setExplosionImmunityTimer(getExplosionImmunityTimer() - 1);
-        }
-    }
-
 
     default void copyFrom(ServerPlayer oldPlayer) {
         PlayerDuck old = of(oldPlayer);

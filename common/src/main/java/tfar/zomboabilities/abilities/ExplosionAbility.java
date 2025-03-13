@@ -2,7 +2,7 @@ package tfar.zomboabilities.abilities;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import tfar.zomboabilities.PlayerDuck;
+import tfar.zomboabilities.utils.AbilityUtils;
 
 //Pressing R - This Ability allows you to blow up Similar to a creeper, you have a chance not to die when you blow up
 //
@@ -19,8 +19,7 @@ public class ExplosionAbility extends Ability {
 
     @Override
     public void secondary(ServerPlayer player) {
-        PlayerDuck playerDuck = PlayerDuck.of(player);
-        boolean immune = playerDuck.getExplosionImmunityTimer()>0;
+        boolean immune = AbilityUtils.getExplosionImmunityTimer(player)>0;
         player.level().explode(immune ? player : null,player.getX(),player.getY(),player.getZ(),5, Level.ExplosionInteraction.TNT);
         applyCooldown(1,5 * 20,player);
     }
