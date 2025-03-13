@@ -33,6 +33,7 @@ public class Abilities {
     public static final Ability OBJECT_RESTORATION = register(new ObjectRestorationAbility(),"object_restoration");
     public static final Ability LIFE_GIVER = register(new LiveGiverAbility(),"life_giver");
     public static final Ability LIGHT_MANIPULATION = register(new LightManipulationAbility(),"light_manipulation");
+    public static final Ability LIGHTNING_ABILITY = register(new LightningAbility(),"lightning_ability");
 
     static Ability register(Ability ability,String name) {
         ability.setName(name);

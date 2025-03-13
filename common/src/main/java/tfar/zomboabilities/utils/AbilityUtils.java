@@ -2,6 +2,7 @@ package tfar.zomboabilities.utils;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import tfar.zomboabilities.Abilities;
@@ -11,6 +12,7 @@ import tfar.zomboabilities.attachments.CommonDataAttachment;
 import tfar.zomboabilities.attachments.CommonDataAttachments;
 import tfar.zomboabilities.data.ForceFieldData;
 import tfar.zomboabilities.data.IceManipulationData;
+import tfar.zomboabilities.data.LightManipulationData;
 import tfar.zomboabilities.data.ObjectRestorationData;
 import tfar.zomboabilities.network.S2CCommonDataAttachmentPacket;
 import tfar.zomboabilities.platform.Services;
@@ -57,12 +59,12 @@ public class AbilityUtils {
     }
 
 
-    public static int getLightFlashTimer(Player player) {
-        return getDataAttachment(player,CommonDataAttachments.LIGHT_FLASH_TIMER);
+    public static LightManipulationData getLightManipulationData(Player player) {
+        return getDataAttachment(player,CommonDataAttachments.LIGHT_MANIPULATION);
     }
 
-    public static void setLightFlashTimer(Player player,int laserActiveDuration) {
-        setDataAttachment(player,CommonDataAttachments.LIGHT_FLASH_TIMER,laserActiveDuration);
+    public static void setLightManipulationData(Player player, LightManipulationData laserActiveDuration) {
+        setDataAttachment(player,CommonDataAttachments.LIGHT_MANIPULATION,laserActiveDuration);
     }
 
 
@@ -97,15 +99,15 @@ public class AbilityUtils {
         return getDataAttachment(entity,CommonDataAttachments.INFINITY);
     }
 
-    public static <T> void setDataAttachment(Entity entity, CommonDataAttachment<T> type,T value) {
-        Services.PLATFORM.setAttachedValue(entity,type,value);
-        if (!entity.level().isClientSide && type.isAutoSync()) {
+    public static <T> void setDataAttachment(Object object, CommonDataAttachment<T> type,T value) {
+        Services.PLATFORM.setAttachedValue(object,type,value);
+        if (object instanceof Entity entity  && !entity.level().isClientSide && type.isAutoSync()) {
             syncDataAttachment(entity, type, value);
         }
     }
 
-    public static <T> T getDataAttachment(Entity entity, CommonDataAttachment<T> type) {
-        return Services.PLATFORM.getAttachedValue(entity,type);
+    public static <T> T getDataAttachment(Object object, CommonDataAttachment<T> type) {
+        return Services.PLATFORM.getAttachedValue(object,type);
     }
 
 
@@ -130,5 +132,13 @@ public class AbilityUtils {
 
     public static BlockState getLiveGiverState(Entity entity) {
         return Services.PLATFORM.getOrCreateAttachedValue(entity,CommonDataAttachments.LIVE_GIVER_STATE);
+    }
+
+    public static void setLightningChance(Level level,int chance) {
+        setDataAttachment(level,CommonDataAttachments.LIGHTNING_CHANCE,chance);
+    }
+
+    public static int getLightningChance(Level level) {
+        return getDataAttachment(level,CommonDataAttachments.LIGHTNING_CHANCE);
     }
 }

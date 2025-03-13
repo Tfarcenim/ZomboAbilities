@@ -61,7 +61,7 @@ public interface IPlatformHelper {
 
 
     <T> void registerDataAttachment(CommonDataAttachment<T> attachment);
-    <T> T getAttachedValue(Entity entity,CommonDataAttachment<T> attachment);
+    <T> T getAttachedValue(Object object, CommonDataAttachment<T> attachment);
     default <T> T getOrCreateAttachedValue(Entity entity,CommonDataAttachment<T> attachment) {
         T value = getAttachedValue(entity,attachment);
         if (value!=null) {
@@ -71,5 +71,5 @@ public interface IPlatformHelper {
         T newValue = getAttachedValue(entity,attachment);
         return newValue;
     }
-    <T> void setAttachedValue(Entity entity,CommonDataAttachment<T> attachment,T value);
+    <T> void setAttachedValue(Object object, CommonDataAttachment<T> attachment, T value);
 }

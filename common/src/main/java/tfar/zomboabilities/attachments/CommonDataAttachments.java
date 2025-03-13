@@ -8,10 +8,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import tfar.zomboabilities.Abilities;
+import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.abilities.AbilityControls;
 import tfar.zomboabilities.data.ForceFieldData;
 import tfar.zomboabilities.data.IceManipulationData;
+import tfar.zomboabilities.data.LightManipulationData;
 import tfar.zomboabilities.data.ObjectRestorationData;
 import tfar.zomboabilities.init.ModGameRules;
 import tfar.zomboabilities.platform.Services;
@@ -69,11 +71,24 @@ public class CommonDataAttachments {
             .codec(BlockState.CODEC)
             .build("life_giver_state"));
 
-    public static final CommonDataAttachment<Integer> LIGHT_FLASH_TIMER = register(CommonDataAttachment.create(o -> 0).build("light_flash_timer"));
+    public static final CommonDataAttachment<LightManipulationData> LIGHT_MANIPULATION = register(CommonDataAttachment.create(o -> new LightManipulationData(0,3))
+            .codec(LightManipulationData.CODEC)
+            .networkSynchronized(LightManipulationData.STREAM_CODEC)
+            .autoSync()
+            .build("light_manipulation"));
 
     public static final CommonDataAttachment<Integer> LASER_ACTIVE_DURATION = register(CommonDataAttachment.create(o -> 0).build("laser_active_duration"));
     public static final CommonDataAttachment<Integer> EXPLOSION_IMMUNITY_TIMER = register(CommonDataAttachment.create(o -> 0).build("explosion_immunity_timer"));
 
+    public static final CommonDataAttachment<Integer> LIGHTNING_CHANCE = register(CommonDataAttachment
+            .create(o -> ZomboAbilities.DEFAULT_LIGHTNING_CHANCE)
+            .codec(Codec.INT)
+            .build("lightning_chance"));
+
+    public static final CommonDataAttachment<Integer> INCREASED_LIGHTING_TIMER = register(CommonDataAttachment
+            .create(o -> 0)
+            .codec(Codec.INT)
+            .build("increased_lightning_timer"));
 
     public static CommonDataAttachment<?> lookup(ResourceLocation location) {
         return MAP.get(location);

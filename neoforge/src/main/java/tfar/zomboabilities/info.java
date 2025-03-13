@@ -339,14 +339,13 @@ public class info {
 //
 //You can turn Zombie Villagers into normal villagers by shifting and right clicking on them, it’ll do the same effects as if you did it with a golden apple.
 //
-//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Light Manipulation
 //
 //Pressing R - This Ability allows you to shoot a beam of Light at the person, the Light has a chance to give the person Blindness for 10 seconds
 //Cooldown - 10 Seconds (After 3 uses)
 //
-//-
+//-//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Lightning - This Ability can only be used While its raining
 //

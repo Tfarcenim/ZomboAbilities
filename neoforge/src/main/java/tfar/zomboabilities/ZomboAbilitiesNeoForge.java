@@ -1,6 +1,7 @@
 package tfar.zomboabilities;
 
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -24,6 +25,7 @@ import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -59,6 +61,13 @@ public class ZomboAbilitiesNeoForge {
                 ZomboAbilities.playerTick(serverPlayer);
             }
         });
+
+        NeoForge.EVENT_BUS.addListener(LevelTickEvent.Pre.class,pre -> {
+            if (pre.getLevel() instanceof ServerLevel serverLevel) {
+                ZomboAbilities.levelTick(serverLevel);
+            }
+        });
+
         NeoForge.EVENT_BUS.addListener(PlayerInteractEvent.EntityInteractSpecific.class,event -> ZomboAbilities.interactMob(event.getEntity(),event.getTarget()));
         NeoForge.EVENT_BUS.addListener(ItemEntityPickupEvent.Pre.class,event -> {
             if (event.getPlayer().hasEffect(ModMobEffects.FLOATING_ITEMS)) {

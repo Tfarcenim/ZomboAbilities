@@ -2,7 +2,6 @@ package tfar.zomboabilities.platform;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
-import net.minecraft.world.entity.Entity;
 import tfar.zomboabilities.attachments.CommonDataAttachment;
 import tfar.zomboabilities.platform.services.IPlatformHelper;
 import net.fabricmc.loader.api.FabricLoader;
@@ -35,16 +34,16 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
     @SuppressWarnings({"UnstableApiUsage", "unchecked"})
     @Override
-    public <T> T getAttachedValue(Entity entity, CommonDataAttachment<T> attachment) {
+    public <T> T getAttachedValue(Object object, CommonDataAttachment<T> attachment) {
         AttachmentType<T> type = (AttachmentType<T>) attachment.getAttachment();
-        return entity.getAttached(type);
+        return object.getAttached(type);
     }
 
     @SuppressWarnings({"UnstableApiUsage", "unchecked"})
     @Override
-    public <T> void setAttachedValue(Entity entity, CommonDataAttachment<T> attachment, T value) {
+    public <T> void setAttachedValue(Object object, CommonDataAttachment<T> attachment, T value) {
         AttachmentType<T> type = (AttachmentType<T>) attachment.getAttachment();
-        entity.setAttached(type,value);
+        object.setAttached(type,value);
     }
 
     @SuppressWarnings("UnstableApiUsage")

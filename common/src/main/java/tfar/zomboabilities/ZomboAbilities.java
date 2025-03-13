@@ -49,6 +49,7 @@ import tfar.zomboabilities.abilities.CopyAbility;
 import tfar.zomboabilities.abilities.EndermanGeneticsAbility;
 import tfar.zomboabilities.abilities.GoldTouchAbility;
 import tfar.zomboabilities.commands.ModCommands;
+import tfar.zomboabilities.data.LightManipulationData;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
 import tfar.zomboabilities.init.*;
 import tfar.zomboabilities.platform.Services;
@@ -73,6 +74,8 @@ public class ZomboAbilities {
     public static final ResourceKey<DimensionType> DEATH_DIM_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE,id("death"));
     public static final ResourceKey<Level> DEATH_DIM = ResourceKey.create(Registries.DIMENSION,id("death"));
     public static final boolean ENABLE_LOG = Services.PLATFORM.isDevelopmentEnvironment();
+
+    public static final int DEFAULT_LIGHTNING_CHANCE = 100000;
 
     public static ResourceLocation id(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID,path);
@@ -171,6 +174,12 @@ public class ZomboAbilities {
             AbilityUtils.setExplosionImmunityTimer(player,AbilityUtils.getExplosionImmunityTimer(player) - 1);
         }
 
+        LightManipulationData lightManipulationData = AbilityUtils.getLightManipulationData(player);
+        if (lightManipulationData.lightFlashTimer() > 0) {
+            AbilityUtils.setLightManipulationData(player,lightManipulationData.decrementTimer());
+        }
+
+
         if (!player.isRemoved() && player.hasEffect(ModMobEffects.COPY_ABILITY)) {
             if (playerDuck.getMobAbility() == CopyAbility.ZOMBIE || playerDuck.getMobAbility() == CopyAbility.DROWNED) {
                 boolean flag = Utils.isSunBurnTick(player);
@@ -198,6 +207,10 @@ public class ZomboAbilities {
                 }
             }
         }
+    }
+
+    public static void levelTick(ServerLevel serverLevel) {
+
     }
 
     static void onEffectRemove(LivingEntity living, Holder<MobEffect> holder) {
@@ -391,4 +404,6 @@ public class ZomboAbilities {
     public static <V> Stream<V> getKnown(Registry<V> registry) {
         return registry.stream().filter(o -> registry.getKey(o).getNamespace().equals(MOD_ID));
     }
+
+
 }

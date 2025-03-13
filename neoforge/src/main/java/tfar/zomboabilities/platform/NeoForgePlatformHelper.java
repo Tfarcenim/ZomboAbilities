@@ -13,7 +13,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.NeoForgeMod;
-import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -21,7 +20,6 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 import tfar.zomboabilities.attachments.CommonDataAttachment;
 import tfar.zomboabilities.PacketHandlerNeoForge;
-import tfar.zomboabilities.init.ModTags;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
 import tfar.zomboabilities.platform.services.IPlatformHelper;
@@ -106,15 +104,23 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 
     @SuppressWarnings({"unchecked"})
     @Override
-    public <T> T getAttachedValue(Entity entity, CommonDataAttachment<T> attachment) {
+    public <T> T getAttachedValue(Object object, CommonDataAttachment<T> attachment) {
         AttachmentType<T> type = (AttachmentType<T>) attachment.getAttachment();
-        return entity.getData(type);
+        if (object instanceof IAttachmentHolder attachmentHolder) {
+            return attachmentHolder.getData(type);
+        }else {
+            throw new IllegalStateException("Cannot attach data to "+object);
+        }
     }
 
     @SuppressWarnings({"unchecked"})
     @Override
-    public <T> void setAttachedValue(Entity entity, CommonDataAttachment<T> attachment, T value) {
+    public <T> void setAttachedValue(Object object, CommonDataAttachment<T> attachment, T value) {
         AttachmentType<T> type = (AttachmentType<T>) attachment.getAttachment();
-        entity.setData(type, value);
+        if (object instanceof IAttachmentHolder attachmentHolder) {
+            attachmentHolder.setData(type, value);
+        } else {
+            throw new IllegalStateException("Cannot attach data to "+object);
+        }
     }
 }
