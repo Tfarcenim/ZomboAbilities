@@ -45,7 +45,7 @@ public class DuplicateClonesAbility extends Ability{
 
     @Override
     public void secondary(ServerPlayer player) {
-        EntityHitResult result = Utils.pick(player,player.blockInteractionRange(),player.entityInteractionRange(),0);
+        EntityHitResult result = Utils.pickEntity(player,player.blockInteractionRange(),player.entityInteractionRange(),0);
         if (result != null) {
             Entity entity = result.getEntity();
             if (entity instanceof ClonePlayerEntity clonePlayerEntity && clonePlayerEntity.getOwner() == player) {

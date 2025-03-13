@@ -3,6 +3,7 @@ package tfar.zomboabilities.utils;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tfar.zomboabilities.Abilities;
@@ -88,5 +89,13 @@ public class AbilityUtils {
     
     public static ObjectRestorationData getORData(Entity entity) {
         return Services.PLATFORM.getAttachedValue(entity,CommonDataAttachments.BLOCK_RESTORATION);
+    }
+
+    public static void setLiveGiverState(Entity entity,BlockState state) {
+        Services.PLATFORM.setAttachedValue(entity,CommonDataAttachments.LIVE_GIVER_STATE,state);
+    }
+
+    public static BlockState getLiveGiverState(Entity entity) {
+        return Services.PLATFORM.getOrCreateAttachedValue(entity,CommonDataAttachments.LIVE_GIVER_STATE);
     }
 }

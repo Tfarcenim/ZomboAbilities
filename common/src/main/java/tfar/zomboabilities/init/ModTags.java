@@ -12,6 +12,8 @@ public class ModTags {
     public static final TagKey<Block> GLASS_BLOCKS_CHEAP = commonTag("glass_blocks/cheap");
     public static final TagKey<EntityType<?>> MERMAN_FRIENDLY = modTag("merman_friendly");
 
+    public static final TagKey<EntityType<?>> LIFE_GIVER_WHITELIST = modTag("life_giver_whitelist");
+
     private static TagKey<Block> commonTag(String name) {
         return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", name));
     }

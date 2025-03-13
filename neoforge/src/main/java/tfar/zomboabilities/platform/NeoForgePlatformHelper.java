@@ -13,6 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -20,6 +21,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 import tfar.zomboabilities.attachments.CommonDataAttachment;
 import tfar.zomboabilities.PacketHandlerNeoForge;
+import tfar.zomboabilities.init.ModTags;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
 import tfar.zomboabilities.platform.services.IPlatformHelper;
@@ -51,7 +53,7 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     public static PayloadRegistrar registrar;
 
     @Override
-    public <MSG extends S2CModPacket<?>> void registerClientPlayPacket(CustomPacketPayload.Type<MSG> type, StreamCodec<RegistryFriendlyByteBuf,MSG> streamCodec) {
+    public <MSG extends S2CModPacket<?>> void registerClientPlayPacket(CustomPacketPayload.Type<MSG> type, StreamCodec<RegistryFriendlyByteBuf, MSG> streamCodec) {
         registrar.playToClient(type, streamCodec, (p, t) -> p.handleClient());
     }
 
@@ -73,7 +75,7 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public void sendToTracking(S2CModPacket<?> msg, Entity entity) {
-        PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity,msg);
+        PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, msg);
     }
 
     @Override
@@ -85,12 +87,12 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     public Pair<Boolean, Vec3> teleportEvent(LivingEntity entity, double targetX, double targetY, double targetZ) {
         EntityTeleportEvent.EnderEntity event = net.neoforged.neoforge.event.EventHooks.onEnderTeleport(entity, targetX, targetY, targetZ);
 
-        return Pair.of(event.isCanceled(),new Vec3(event.getTargetX(),event.getTargetY(),event.getTargetZ()));
+        return Pair.of(event.isCanceled(), new Vec3(event.getTargetX(), event.getTargetY(), event.getTargetZ()));
     }
 
     @Override
     public <T> void registerDataAttachment(CommonDataAttachment<T> attachment) {
-        AttachmentType.Builder<T> builder = AttachmentType.builder((Function<IAttachmentHolder,T>)(Object) attachment.getDefaultValueSupplier());
+        AttachmentType.Builder<T> builder = AttachmentType.builder((Function<IAttachmentHolder, T>) (Object) attachment.getDefaultValueSupplier());
         if (attachment.getCodec() != null) {
             builder.serialize(attachment.getCodec());
         }
@@ -98,7 +100,7 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
             builder.copyOnDeath();
         }
         AttachmentType<T> type = builder.build();
-        Registry.register(NeoForgeRegistries.ATTACHMENT_TYPES,attachment.getName(),type);
+        Registry.register(NeoForgeRegistries.ATTACHMENT_TYPES, attachment.getName(), type);
         attachment.setAttachment(type);
     }
 
@@ -113,6 +115,6 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public <T> void setAttachedValue(Entity entity, CommonDataAttachment<T> attachment, T value) {
         AttachmentType<T> type = (AttachmentType<T>) attachment.getAttachment();
-        entity.setData(type,value);
+        entity.setData(type, value);
     }
 }

@@ -1,3 +1,12 @@
 {
-  "effect.zomboabilities.intangibility": "Intangibility"
+  "block.zomboabilities.force_field": "Force Field",
+  "block.zomboabilities.pointed_ice": "Pointed Ice",
+  "effect.zomboabilities.copy_ability": "Copy Ability",
+  "effect.zomboabilities.flight": "Flight",
+  "effect.zomboabilities.floating_items": "Floating Items",
+  "effect.zomboabilities.floating_touch": "Floating Touch",
+  "effect.zomboabilities.intangibility": "Intangibility",
+  "effect.zomboabilities.quiet_step": "Quiet Step",
+  "effect.zomboabilities.wither_touch": "Wither Touch",
+  "item.zomboabilities.force_shield": "Force Shield"
 }

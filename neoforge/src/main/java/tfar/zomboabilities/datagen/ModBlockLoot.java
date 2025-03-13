@@ -17,6 +17,7 @@ public class ModBlockLoot extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
+        add(ModBlocks.POINTED_ICE,noDrop());
     }
 
     @Override

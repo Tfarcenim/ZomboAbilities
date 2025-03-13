@@ -20,5 +20,10 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(ModTags.MERMAN_FRIENDLY).add(EntityType.DOLPHIN,EntityType.GUARDIAN,EntityType.ELDER_GUARDIAN,EntityType.DROWNED);
+
+        tag(ModTags.LIFE_GIVER_WHITELIST).add(EntityType.ALLAY,EntityType.BEE,EntityType.BLAZE,EntityType.COW,EntityType.DROWNED,
+                EntityType.ENDERMAN,EntityType.ENDERMITE,
+                EntityType.GUARDIAN, EntityType.HUSK,EntityType.PIG, EntityType.SHEEP,EntityType.SHULKER,EntityType.SKELETON,
+                EntityType.WITHER_SKELETON,EntityType.ZOMBIE);
     }
 }

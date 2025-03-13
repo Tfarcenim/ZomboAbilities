@@ -45,7 +45,7 @@ public class Utils {
         return false;
     }
 
-    public static EntityHitResult pick(Entity pEntity, double pBlockInteractionRange, double pEntityInteractionRange, float pPartialTick) {
+    public static EntityHitResult pickEntity(Entity pEntity, double pBlockInteractionRange, double pEntityInteractionRange, float pPartialTick) {
         double d0 = Math.max(pBlockInteractionRange, pEntityInteractionRange);
         double d1 = Mth.square(d0);
         Vec3 vec3 = pEntity.getEyePosition(pPartialTick);
@@ -67,7 +67,7 @@ public class Utils {
     }
 
     public static HitResult pickEither(Entity pEntity, double pBlockInteractionRange, double pEntityInteractionRange, float pPartialTick) {
-        EntityHitResult entityHitResult = pick(pEntity,pBlockInteractionRange,pEntityInteractionRange,pPartialTick);
+        EntityHitResult entityHitResult = pickEntity(pEntity,pBlockInteractionRange,pEntityInteractionRange,pPartialTick);
         if (entityHitResult != null) return entityHitResult;
 
         return pEntity.pick(pEntityInteractionRange, pPartialTick, true);

@@ -31,7 +31,8 @@ public class Abilities {
     public static final Ability INVISIBILITY = register(new InvisibilityAbility(),"invisibility");
     public static final Ability WITHER_TOUCH = register(new WitherTouchAbility(),"wither_touch");
     public static final Ability OBJECT_RESTORATION = register(new ObjectRestorationAbility(),"object_restoration");
-
+    public static final Ability LIFE_GIVER = register(new LiveGiverAbility(),"life_giver");
+    public static final Ability LIGHT_MANIPULATION = register(new LightManipulationAbility(),"light_manipulation");
 
     static Ability register(Ability ability,String name) {
         ability.setName(name);

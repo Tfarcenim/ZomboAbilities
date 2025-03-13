@@ -24,6 +24,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.monster.ZombieVillager;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
@@ -38,6 +39,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -247,6 +249,17 @@ public class ZomboAbilities {
     static void interactMob(Player player, Entity entity){
         if (player.hasEffect(ModMobEffects.FLOATING_TOUCH) && entity instanceof LivingEntity living) {
             living.addEffect(new MobEffectInstance(MobEffects.LEVITATION,200));
+        }
+
+        if (AbilityUtils.hasAbility(player,Abilities.LIFE_GIVER) && player.isCrouching()) {
+            BlockState state = AbilityUtils.getLiveGiverState(entity);
+            if (!state.isAir()) {
+               player.level().setBlock(entity.blockPosition(),state, Block.UPDATE_ALL);
+               entity.discard();
+            }
+            if (entity instanceof ZombieVillager zombieVillager) {
+                zombieVillager.startConverting(player.getUUID(),zombieVillager.getRandom().nextInt(2401) + 3600);
+            }
         }
     }
 

@@ -1,0 +1,19 @@
+{
+  "values": [
+    "minecraft:allay",
+    "minecraft:bee",
+    "minecraft:blaze",
+    "minecraft:cow",
+    "minecraft:drowned",
+    "minecraft:enderman",
+    "minecraft:endermite",
+    "minecraft:guardian",
+    "minecraft:husk",
+    "minecraft:pig",
+    "minecraft:sheep",
+    "minecraft:shulker",
+    "minecraft:skeleton",
+    "minecraft:wither_skeleton",
+    "minecraft:zombie"
+  ]
+}

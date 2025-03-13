@@ -12,7 +12,7 @@ import tfar.zomboabilities.platform.Services;
 public class BoogieWoogieAbility extends Ability{
     @Override
     public void primary(ServerPlayer player) {
-        EntityHitResult pick = Utils.pick(player, player.blockInteractionRange(), player.entityInteractionRange(), 0);
+        EntityHitResult pick = Utils.pickEntity(player, player.blockInteractionRange(), player.entityInteractionRange(), 0);
         if (pick != null) {
             Entity entity = pick.getEntity();
             Vec3 pos1 = player.position();

@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import tfar.zomboabilities.Abilities;
 import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.abilities.AbilityControls;
@@ -61,6 +62,11 @@ public class CommonDataAttachments {
             .codec(Codec.BOOL)
             .build("infinity"));
 
+    public static final CommonDataAttachment<BlockState> LIVE_GIVER_STATE = register(CommonDataAttachment.create(o -> Blocks.AIR.defaultBlockState())
+            .codec(BlockState.CODEC)
+            .build("life_giver_state"));
+
+    public static final CommonDataAttachment<Integer> LIGHT_FLASH = register(CommonDataAttachment.create(o -> 0).build("light_flash"));
 
     public static CommonDataAttachment<?> lookup(ResourceLocation location) {
         return MAP.get(location);
