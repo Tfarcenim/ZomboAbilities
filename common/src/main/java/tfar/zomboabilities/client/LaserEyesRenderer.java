@@ -41,7 +41,7 @@ public class LaserEyesRenderer extends RenderLayer<AbstractClientPlayer, PlayerM
     //    renderVector(poseStack, bufferSource.getBuffer(RenderType.lines()), new Vector3f(0.0F, 0, 0.0F), livingEntity.getViewVector(partialTick)
       //          .scale(2.0), 0xff00ff00);
 
-        renderBean(poseStack,bufferSource,livingEntity,partialTick);
+        renderGuardianBeam(poseStack,bufferSource,livingEntity,partialTick);
 
         poseStack.popPose();
     }
@@ -57,7 +57,7 @@ public class LaserEyesRenderer extends RenderLayer<AbstractClientPlayer, PlayerM
         return new Vec3(d0, d1, d2);
     }
 
-    public static void renderBean(PoseStack poseStack, MultiBufferSource buffer, AbstractClientPlayer entity, float partialTicks) {
+    public static void renderGuardianBeam(PoseStack poseStack, MultiBufferSource buffer, AbstractClientPlayer entity, float partialTicks) {
         LivingEntity livingentity = entity.getLastHurtMob();
         float f = .5f;//entity.getAttackAnimationScale(partialTicks);
         float f1 = 1;//entity.getClientSideAttackTime() + partialTicks;

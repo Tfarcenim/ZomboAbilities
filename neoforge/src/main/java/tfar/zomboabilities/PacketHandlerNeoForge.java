@@ -5,9 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import tfar.zomboabilities.network.PacketHandler;
-import tfar.zomboabilities.network.S2CAttachmentTypePacketBoolean;
 import tfar.zomboabilities.platform.NeoForgePlatformHelper;
-import tfar.zomboabilities.platform.Services;
 
 public class PacketHandlerNeoForge {
 

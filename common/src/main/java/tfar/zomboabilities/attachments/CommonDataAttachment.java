@@ -1,9 +1,13 @@
 package tfar.zomboabilities.attachments;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import tfar.zomboabilities.ZomboAbilities;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -13,14 +17,20 @@ public class CommonDataAttachment<T> {
     protected final ResourceLocation name;
     protected final boolean copyOnDeath;
     protected final Codec<T> codec;
+    private final StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec;
+
+    private final boolean autoSync;
 
     protected Object attachment;
 
-    public CommonDataAttachment(Function<Object,T> defaultValueSupplier, ResourceLocation name, boolean copyOnDeath, Codec<T> codec) {
+    public CommonDataAttachment(Function<Object,T> defaultValueSupplier, ResourceLocation name, boolean copyOnDeath, Codec<T> codec,
+                                StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec,boolean autoSync) {
         this.defaultValueSupplier = defaultValueSupplier;
         this.name = name;
         this.copyOnDeath = copyOnDeath;
         this.codec = codec;
+        this.streamCodec = streamCodec;
+        this.autoSync = autoSync;
     }
 
     public static <T> Builder<T> create(Function<Object,T> defaultValueSupplier) {
@@ -41,9 +51,23 @@ public class CommonDataAttachment<T> {
     public Codec<T> getCodec() {
         return codec;
     }
+
+    public StreamCodec<? super RegistryFriendlyByteBuf, T> getStreamCodec() {
+        return streamCodec;
+    }
+
     public boolean isCopyOnDeath() {
         return copyOnDeath;
     }
+
+    public boolean canSync() {
+        return streamCodec!=null;
+    }
+
+    public boolean isAutoSync() {
+        return autoSync;
+    }
+
     public Object getAttachment() {
         return attachment;
     }
@@ -58,6 +82,9 @@ public class CommonDataAttachment<T> {
         protected final Function<Object,T> defaultValueSupplier;
         protected boolean copyOnDeath;
         protected Codec<T> codec;
+        @Nullable
+        private StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec;
+        private boolean autoSync = false;
 
         public Builder(Function<Object, T> defaultValueSupplier) {
             this.defaultValueSupplier = defaultValueSupplier;
@@ -66,6 +93,18 @@ public class CommonDataAttachment<T> {
         public Builder<T> codec(Codec<T> codec) {
             Objects.requireNonNull(codec);
             this.codec = codec;
+            return this;
+        }
+
+        public Builder<T> networkSynchronized(StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+            Objects.requireNonNull(streamCodec);
+            this.streamCodec = streamCodec;
+            return this;
+        }
+
+        public Builder<T> autoSync() {
+            Objects.requireNonNull(streamCodec,"A Stream Codec is required for autosync!");
+            autoSync = true;
             return this;
         }
 
@@ -80,7 +119,7 @@ public class CommonDataAttachment<T> {
 
         public CommonDataAttachment<T> build(ResourceLocation name) {
             Objects.requireNonNull(name);
-            return new CommonDataAttachment<>(defaultValueSupplier,name,copyOnDeath, codec);
+            return new CommonDataAttachment<>(defaultValueSupplier,name,copyOnDeath, codec,streamCodec,autoSync);
         }
     }
 }

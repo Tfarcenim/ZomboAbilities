@@ -53,7 +53,7 @@ public interface IPlatformHelper {
 
     void sendToClient(S2CModPacket<?> msg, ServerPlayer player);
     void sendToServer(C2SModPacket<?> msg);
-    void sendToTracking(S2CModPacket<?> msg, Entity entity);
+    void sendToTracking(S2CModPacket<?> msg, Entity tracked);
 
     Holder<Attribute> getSwimSpeed();
 

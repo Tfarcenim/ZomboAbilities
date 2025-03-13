@@ -20,7 +20,7 @@ public class PacketHandler {
         Services.PLATFORM.registerClientPlayPacket(S2CSetKeyActivePacket.TYPE, S2CSetKeyActivePacket.STREAM_CODEC);
         Services.PLATFORM.registerClientPlayPacket(S2CParticleAABBPacket.TYPE, S2CParticleAABBPacket.STREAM_CODEC);
 
-        Services.PLATFORM.registerClientPlayPacket(S2CAttachmentTypePacketBoolean.TYPE,S2CAttachmentTypePacketBoolean.STREAM_CODEC);
+        Services.PLATFORM.registerClientPlayPacket(S2CCommonDataAttachmentPacket.TYPE,S2CCommonDataAttachmentPacket.STREAM_CODEC);
     }
 
     public static void sendToServer(C2SModPacket<?> packet) {
