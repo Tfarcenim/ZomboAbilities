@@ -21,6 +21,7 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
 import net.neoforged.neoforge.event.entity.living.*;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -61,6 +62,8 @@ public class ZomboAbilitiesNeoForge {
                 ZomboAbilities.playerTick(serverPlayer);
             }
         });
+
+        NeoForge.EVENT_BUS.addListener(AttackEntityEvent.class,event -> event.setCanceled(ZomboAbilities.onAttack(event.getEntity(),event.getTarget())));
 
         NeoForge.EVENT_BUS.addListener(LevelTickEvent.Pre.class,pre -> {
             if (pre.getLevel() instanceof ServerLevel serverLevel) {

@@ -345,7 +345,6 @@ public class info {
 //Pressing R - This Ability allows you to shoot a beam of Light at the person, the Light has a chance to give the person Blindness for 10 seconds
 //Cooldown - 10 Seconds (After 3 uses)
 //
-//-//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Lightning - This Ability can only be used While its raining
 //
@@ -358,6 +357,8 @@ public class info {
 //
 //Passive - Player gets Speed Boost 1 in Rain
 //
+
+
 //-Magnetism
 //
 //Pressing R - This Ability allows all Nearby Objects within 300 Blocks made out of Iron that arent Placed, to attract fast to the Player, It will say "Magnet On" In chat for the player and Pressing R again will deactivate it. Iron Golems will be attracted towards the player
@@ -385,13 +386,12 @@ public class info {
 //
 //Passive - Any of the tool mentioned above, if another player trys to hit the player with the ability with an iron item, The item will automatically be placed in the inventory of the player with the ability.
 //
-//-
 //
 //Mob Absorb
 //
 //Pressing R - By pressing this, the player will gain a item in there inventory, it will be a heart of the sea, But the name of it will the Mob Capsule, This cost 5 Exp to Make, By right clicking a mob with the Mob capsule, the mob will basically be yours, like a Pokemon, The name of the mob capsule will turn into the name of the mob you have, when you summon the mob out, the mob will only not attack you, You can put the mob back in its capsule anytime, if the mob dies, the Mob Capsule from your inventory will just disappear, The mob capsule can not be used for 2 mobs at a time only 1..
 //
-//-
+//-//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //-
 //
 //Shape shift
@@ -411,14 +411,6 @@ public class info {
 //
 //Passives - Players will have Regen 1 In the Day time,
 //Eating Any kind of meat will poison you for 10 seconds and give you hunger effect for 20.
-//
-//-
-//
-//
-//
-//
-//
-//
 //
 //
 //Air Manipualtion

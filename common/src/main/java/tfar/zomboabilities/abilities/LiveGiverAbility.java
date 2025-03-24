@@ -35,7 +35,7 @@ public class LiveGiverAbility extends Ability {
             if (state.getDestroySpeed(player.serverLevel(),pos)>=0) {
                 List<EntityType<?>> possibilities = new ArrayList<>();
                 for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE) {
-                    if (type.is(ModTags.LIFE_GIVER_WHITELIST)) {
+                    if (type.is(ModTags.EntityTypes.LIFE_GIVER_WHITELIST)) {
                         possibilities.add(type);
                     }
                 }

@@ -44,10 +44,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tfar.zomboabilities.abilities.Ability;
-import tfar.zomboabilities.abilities.CopyAbility;
-import tfar.zomboabilities.abilities.EndermanGeneticsAbility;
-import tfar.zomboabilities.abilities.GoldTouchAbility;
+import tfar.zomboabilities.abilities.*;
 import tfar.zomboabilities.commands.ModCommands;
 import tfar.zomboabilities.data.LightManipulationData;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
@@ -210,7 +207,14 @@ public class ZomboAbilities {
     }
 
     public static void levelTick(ServerLevel serverLevel) {
-
+        int timer = AbilityUtils.getLightningTimer(serverLevel);
+        if (timer > 0) {
+            timer--;
+            if (timer ==0) {
+                AbilityUtils.setLightningChance(serverLevel,AbilityUtils.getLightningChance(serverLevel)* LightningAbility.CHANCE);
+            }
+            AbilityUtils.setLightningTimer(serverLevel,timer);
+        }
     }
 
     static void onEffectRemove(LivingEntity living, Holder<MobEffect> holder) {
@@ -406,4 +410,15 @@ public class ZomboAbilities {
     }
 
 
+    //return true to block attack
+    public static boolean onAttack(Player player, Entity target) {
+        if (target instanceof Player playerTarget) {
+            if (player.getWeaponItem().is(ModTags.Items.ATTRACTED) && AbilityUtils.hasAbility(playerTarget,Abilities.MAGNETISM)) {
+                player.drop(player.getWeaponItem(),true);
+                player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);
+                return true;
+            }
+        }
+        return false;
+    }
 }

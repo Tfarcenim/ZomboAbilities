@@ -41,7 +41,7 @@ public class Hooks {
     }
 
     static boolean isMermanFriendly(Mob mob) {
-        return mob.getType().is(ModTags.MERMAN_FRIENDLY);
+        return mob.getType().is(ModTags.EntityTypes.MERMAN_FRIENDLY);
     }
 
     static boolean isMerman(Player player) {

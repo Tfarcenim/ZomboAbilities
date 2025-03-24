@@ -19,9 +19,9 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
     ////Dolphins, Guardians, Elder Guardians, Drowned Zombies, Will not attack the player.
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(ModTags.MERMAN_FRIENDLY).add(EntityType.DOLPHIN,EntityType.GUARDIAN,EntityType.ELDER_GUARDIAN,EntityType.DROWNED);
+        tag(ModTags.EntityTypes.MERMAN_FRIENDLY).add(EntityType.DOLPHIN,EntityType.GUARDIAN,EntityType.ELDER_GUARDIAN,EntityType.DROWNED);
 
-        tag(ModTags.LIFE_GIVER_WHITELIST).add(EntityType.ALLAY,EntityType.BEE,EntityType.BLAZE,EntityType.COW,EntityType.DROWNED,
+        tag(ModTags.EntityTypes.LIFE_GIVER_WHITELIST).add(EntityType.ALLAY,EntityType.BEE,EntityType.BLAZE,EntityType.COW,EntityType.DROWNED,
                 EntityType.ENDERMAN,EntityType.ENDERMITE,
                 EntityType.GUARDIAN, EntityType.HUSK,EntityType.PIG, EntityType.SHEEP,EntityType.SHULKER,EntityType.SKELETON,
                 EntityType.WITHER_SKELETON,EntityType.ZOMBIE);

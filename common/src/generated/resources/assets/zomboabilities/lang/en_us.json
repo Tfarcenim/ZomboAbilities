@@ -8,5 +8,6 @@
   "effect.zomboabilities.intangibility": "Intangibility",
   "effect.zomboabilities.quiet_step": "Quiet Step",
   "effect.zomboabilities.wither_touch": "Wither Touch",
-  "item.zomboabilities.force_shield": "Force Shield"
+  "item.zomboabilities.force_shield": "Force Shield",
+  "item.zomboabilities.mob_capsule": "Mob Capsule"
 }

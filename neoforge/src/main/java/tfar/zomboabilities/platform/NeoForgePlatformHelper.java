@@ -13,6 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -122,5 +123,10 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
         } else {
             throw new IllegalStateException("Cannot attach data to "+object);
         }
+    }
+
+    @Override
+    public boolean isMultipart(Entity entity) {
+        return entity instanceof PartEntity<?> || entity.isMultipartEntity();
     }
 }

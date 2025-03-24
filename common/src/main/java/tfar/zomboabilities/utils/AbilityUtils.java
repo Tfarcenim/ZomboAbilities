@@ -141,4 +141,28 @@ public class AbilityUtils {
     public static int getLightningChance(Level level) {
         return getDataAttachment(level,CommonDataAttachments.LIGHTNING_CHANCE);
     }
+
+    public static void setLightningTimer(Level level,int timer) {
+        setDataAttachment(level,CommonDataAttachments.INCREASED_LIGHTNING_TIMER,timer);
+    }
+
+    public static int getLightningTimer(Level level) {
+        return getDataAttachment(level,CommonDataAttachments.INCREASED_LIGHTNING_TIMER);
+    }
+
+    public static void setCircleLightningTimer(Entity entity,int timer) {
+        setDataAttachment(entity,CommonDataAttachments.CIRCLE_LIGHTNING_TIMER,timer);
+    }
+
+    public static int getCircleLightningTimer(Entity entity) {
+        return getDataAttachment(entity,CommonDataAttachments.CIRCLE_LIGHTNING_TIMER);
+    }
+
+    public static void setMagnet(Entity entity,boolean magnet) {
+        setDataAttachment(entity,CommonDataAttachments.MAGNET,magnet);
+    }
+
+    public static boolean getMagnet(Entity entity) {
+        return getDataAttachment(entity,CommonDataAttachments.MAGNET);
+    }
 }

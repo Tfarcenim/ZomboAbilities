@@ -72,4 +72,6 @@ public interface IPlatformHelper {
         return newValue;
     }
     <T> void setAttachedValue(Object object, CommonDataAttachment<T> attachment, T value);
+
+    boolean isMultipart(Entity entity);
 }

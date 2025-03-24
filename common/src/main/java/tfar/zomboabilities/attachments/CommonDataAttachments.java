@@ -85,10 +85,22 @@ public class CommonDataAttachments {
             .codec(Codec.INT)
             .build("lightning_chance"));
 
-    public static final CommonDataAttachment<Integer> INCREASED_LIGHTING_TIMER = register(CommonDataAttachment
+    public static final CommonDataAttachment<Integer> INCREASED_LIGHTNING_TIMER = register(CommonDataAttachment
             .create(o -> 0)
             .codec(Codec.INT)
             .build("increased_lightning_timer"));
+
+    public static final CommonDataAttachment<Integer> CIRCLE_LIGHTNING_TIMER = register(CommonDataAttachment
+            .create(o -> 0)
+            .codec(Codec.INT)
+            .build("circle_lightning_timer"));
+
+    public static final CommonDataAttachment<Boolean> MAGNET = register(CommonDataAttachment.create(o -> false)
+            .codec(Codec.BOOL)
+            .networkSynchronized(ByteBufCodecs.BOOL)
+            .autoSync()
+            .build("magnet"));
+
 
     public static CommonDataAttachment<?> lookup(ResourceLocation location) {
         return MAP.get(location);
