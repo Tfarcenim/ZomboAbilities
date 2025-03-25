@@ -37,6 +37,7 @@ public class Abilities {
     public static final Ability MAGNETISM = register(new MagnetAbility(),"magnetism");
     public static final Ability MOB_ABSORB = register(new MobAbsorbAbility(),"mob_absorb");
     public static final Ability SHAPE_SHIFT = register(new ShapeShiftAbility(),"shape_shift");
+    public static final Ability PLANT_MANIPULATION = register(new PlantManipulationAbility(),"plant_manipulation");
 
     static Ability register(Ability ability,String name) {
         ability.setName(name);

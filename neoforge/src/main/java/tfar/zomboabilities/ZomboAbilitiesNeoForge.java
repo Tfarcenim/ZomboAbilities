@@ -50,6 +50,7 @@ public class ZomboAbilitiesNeoForge {
         if (dist.isClient()) {
             ModClientNeoForge.init(eventBus);
         }
+        NeoForge.EVENT_BUS.addListener(LivingEntityUseItemEvent.Finish.class,event -> ZomboAbilities.onItemFinished(event.getEntity(),event.getItem(),event.getDuration(),event.getResultStack()));
         NeoForge.EVENT_BUS.addListener(RegisterCommandsEvent.class,event -> ModCommands.register(event.getDispatcher()));
         // This method is invoked by the NeoForge mod loader when it is ready
         // to load your mod. You can access NeoForge and Common code in this

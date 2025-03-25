@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import tfar.zomboabilities.data.IceManipulationData;
 import tfar.zomboabilities.entity.IceSpikeEntity;
 import tfar.zomboabilities.init.ModEntityTypes;
 import tfar.zomboabilities.platform.Services;
@@ -65,6 +66,12 @@ public class IceManipulationAbility extends Ability{
             iceSpikeEntity.setPos(vec3);
             player.serverLevel().addFreshEntity(iceSpikeEntity);
         }
+    }
+
+    @Override
+    public void onRemoved(ServerPlayer player) {
+        super.onRemoved(player);
+        AbilityUtils.setIMData(player,new IceManipulationData(false));
     }
 
     @Override

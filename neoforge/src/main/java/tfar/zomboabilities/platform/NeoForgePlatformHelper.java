@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
@@ -19,8 +20,10 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 import tfar.zomboabilities.attachments.CommonDataAttachment;
 import tfar.zomboabilities.PacketHandlerNeoForge;
+import tfar.zomboabilities.compat.WoodwalkersCompat;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
 import tfar.zomboabilities.platform.services.IPlatformHelper;
@@ -128,5 +131,20 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public boolean isMultipart(Entity entity) {
         return entity instanceof PartEntity<?> || entity.isMultipartEntity();
+    }
+
+    @Override
+    public void demorph(ServerPlayer player) {
+        WoodwalkersCompat.morph(player,null);
+    }
+
+    @Override
+    public void morph(ServerPlayer player, LivingEntity livingEntity) {
+        WoodwalkersCompat.morph(player, livingEntity);
+    }
+
+    @Override
+    public @Nullable LivingEntity getMorph(Player player) {
+        return WoodwalkersCompat.getMorph(player);
     }
 }

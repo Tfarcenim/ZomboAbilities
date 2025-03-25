@@ -36,7 +36,7 @@ public class MermanAbility extends Ability{
     final ResourceLocation ID = ZomboAbilities.id("merman");
 
     @Override
-    public void applyPassive(ServerPlayer player) {
+    public void onAdded(ServerPlayer player) {
         applyAttributeSafely(player, Attributes.SUBMERGED_MINING_SPEED,
                 new AttributeModifier(ID,4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         applyAttributeSafely(player, Services.PLATFORM.getSwimSpeed(),
@@ -44,7 +44,7 @@ public class MermanAbility extends Ability{
     }
 
     @Override
-    public void removePassive(ServerPlayer player) {
+    public void onRemoved(ServerPlayer player) {
         player.getAttribute(Attributes.SUBMERGED_MINING_SPEED).removeModifier(ID);
         player.getAttribute(Services.PLATFORM.getSwimSpeed()).removeModifier(ID);
     }

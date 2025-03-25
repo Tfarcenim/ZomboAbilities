@@ -8,8 +8,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 import tfar.zomboabilities.attachments.CommonDataAttachment;
 import tfar.zomboabilities.network.C2SModPacket;
 import tfar.zomboabilities.network.S2CModPacket;
@@ -74,4 +76,10 @@ public interface IPlatformHelper {
     <T> void setAttachedValue(Object object, CommonDataAttachment<T> attachment, T value);
 
     boolean isMultipart(Entity entity);
+
+    void demorph(ServerPlayer player);
+
+    void morph(ServerPlayer player, LivingEntity livingEntity);
+
+    @Nullable LivingEntity getMorph(Player player);
 }

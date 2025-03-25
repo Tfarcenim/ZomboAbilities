@@ -391,7 +391,6 @@ public class info {
 //
 //Pressing R - By pressing this, the player will gain a item in there inventory, it will be a heart of the sea, But the name of it will the Mob Capsule, This cost 5 Exp to Make, By right clicking a mob with the Mob capsule, the mob will basically be yours, like a Pokemon, The name of the mob capsule will turn into the name of the mob you have, when you summon the mob out, the mob will only not attack you, You can put the mob back in its capsule anytime, if the mob dies, the Mob Capsule from your inventory will just disappear, The mob capsule can not be used for 2 mobs at a time only 1..
 //
-//-//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //-
 //
 //Shape shift
@@ -399,7 +398,7 @@ public class info {
 //Pressing R - By Hitting a Mob and Pressing R within 10 Seconds of hitting them, The Player will be able to transform into the mob, the Player will also be able to use the abilities of the Mob.the Time limit for being the Mob is 5 minutes.You can Press R again to detransform.
 //Cooldown - 40 Seconds
 //
-//-
+//-//-//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Plant Manipulation (You can be creative with this one)
 //

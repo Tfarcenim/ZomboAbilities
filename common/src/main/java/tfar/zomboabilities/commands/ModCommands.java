@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import tfar.zomboabilities.Abilities;
 import tfar.zomboabilities.utils.AbilityUtils;
-import tfar.zomboabilities.PlayerDuck;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.utils.LivesUtils;
@@ -86,8 +85,8 @@ public class ModCommands {
     }
 
     public static void updateAbility(ServerPlayer player, @NotNull Ability prev, @NotNull Ability next) {
-        prev.removePassive(player);
-        next.applyPassive(player);
+        prev.onRemoved(player);
+        next.onAdded(player);
     }
 
     static int queryAbility(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {

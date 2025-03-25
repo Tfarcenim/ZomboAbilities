@@ -101,6 +101,12 @@ public class CommonDataAttachments {
             .autoSync()
             .build("magnet"));
 
+    public static final CommonDataAttachment<Integer> SHAPE_SHIFT_TIMER = register(CommonDataAttachment.create(o -> 0)
+            .codec(Codec.INT)
+            .networkSynchronized(ByteBufCodecs.INT)
+            .autoSync()
+            .build("shape_shift_timer"));
+
 
     public static CommonDataAttachment<?> lookup(ResourceLocation location) {
         return MAP.get(location);

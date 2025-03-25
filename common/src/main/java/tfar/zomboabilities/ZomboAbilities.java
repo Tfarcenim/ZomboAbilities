@@ -3,6 +3,7 @@ package tfar.zomboabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -13,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -29,6 +31,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.entity.projectile.ThrownPotion;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.FireworkRocketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -389,9 +392,11 @@ public class ZomboAbilities {
     }
 
     public static void locationChanged(ServerLevel level, LivingEntity entity) {
-        Enchantment frostWalker = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(Enchantments.FROST_WALKER).get().value();
-        EnchantedItemInUse enchantediteminuse = new EnchantedItemInUse(new ItemStack(Items.NETHERITE_BOOTS), EquipmentSlot.FEET, entity);
-        frostWalker.runLocationChangedEffects(level,1,enchantediteminuse,entity);
+        if (AbilityUtils.getIMData(entity).frostWalkerActive()) {
+            Enchantment frostWalker = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(Enchantments.FROST_WALKER).get().value();
+            EnchantedItemInUse enchantediteminuse = new EnchantedItemInUse(new ItemStack(Items.NETHERITE_BOOTS), EquipmentSlot.FEET, entity);
+            frostWalker.runLocationChangedEffects(level, 1, enchantediteminuse, entity);
+        }
     }
 
     public static Stream<Block> getKnownBlocks() {
@@ -420,5 +425,15 @@ public class ZomboAbilities {
             }
         }
         return false;
+    }
+
+    public static void onItemFinished(LivingEntity entity, ItemStack item, int duration, ItemStack resultStack) {
+        if (AbilityUtils.hasAbility(entity,Abilities.PLANT_MANIPULATION)) {
+            FoodProperties food = item.get(DataComponents.FOOD);
+            if (item.is(ItemTags.WOLF_FOOD)) {
+                entity.addEffect(new MobEffectInstance(MobEffects.POISON,20 * 10,0));
+                entity.addEffect(new MobEffectInstance(MobEffects.HUNGER,20 *20,0));
+            }
+        }
     }
 }

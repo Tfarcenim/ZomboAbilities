@@ -42,11 +42,11 @@ public abstract class Ability {
         }
     }
 
-    public void applyPassive(ServerPlayer player) {
+    public void onAdded(ServerPlayer player) {
 
     }
 
-    public void removePassive(ServerPlayer player) {
+    public void onRemoved(ServerPlayer player) {
 
     }
 

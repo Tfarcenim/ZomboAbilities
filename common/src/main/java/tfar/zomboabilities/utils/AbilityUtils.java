@@ -165,4 +165,12 @@ public class AbilityUtils {
     public static boolean getMagnet(Entity entity) {
         return getDataAttachment(entity,CommonDataAttachments.MAGNET);
     }
+
+    public static void setShapeShiftTimer(Entity entity,int magnet) {
+        setDataAttachment(entity,CommonDataAttachments.SHAPE_SHIFT_TIMER,magnet);
+    }
+
+    public static int getShapeShiftTimer(Entity entity) {
+        return getDataAttachment(entity,CommonDataAttachments.SHAPE_SHIFT_TIMER);
+    }
 }
