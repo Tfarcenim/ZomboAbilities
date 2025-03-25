@@ -398,7 +398,6 @@ public class info {
 //Pressing R - By Hitting a Mob and Pressing R within 10 Seconds of hitting them, The Player will be able to transform into the mob, the Player will also be able to use the abilities of the Mob.the Time limit for being the Mob is 5 minutes.You can Press R again to detransform.
 //Cooldown - 40 Seconds
 //
-//-//-//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Plant Manipulation (You can be creative with this one)
 //
@@ -411,6 +410,8 @@ public class info {
 //Passives - Players will have Regen 1 In the Day time,
 //Eating Any kind of meat will poison you for 10 seconds and give you hunger effect for 20.
 //
+
+
 //
 //Air Manipualtion
 //
@@ -418,7 +419,6 @@ public class info {
 //
 //
 //-
-//
 //
 //
 //
@@ -449,7 +449,7 @@ public class info {
 //
 //Each of these will last up to 20 seconds
 //
-//-
+//-////-//-//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Pocket Dimension
 //
