@@ -16,6 +16,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.block.ForceFieldBlock;
+import tfar.zomboabilities.block.PocketDimensionPortalBlock;
 
 public class ModBlocks {
     public static final Block FORCE_FIELD = register("force_field",new ForceFieldBlock(BlockBehaviour.Properties.of()
@@ -35,6 +36,14 @@ public class ModBlocks {
             .strength(0.5F)
             .sound(SoundType.GLASS)
             .noOcclusion()
+            .isValidSpawn(ModBlocks::never)
+            .isRedstoneConductor(ModBlocks::never)));
+
+    public static final Block POCKET_DIMENSION_PORTAL = register("pocket_dimension_portal",new PocketDimensionPortalBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_YELLOW)
+            .randomTicks()
+            .strength(0.5F)
+            .sound(SoundType.GLASS)
             .isValidSpawn(ModBlocks::never)
             .isRedstoneConductor(ModBlocks::never)));
 

@@ -7,7 +7,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -43,7 +42,6 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.dimension.DimensionType;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,8 +69,6 @@ public class ZomboAbilities {
     public static final String MOD_NAME = "ZomboAbilities";
     public static final Logger LOG = LoggerFactory.getLogger(MOD_NAME);
 
-    public static final ResourceKey<DimensionType> DEATH_DIM_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE,id("death"));
-    public static final ResourceKey<Level> DEATH_DIM = ResourceKey.create(Registries.DIMENSION,id("death"));
     public static final boolean ENABLE_LOG = Services.PLATFORM.isDevelopmentEnvironment();
 
     public static final int DEFAULT_LIGHTNING_CHANCE = 100000;
@@ -105,7 +101,7 @@ public class ZomboAbilities {
             if (lives<=1) {
                 MinecraftServer server = player.server;
                 //ServerLevel level = server.getLevel(DEATH_DIM);
-                player.setRespawnPosition(DEATH_DIM,new BlockPos(0,2,0),0,true,false);
+                player.setRespawnPosition(ModLevels.DEATH,new BlockPos(0,2,0),0,true,false);
                 //player.teleportTo(level,0,2,0,player.getYRot(),player.getXRot());
                 player.setGameMode(GameType.CREATIVE);
                 AbilityUtils.removeAbility(player);

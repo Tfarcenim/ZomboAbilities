@@ -55,7 +55,7 @@ dependencies {
         implementation "dev.architectury:architectury-neoforge:$architectury_version"
     }
 
-    implementation "curse.maven:crafted-core-923377:5987792"
+    implementation "curse.maven:crafted-core-923377:6187047"
     implementation "curse.maven:woodwalkers-868922:5993653"
 
 }

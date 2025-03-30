@@ -1,6 +1,11 @@
 package tfar.zomboabilities.abilities;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import tfar.zomboabilities.init.ModLevels;
+
 //Pressing R - The Player will go into a Pitch black pocket dimension,
 // there floor will be made out of Oak Planks,
 // the Wall will be Made out of White Concrete and The Ceiling will be made out of white concrete,
@@ -17,7 +22,21 @@ import net.minecraft.server.level.ServerPlayer;
 public class PocketDimensionAbility extends Ability{
     @Override
     public void primary(ServerPlayer player) {
+        MinecraftServer server = player.server;
+        boolean inPocketDimension = player.serverLevel().dimension() == ModLevels.POCKET_DIMENSION;
 
+        if (inPocketDimension) {
+            ServerLevel overworld = server.overworld();
+            player.teleportTo(overworld, 0, 2, 0, player.getYRot(), player.getXRot());
+        }
+         else {
+            ServerLevel level = server.getLevel(ModLevels.POCKET_DIMENSION);
+            BlockPos returnPos = player.blockPosition();
+
+            if (player.serverLevel().isInWorldBounds(returnPos)) {
+                player.teleportTo(level, 0, 2, 0, player.getYRot(), player.getXRot());
+            }
+        }
     }
 
     @Override
