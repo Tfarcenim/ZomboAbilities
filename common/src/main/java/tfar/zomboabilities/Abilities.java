@@ -17,7 +17,7 @@ public class Abilities {
     public static final Ability CONSTRUCTION = register(new ConstructionAbility(),"construction");
     public static final Ability OBJECT_DUPLICATION = register(new ObjectDuplicationAbility(),"object_duplication");
     public static final Ability DUPLICATE_CLONES = register(new DuplicateClonesAbility(),"duplicate_clones");
-    public static final Ability ENDERMAN_GENETICS = register(new EndermanGeneticsAbility(),"enderman_genetics");
+    public static final Ability ENDERMAN_GENETICS = register(new EndermanGeneticsAbility().hurtByWater(),"enderman_genetics");
     public static final Ability EXPLOSION = register(new ExplosionAbility(),"explosion");
     public static final Ability FIRE_MANIPULATION = register(new FireManipulationAbility(),"fire_manipulation");
     public static final Ability FLIGHT = register(new FlightAbility(),"flight");
@@ -41,6 +41,11 @@ public class Abilities {
     public static final Ability AIR_MANIPULATION = register(new AirManipulationAbility(),"air_manipulation");
     public static final Ability ORE_ABSORB = register(new OreAbsorbAbility(),"ore_absorb");
     public static final Ability POCKET_DIMENSION = register(new PocketDimensionAbility(),"pocket_dimension");
+    public static final Ability POISON_TOUCH = register(new PoisonTouchAbility(),"poison_touch");
+    public static final Ability REGENERATION = register(new RegenerationAbility(),"regeneration");
+    public static final Ability SAND_BODY = register(new SandBodyAbility().hurtByWater(),"sand_body");
+    public static final Ability SHRINK = register(new ShrinkAbility(),"shrink");
+
 
     static Ability register(Ability ability,String name) {
         ability.setName(name);

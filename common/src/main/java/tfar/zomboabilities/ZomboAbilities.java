@@ -1,25 +1,21 @@
 package tfar.zomboabilities;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.core.SectionPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.commands.PlaceCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -32,6 +28,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.monster.ZombieVillager;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
@@ -44,26 +41,26 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.StructureBlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.phys.Vec2;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.EntityCollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tfar.zomboabilities.abilities.*;
+import tfar.zomboabilities.attachments.CommonDataAttachments;
 import tfar.zomboabilities.commands.ModCommands;
 import tfar.zomboabilities.data.LightManipulationData;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
@@ -74,11 +71,10 @@ import tfar.zomboabilities.utils.LivesUtils;
 import tfar.zomboabilities.utils.Utils;
 import tfar.zomboabilities.world.ZomboAbilitiesLevelData;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-
-import static net.minecraft.world.level.block.entity.StructureBlockEntity.createRandom;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
 // import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
@@ -301,28 +297,32 @@ public class ZomboAbilities {
         }
     }
 
-    static void onHit(LivingEntity target, DamageSource source) {
+    static void onDamaged(LivingEntity target, DamageSource source) {
         Entity attacker = source.getEntity();
-        if (attacker instanceof ServerPlayer player) {
-            if (player.hasEffect(ModMobEffects.COPY_ABILITY)) {
+        if (attacker instanceof ServerPlayer playerAttacker) {
+            if (playerAttacker.hasEffect(ModMobEffects.COPY_ABILITY)) {
                 if (target instanceof ServerPlayer playerTarget) {
                     Ability targetAbility = AbilityUtils.getAbility(playerTarget);
                     if (targetAbility != null) {
-                        PlayerDuck.of(player).setCopiedAbility(targetAbility);
-                        player.displayClientMessage(Component.literal("ability "+targetAbility.getName()+" copied"),false);
+                        PlayerDuck.of(playerAttacker).setCopiedAbility(targetAbility);
+                        playerAttacker.displayClientMessage(Component.literal("ability "+targetAbility.getName()+" copied"),false);
                     } else {
-                        player.displayClientMessage(Component.literal("No Ability Found"),false);
+                        playerAttacker.displayClientMessage(Component.literal("No Ability Found"),false);
                     }
                 } else {
                     EntityType<?> type = target.getType();
                     Consumer<ServerPlayer> consumer = CopyAbility.MAP.get(type);
                     if (consumer != null) {
-                        PlayerDuck.of(player).setMobAbility(consumer);
-                        consumer.accept(player);
+                        PlayerDuck.of(playerAttacker).setMobAbility(consumer);
+                        consumer.accept(playerAttacker);
                     } else {
-                        player.displayClientMessage(Component.literal("No Ability Found"),false);
+                        playerAttacker.displayClientMessage(Component.literal("No Ability Found"),false);
                     }
                 }
+            }
+
+            if (target instanceof Villager villager && AbilityUtils.hasAbility(playerAttacker,Abilities.POISON_TOUCH)) {
+                AbilityUtils.setZombificationTimer(villager,400);
             }
         }
 
@@ -477,8 +477,39 @@ public class ZomboAbilities {
                 .setIgnoreEntities(true);
 
         BlockPos blockpos = pos.offset(offset);
-        structureTemplate.placeInWorld(level, blockpos, blockpos, structureplacesettings, createRandom(0), 2);
+        structureTemplate.placeInWorld(level, blockpos, blockpos, structureplacesettings, StructureBlockEntity.createRandom(0), 2);
     }
 
 
+    public static void onTouch(Player player, Entity entity) {
+        Ability ability = AbilityUtils.getAbility(player);
+        ability.onTouch(player,entity);
+    }
+
+    public static void entityTick(Entity entity) {
+        if (entity instanceof Villager villager) {
+            int timer = AbilityUtils.getZombificationTimer(villager);
+            if (timer>0) {
+                timer--;
+
+                if (timer ==0) {
+                    villager.convertTo(EntityType.ZOMBIE_VILLAGER,false);
+                }
+
+                AbilityUtils.setZombificationTimer(villager,timer);
+            }
+        }
+    }
+
+    public static Optional<VoxelShape> getShape(BlockBehaviour.BlockStateBase blockStateBase, BlockGetter level, BlockPos pos, CollisionContext context) {
+        if (blockStateBase.is(BlockTags.SAND)) {
+            if (context instanceof EntityCollisionContext entityCollisionContext) {
+                Entity entity = entityCollisionContext.getEntity();
+                if (entity != null && AbilityUtils.getDataAttachment(entity, CommonDataAttachments.SAND_SHIFT)) {
+                    return Optional.of(Shapes.empty());
+                }
+            }
+        }
+        return Optional.empty();
+    }
 }

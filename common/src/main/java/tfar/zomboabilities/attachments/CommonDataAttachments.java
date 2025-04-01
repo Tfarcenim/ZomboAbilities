@@ -113,6 +113,16 @@ public class CommonDataAttachments {
             .codec(GlobalPos.CODEC)
             .build("pocket_dimension_return"));
 
+    public static final CommonDataAttachment<Integer> ZOMBIFICATION_TIMER = register(CommonDataAttachment.create(o -> 0)
+            .codec(Codec.INT)
+            .build("zombification_timer"));
+
+    public static final CommonDataAttachment<Boolean> SAND_SHIFT = register(CommonDataAttachment.create(o -> false)
+            .codec(Codec.BOOL)
+            .networkSynchronized(ByteBufCodecs.BOOL)
+            .autoSync()
+            .build("sand_shift")
+        );
 
     public static CommonDataAttachment<?> lookup(ResourceLocation location) {
         return MAP.get(location);

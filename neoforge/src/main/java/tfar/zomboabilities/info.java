@@ -457,7 +457,6 @@ public class info {
 //Players cannot do /tpa while in this Pocket Dimension
 //
 //
-//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Poison Touch
 //
@@ -468,7 +467,7 @@ public class info {
 //20 more Seconds, Player will gain Weakness 2 for 80 Seconds
 //20 more Seconds, Player will gain Slowness 2 for 80 Seconds
 //25 More Seconds, Player will Gain Blindess 3 for 50 Seconds
-//20 More Seocnds Player will Get Poison 3 for 300 Seconds
+//20 More Seconds Player will Get Poison 3 for 300 Seconds
 //
 //By Pressing Y  on a Arrow, The Player can make Poison arrows
 //
@@ -481,7 +480,7 @@ public class info {
 //Iron Golem
 //Zombie
 //Drowned Zombie
-//Husl
+//Husk
 //Skeleton
 //Stray
 //That new Swamp Skeleton
@@ -494,11 +493,6 @@ public class info {
 //
 //-
 //
-//
-//
-//
-//
-//
 //Sand Body
 //
 //Passive - This Ability sorta allows you to be intangible, Arrows will go straight through you, You will Take Damage in Water, everytime you sprint, Sand sprinting particles will show on your feet
@@ -507,16 +501,14 @@ public class info {
 //
 //Press T - Summons a Sand block in your Cross Air
 //
-//-
-//
+//////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Shrink
 //
 //Pressing R - This Ability allows you to shrink a super small size, the less Hunger bars you have, the smaller you can go, you need to be down 2 Hunger bars minimum to shrink.
 //
-//Your hearst will go down when you shrink
+//Your hearts will go down when you shrink
 //
-//-
 //
 //Slime genetics
 //

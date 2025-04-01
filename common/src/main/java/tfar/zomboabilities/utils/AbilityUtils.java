@@ -182,4 +182,22 @@ public class AbilityUtils {
     public static void setPocketDimensionReturn(Entity entity,GlobalPos pos) {
         setDataAttachment(entity,CommonDataAttachments.POCKET_DIMENSION_RETURN,pos);
     }
+
+    public static void setZombificationTimer(Entity entity,int timer) {
+        setDataAttachment(entity,CommonDataAttachments.ZOMBIFICATION_TIMER,timer);
+    }
+
+    public static int getZombificationTimer(Entity entity) {
+        return getDataAttachment(entity,CommonDataAttachments.ZOMBIFICATION_TIMER);
+    }
+
+
+    public static void toggleBool(Entity entity,CommonDataAttachment<Boolean> attachment) {
+        setDataAttachment(entity,attachment,!getDataAttachment(entity,attachment));
+    }
+
+    public static void toggleSandShift(Entity entity) {
+        toggleBool(entity,CommonDataAttachments.SAND_SHIFT);
+    }
+
 }

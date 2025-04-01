@@ -4,9 +4,11 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import tfar.zomboabilities.Abilities;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.utils.AbilityUtils;
@@ -16,6 +18,7 @@ public abstract class Ability {
     public static final Codec<Ability> CODEC = Codec.STRING.xmap(Abilities.ABILITIES_BY_NAME::get, Ability::getName);
 
     private String name;
+    boolean hurtByWater;
 
     public Ability() {
     }
@@ -26,6 +29,15 @@ public abstract class Ability {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Ability hurtByWater() {
+        hurtByWater = true;
+        return this;
+    }
+
+    public boolean isHurtByWater() {
+        return hurtByWater;
     }
 
     public void tryUseAbility(ServerPlayer player, int key) {
@@ -121,6 +133,10 @@ public abstract class Ability {
         return "Ability{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    public void onTouch(Player player, Entity touched) {
+
     }
 
     public static final class NoAbility extends Ability {

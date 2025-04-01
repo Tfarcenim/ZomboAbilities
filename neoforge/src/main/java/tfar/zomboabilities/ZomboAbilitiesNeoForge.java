@@ -7,6 +7,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Fireball;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -21,6 +24,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
+import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
@@ -28,6 +32,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -74,6 +79,8 @@ public class ZomboAbilitiesNeoForge {
             }
         });
 
+        NeoForge.EVENT_BUS.addListener(EntityTickEvent.Post.class,event -> ZomboAbilities.entityTick(event.getEntity()));
+
         NeoForge.EVENT_BUS.addListener(AttackEntityEvent.class,event -> event.setCanceled(ZomboAbilities.onAttack(event.getEntity(),event.getTarget())));
 
         NeoForge.EVENT_BUS.addListener(LevelTickEvent.Pre.class,pre -> {
@@ -92,7 +99,7 @@ public class ZomboAbilitiesNeoForge {
         });
         NeoForge.EVENT_BUS.addListener(EntityInvulnerabilityCheckEvent.class, event -> event.setInvulnerable(ZomboAbilities.checkInvulnerable(event.getEntity(),event.getSource(),event.isInvulnerable())));
         NeoForge.EVENT_BUS.addListener(LivingIncomingDamageEvent.class, event -> event.setCanceled(ZomboAbilities.onIncomingDamage(event.getEntity(),event.getSource(),event.getAmount())));
-        NeoForge.EVENT_BUS.addListener(LivingDamageEvent.Post.class,event -> ZomboAbilities.onHit(event.getEntity(),event.getSource()));
+        NeoForge.EVENT_BUS.addListener(LivingDamageEvent.Post.class,event -> ZomboAbilities.onDamaged(event.getEntity(),event.getSource()));
         NeoForge.EVENT_BUS.addListener(MobEffectEvent.Remove.class,event -> ZomboAbilities.onEffectRemove(event.getEntity(),event.getEffect()));
         NeoForge.EVENT_BUS.addListener(EventPriority.LOW,MobEffectEvent.Expired.class,event -> ZomboAbilities.onEffectExpire(event.getEntity(),event.getEffectInstance()));
         NeoForge.EVENT_BUS.addListener(EntityStruckByLightningEvent.class,event -> ZomboAbilities.onLightning(event.getEntity()));
@@ -106,6 +113,7 @@ public class ZomboAbilitiesNeoForge {
         NeoForge.EVENT_BUS.addListener(this::drops);
         NeoForge.EVENT_BUS.addListener(this::xpDrops);
         NeoForge.EVENT_BUS.addListener(this::harvestCheck);
+        NeoForge.EVENT_BUS.addListener(this::projectileImpact);
 
         eventBus.addListener(RegisterEvent.class, this::registerObjs);
         eventBus.addListener(ModDatagen::gather);
@@ -114,6 +122,15 @@ public class ZomboAbilitiesNeoForge {
         eventBus.addListener(RegisterTicketControllersEvent.class,event -> event.register(TICKET_CONTROLLER));
         ZomboAbilities.init();
 
+    }
+
+    void projectileImpact(ProjectileImpactEvent event) {
+        Entity entity = event.getEntity();
+        Projectile projectile = event.getProjectile();
+        boolean sandMan = AbilityUtils.hasAbility(entity,Abilities.SAND_BODY);
+        if (sandMan && (projectile instanceof AbstractArrow || projectile instanceof Fireball)) {
+            event.setCanceled(true);
+        }
     }
 
     void drops(BlockDropsEvent event) {

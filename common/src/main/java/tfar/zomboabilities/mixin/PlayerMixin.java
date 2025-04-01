@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -122,9 +123,14 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
         }
     }
 
+    @Inject(method = "touch",at = @At("RETURN"))
+    private void onTouch(Entity entity, CallbackInfo ci) {
+        ZomboAbilities.onTouch((Player)(Object)this,entity);
+    }
+
     @Override
     public boolean isSensitiveToWater() {
-        return mobAbility == CopyAbility.ENDERMAN || AbilityUtils.hasAbility(this,Abilities.ENDERMAN_GENETICS);
+        return mobAbility == CopyAbility.ENDERMAN || AbilityUtils.getAbility(this).isHurtByWater();
     }
 
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
