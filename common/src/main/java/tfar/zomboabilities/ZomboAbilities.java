@@ -1,19 +1,25 @@
 package tfar.zomboabilities;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.commands.PlaceCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -38,10 +44,22 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,10 +72,13 @@ import tfar.zomboabilities.platform.Services;
 import tfar.zomboabilities.utils.AbilityUtils;
 import tfar.zomboabilities.utils.LivesUtils;
 import tfar.zomboabilities.utils.Utils;
+import tfar.zomboabilities.world.ZomboAbilitiesLevelData;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
+
+import static net.minecraft.world.level.block.entity.StructureBlockEntity.createRandom;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
 // import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
@@ -432,4 +453,32 @@ public class ZomboAbilities {
             }
         }
     }
+
+    public static void onServerStart(MinecraftServer server) throws CommandSyntaxException {
+        ZomboAbilitiesLevelData zomboAbilitiesLevelData = ZomboAbilitiesLevelData.getOrCreate(server);
+        if (zomboAbilitiesLevelData.isFirstLoad()) {
+
+            ServerLevel serverlevel = server.getLevel(ModLevels.POCKET_DIMENSION);
+
+            StructureTemplate structureTemplate = serverlevel.getStructureManager().get(id("pocket_dimension")).orElseThrow();
+
+            placeStructure(serverlevel,structureTemplate,new BlockPos(0,1,0),new BlockPos(0,1,0));
+
+            zomboAbilitiesLevelData.markFirstLoad();
+        }
+    }
+
+
+    private static void placeStructure(ServerLevel level, StructureTemplate structureTemplate,BlockPos pos,BlockPos offset) {
+       // this.loadStructureInfo(structureTemplate);
+        StructurePlaceSettings structureplacesettings = new StructurePlaceSettings()
+                .setMirror(Mirror.NONE)
+                .setRotation(Rotation.NONE)
+                .setIgnoreEntities(true);
+
+        BlockPos blockpos = pos.offset(offset);
+        structureTemplate.placeInWorld(level, blockpos, blockpos, structureplacesettings, createRandom(0), 2);
+    }
+
+
 }

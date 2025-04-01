@@ -1,5 +1,6 @@
 package tfar.zomboabilities.utils;
 
+import net.minecraft.core.GlobalPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -172,5 +173,13 @@ public class AbilityUtils {
 
     public static int getShapeShiftTimer(Entity entity) {
         return getDataAttachment(entity,CommonDataAttachments.SHAPE_SHIFT_TIMER);
+    }
+
+    public static GlobalPos getPocketDimensionReturn(Entity entity) {
+        return getDataAttachment(entity,CommonDataAttachments.POCKET_DIMENSION_RETURN);
+    }
+
+    public static void setPocketDimensionReturn(Entity entity,GlobalPos pos) {
+        setDataAttachment(entity,CommonDataAttachments.POCKET_DIMENSION_RETURN,pos);
     }
 }

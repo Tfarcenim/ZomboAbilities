@@ -43,6 +43,7 @@ public class ModBlocks {
             .mapColor(MapColor.COLOR_YELLOW)
             .randomTicks()
             .strength(0.5F)
+            .explosionResistance(1200)
             .sound(SoundType.GLASS)
             .isValidSpawn(ModBlocks::never)
             .isRedstoneConductor(ModBlocks::never)));

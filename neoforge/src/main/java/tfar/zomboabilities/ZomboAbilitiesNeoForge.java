@@ -1,6 +1,7 @@
 package tfar.zomboabilities;
 
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -26,6 +27,7 @@ import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -50,6 +52,14 @@ public class ZomboAbilitiesNeoForge {
         if (dist.isClient()) {
             ModClientNeoForge.init(eventBus);
         }
+
+        NeoForge.EVENT_BUS.addListener(ServerStartedEvent.class,event -> {
+            try {
+                ZomboAbilities.onServerStart(event.getServer());
+            } catch (CommandSyntaxException e) {
+                throw new RuntimeException(e);
+            }
+        });
         NeoForge.EVENT_BUS.addListener(LivingEntityUseItemEvent.Finish.class,event -> ZomboAbilities.onItemFinished(event.getEntity(),event.getItem(),event.getDuration(),event.getResultStack()));
         NeoForge.EVENT_BUS.addListener(RegisterCommandsEvent.class,event -> ModCommands.register(event.getDispatcher()));
         // This method is invoked by the NeoForge mod loader when it is ready

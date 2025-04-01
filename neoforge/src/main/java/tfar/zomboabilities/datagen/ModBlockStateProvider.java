@@ -19,6 +19,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         simpleBlock(ModBlocks.FORCE_FIELD);
+        simpleBlock(ModBlocks.POCKET_DIMENSION_PORTAL,models().getExistingFile(mcLoc("block/glowstone")));
 
         getVariantBuilder(ModBlocks.POINTED_ICE).forAllStates(state -> {
             DripstoneThickness thickness = state.getValue(PointedDripstoneBlock.THICKNESS);

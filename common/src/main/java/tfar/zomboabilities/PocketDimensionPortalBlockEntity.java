@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import tfar.zomboabilities.init.ModBlockEntityTypes;
 
 public class PocketDimensionPortalBlockEntity extends BlockEntity {
+
     public PocketDimensionPortalBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
     }

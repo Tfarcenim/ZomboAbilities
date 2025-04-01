@@ -57,7 +57,7 @@ public class ModDataPackProvider extends DatapackBuiltinEntriesProvider {
                         1,
                         false,
                         false,
-                        0,
+                        -16,
                         256,
                         128,
                         BlockTags.INFINIBURN_OVERWORLD,

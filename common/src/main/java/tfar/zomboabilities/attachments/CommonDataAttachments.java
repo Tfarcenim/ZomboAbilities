@@ -2,9 +2,11 @@ package tfar.zomboabilities.attachments;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import tfar.zomboabilities.Abilities;
@@ -106,6 +108,10 @@ public class CommonDataAttachments {
             .networkSynchronized(ByteBufCodecs.INT)
             .autoSync()
             .build("shape_shift_timer"));
+
+    public static final CommonDataAttachment<GlobalPos> POCKET_DIMENSION_RETURN = register(CommonDataAttachment.create(o -> new GlobalPos(Level.OVERWORLD,BlockPos.ZERO))
+            .codec(GlobalPos.CODEC)
+            .build("pocket_dimension_return"));
 
 
     public static CommonDataAttachment<?> lookup(ResourceLocation location) {

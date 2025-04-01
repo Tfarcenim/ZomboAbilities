@@ -1,10 +1,14 @@
 package tfar.zomboabilities.abilities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.state.BlockState;
+import tfar.zomboabilities.init.ModBlocks;
 import tfar.zomboabilities.init.ModLevels;
+import tfar.zomboabilities.utils.AbilityUtils;
 
 //Pressing R - The Player will go into a Pitch black pocket dimension,
 // there floor will be made out of Oak Planks,
@@ -25,23 +29,28 @@ public class PocketDimensionAbility extends Ability{
         MinecraftServer server = player.server;
         boolean inPocketDimension = player.serverLevel().dimension() == ModLevels.POCKET_DIMENSION;
 
-        if (inPocketDimension) {
-            ServerLevel overworld = server.overworld();
-            player.teleportTo(overworld, 0, 2, 0, player.getYRot(), player.getXRot());
-        }
-         else {
-            ServerLevel level = server.getLevel(ModLevels.POCKET_DIMENSION);
-            BlockPos returnPos = player.blockPosition();
+        if (!inPocketDimension) {
+           BlockPos returnPos = player.blockPosition();
+            BlockState state = player.serverLevel().getBlockState(returnPos);
 
-            if (player.serverLevel().isInWorldBounds(returnPos)) {
-                player.teleportTo(level, 0, 2, 0, player.getYRot(), player.getXRot());
-            }
-        }
+            if (state.getDestroySpeed(player.serverLevel(),returnPos) >=0 &&player.serverLevel().isInWorldBounds(returnPos)) {
+                ServerLevel destination = server.getLevel(ModLevels.POCKET_DIMENSION);
+                player.serverLevel().setBlock(returnPos, ModBlocks.POCKET_DIMENSION_PORTAL.defaultBlockState(),3);
+                AbilityUtils.setPocketDimensionReturn(player,new GlobalPos(player.serverLevel().dimension(),returnPos));
+                player.teleportTo(destination, 0, 2, 0, player.getYRot(), player.getXRot());
+           }
+       }
     }
 
     @Override
     public void secondary(ServerPlayer player) {
-
+        MinecraftServer server = player.server;
+        boolean inPocketDimension = player.serverLevel().dimension() == ModLevels.POCKET_DIMENSION;
+        if (inPocketDimension) {
+            GlobalPos globalPos = AbilityUtils.getPocketDimensionReturn(player);
+            BlockPos pos = globalPos.pos();
+            player.teleportTo(server.getLevel(globalPos.dimension()), pos.getX(),pos.getY(),pos.getZ(), player.getYRot(), player.getXRot());
+        }
     }
 
     @Override
