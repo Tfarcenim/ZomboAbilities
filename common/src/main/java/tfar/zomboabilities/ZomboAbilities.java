@@ -435,11 +435,8 @@ public class ZomboAbilities {
     //return true to block attack
     public static boolean onAttack(Player player, Entity target) {
         if (target instanceof Player playerTarget) {
-            if (player.getWeaponItem().is(ModTags.Items.ATTRACTED) && AbilityUtils.hasAbility(playerTarget,Abilities.MAGNETISM)) {
-                player.drop(player.getWeaponItem(),true);
-                player.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);
-                return true;
-            }
+            Ability ability = AbilityUtils.getAbility(target);
+            return ability.onAttacked(playerTarget,player);
         }
         return false;
     }

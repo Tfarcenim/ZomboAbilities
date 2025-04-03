@@ -1,8 +1,10 @@
 package tfar.zomboabilities.attachments;
 
+import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -20,9 +22,7 @@ import tfar.zomboabilities.data.ObjectRestorationData;
 import tfar.zomboabilities.init.ModGameRules;
 import tfar.zomboabilities.platform.Services;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class CommonDataAttachments {
 
@@ -123,6 +123,17 @@ public class CommonDataAttachments {
             .autoSync()
             .build("sand_shift")
         );
+
+    public static final CommonDataAttachment<Boolean> SHRUNK = register(CommonDataAttachment.create(o -> false)
+            .codec(Codec.BOOL)
+            .build("shrunk")
+    );
+
+    public static final CommonDataAttachment<Set<UUID>> IGNORE_PLAYERS = register(CommonDataAttachment.<Set<UUID>>create(o -> Sets.newHashSet())
+            .codec(UUIDUtil.CODEC_SET)
+            .build("ignore_players")
+    );
+
 
     public static CommonDataAttachment<?> lookup(ResourceLocation location) {
         return MAP.get(location);

@@ -2,9 +2,13 @@ package tfar.zomboabilities.abilities;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import tfar.zomboabilities.init.ModTags;
 import tfar.zomboabilities.utils.AbilityUtils;
 
@@ -53,5 +57,15 @@ public class MagnetAbility extends Ability {
             entity.addDeltaMovement(player.position().subtract(entity.position()).scale(power));
             entity.hurtMarked = true;
         }
+    }
+
+    @Override
+    public boolean onAttacked(Player attacked, LivingEntity attacker) {
+        if (attacker.getWeaponItem().is(ModTags.Items.ATTRACTED) && attacker instanceof ServerPlayer playerAttacker) {
+            playerAttacker.drop(attacker.getWeaponItem(),true);
+            attacker.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+            return true;
+        }
+        return false;
     }
 }

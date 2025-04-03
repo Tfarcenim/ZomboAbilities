@@ -45,7 +45,8 @@ public class Abilities {
     public static final Ability REGENERATION = register(new RegenerationAbility(),"regeneration");
     public static final Ability SAND_BODY = register(new SandBodyAbility().hurtByWater(),"sand_body");
     public static final Ability SHRINK = register(new ShrinkAbility(),"shrink");
-
+    public static final Ability SLIME_GENETICS = register(new SlimeGenenticsAbility(),"slime_genetics");
+    public static final Ability SPIDER_GENETICS = register(new SpiderGeneticsAbility(),"spider_genetics");
 
     static Ability register(Ability ability,String name) {
         ability.setName(name);

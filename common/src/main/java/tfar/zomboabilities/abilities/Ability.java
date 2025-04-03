@@ -5,6 +5,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -137,6 +138,10 @@ public abstract class Ability {
 
     public void onTouch(Player player, Entity touched) {
 
+    }
+
+    public boolean onAttacked(Player attacked,LivingEntity attacker) {
+        return false;
     }
 
     public static final class NoAbility extends Ability {

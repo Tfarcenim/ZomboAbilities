@@ -1,6 +1,9 @@
 package tfar.zomboabilities.abilities;
 
 import net.minecraft.server.level.ServerPlayer;
+import tfar.zomboabilities.attachments.CommonDataAttachments;
+import tfar.zomboabilities.compat.PehkuiCompat;
+import tfar.zomboabilities.utils.AbilityUtils;
 
 //Shrink
 //
@@ -12,7 +15,9 @@ public class ShrinkAbility extends Ability {
 
     @Override
     public void primary(ServerPlayer player) {
-
+        boolean shrink = !AbilityUtils.getDataAttachment(player,CommonDataAttachments.SHRUNK);
+        AbilityUtils.toggleShrink(player);
+        PehkuiCompat.shrink(player,shrink);
     }
 
     @Override
@@ -27,6 +32,11 @@ public class ShrinkAbility extends Ability {
 
     @Override
     public void quaternary(ServerPlayer player) {
+    }
 
+    @Override
+    public void onRemoved(ServerPlayer player) {
+        super.onRemoved(player);
+        AbilityUtils.defaultDataAttachment(player, CommonDataAttachments.SHRUNK);
     }
 }

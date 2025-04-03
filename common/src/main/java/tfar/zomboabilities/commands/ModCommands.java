@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import tfar.zomboabilities.Abilities;
+import tfar.zomboabilities.attachments.CommonDataAttachments;
 import tfar.zomboabilities.utils.AbilityUtils;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.abilities.Ability;
@@ -66,6 +67,26 @@ public class ModCommands {
                         ).executes(ModCommands::getSelfLives)
                 )
         );
+
+        dispatcher.register(Commands.literal("dangersafe")
+                .then(Commands.argument("player",EntityArgument.player())
+                        .executes(ModCommands::dangerSafe)
+                )
+                .then(Commands.literal("clear").executes(ModCommands::clearDangerSafe))
+        );
+    }
+
+    static int dangerSafe(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        ServerPlayer other = EntityArgument.getPlayer(context,"player");
+        AbilityUtils.insert(player, CommonDataAttachments.IGNORE_PLAYERS,other.getUUID());
+        return 1;
+    }
+
+    static int clearDangerSafe(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        AbilityUtils.clear(player,CommonDataAttachments.IGNORE_PLAYERS);
+        return 1;
     }
 
     static int setAbility(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {

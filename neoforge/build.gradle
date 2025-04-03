@@ -57,6 +57,7 @@ dependencies {
 
     implementation "curse.maven:crafted-core-923377:6187047"
     implementation "curse.maven:woodwalkers-868922:5993653"
+    implementation "com.github.Virtuoel:Pehkui:$pehkui-1.21-neoforge"
 
 }
 

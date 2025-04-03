@@ -14,7 +14,9 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
@@ -52,7 +54,8 @@ public class ZomboAbilitiesNeoForge {
     public static final TicketController TICKET_CONTROLLER = new TicketController(ZomboAbilities.id( "chunk_loader"), null);
 
 
-    public ZomboAbilitiesNeoForge(IEventBus eventBus, Dist dist) {
+    public ZomboAbilitiesNeoForge(IEventBus eventBus, ModContainer container, Dist dist) {
+        container.registerConfig(ModConfig.Type.SERVER,ZomboAbilitiesConfig.SERVER_SPEC);
         eventBus.addListener(PacketHandlerNeoForge::register);
         if (dist.isClient()) {
             ModClientNeoForge.init(eventBus);
@@ -63,6 +66,11 @@ public class ZomboAbilitiesNeoForge {
                 ZomboAbilities.onServerStart(event.getServer());
             } catch (CommandSyntaxException e) {
                 throw new RuntimeException(e);
+            }
+        });
+        NeoForge.EVENT_BUS.addListener(LivingFallEvent.class,event -> {
+            if (AbilityUtils.hasAbility(event.getEntity(),Abilities.SLIME_GENETICS)) {
+                event.setDamageMultiplier(0);
             }
         });
         NeoForge.EVENT_BUS.addListener(LivingEntityUseItemEvent.Finish.class,event -> ZomboAbilities.onItemFinished(event.getEntity(),event.getItem(),event.getDuration(),event.getResultStack()));
@@ -129,6 +137,11 @@ public class ZomboAbilitiesNeoForge {
         Projectile projectile = event.getProjectile();
         boolean sandMan = AbilityUtils.hasAbility(entity,Abilities.SAND_BODY);
         if (sandMan && (projectile instanceof AbstractArrow || projectile instanceof Fireball)) {
+            event.setCanceled(true);
+        }
+        if (projectile instanceof AbstractArrow && AbilityUtils.hasAbility(entity,Abilities.SLIME_GENETICS)) {
+            projectile.setDeltaMovement(projectile.getDeltaMovement().scale(-1));
+            projectile.hurtMarked = true;
             event.setCanceled(true);
         }
     }

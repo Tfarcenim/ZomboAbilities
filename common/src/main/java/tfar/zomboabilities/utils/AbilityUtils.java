@@ -1,5 +1,6 @@
 package tfar.zomboabilities.utils;
 
+import com.google.common.collect.Sets;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -18,6 +19,7 @@ import tfar.zomboabilities.data.ObjectRestorationData;
 import tfar.zomboabilities.network.S2CCommonDataAttachmentPacket;
 import tfar.zomboabilities.platform.Services;
 
+import java.util.Collection;
 import java.util.Objects;
 
 public class AbilityUtils {
@@ -107,6 +109,13 @@ public class AbilityUtils {
         }
     }
 
+    public static <T> void defaultDataAttachment(Object object, CommonDataAttachment<T> type) {
+        T value = type.getDefaultValueSupplier().apply(object);
+        Services.PLATFORM.setAttachedValue(object,type,value);
+        if (object instanceof Entity entity  && !entity.level().isClientSide && type.isAutoSync()) {
+            syncDataAttachment(entity, type, value);
+        }
+    }
     public static <T> T getDataAttachment(Object object, CommonDataAttachment<T> type) {
         return Services.PLATFORM.getAttachedValue(object,type);
     }
@@ -200,4 +209,21 @@ public class AbilityUtils {
         toggleBool(entity,CommonDataAttachments.SAND_SHIFT);
     }
 
+    public static void toggleShrink(Entity entity) {
+        toggleBool(entity,CommonDataAttachments.SHRUNK);
+    }
+
+    public static void setShrunk(Entity entity,boolean shrunk) {
+        setDataAttachment(entity,CommonDataAttachments.SHRUNK,shrunk);
+    }
+
+    public static <T,C extends Collection<T>> void insert(Entity entity,CommonDataAttachment<C> attachment, T value) {
+        C collection = getDataAttachment(entity,attachment);
+        collection.add(value);
+        setDataAttachment(entity,attachment,collection);
+    }
+
+    public static <T,C extends Collection<T>> void clear(Entity entity,CommonDataAttachment<C> attachment) {
+        setDataAttachment(entity,attachment, (C)Sets.newHashSet());
+    }
 }
