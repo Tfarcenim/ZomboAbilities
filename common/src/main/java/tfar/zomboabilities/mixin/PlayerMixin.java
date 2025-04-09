@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tfar.zomboabilities.*;
 import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.abilities.CopyAbility;
+import tfar.zomboabilities.attachments.CommonDataAttachments;
 import tfar.zomboabilities.init.ModMobEffects;
 import tfar.zomboabilities.network.S2CSetKeyActivePacket;
 import tfar.zomboabilities.platform.Services;
@@ -121,6 +122,11 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDuck {
             noPhysics = true;
             setOnGround(false);
         }
+    }
+
+    @Override
+    public boolean onClimbable() {
+        return super.onClimbable() || ZomboAbilities.allowClimbing((Player)(Object)this);
     }
 
     @Inject(method = "touch",at = @At("RETURN"))

@@ -5,12 +5,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Dolphin;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.entity.EntityTypeTest;
+import tfar.zomboabilities.Hooks;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.platform.Services;
 
@@ -66,6 +67,11 @@ public class MermanAbility extends Ability{
             dolphins.forEach(dolphin -> dolphin.setTarget(zombie));
         }
 
+    }
+
+    @Override
+    public boolean isFriendly(Mob aggressor) {
+        return Hooks.isMermanFriendly(aggressor);
     }
 
     @Override

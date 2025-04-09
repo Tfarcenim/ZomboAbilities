@@ -108,6 +108,7 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 
     @SuppressWarnings({"unchecked"})
     @Override
+    @Nullable
     public <T> T getAttachedValue(Object object, CommonDataAttachment<T> attachment) {
         AttachmentType<T> type = (AttachmentType<T>) attachment.getAttachment();
         if (object instanceof IAttachmentHolder attachmentHolder) {
@@ -119,10 +120,14 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 
     @SuppressWarnings({"unchecked"})
     @Override
-    public <T> void setAttachedValue(Object object, CommonDataAttachment<T> attachment, T value) {
+    public <T> void setAttachedValue(Object object, CommonDataAttachment<T> attachment,@Nullable T value) {
         AttachmentType<T> type = (AttachmentType<T>) attachment.getAttachment();
         if (object instanceof IAttachmentHolder attachmentHolder) {
-            attachmentHolder.setData(type, value);
+            if (value == null) {
+                attachmentHolder.removeData(type);
+            } else {
+                attachmentHolder.setData(type, value);
+            }
         } else {
             throw new IllegalStateException("Cannot attach data to "+object);
         }

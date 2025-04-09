@@ -52,6 +52,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -431,6 +433,13 @@ public class ZomboAbilities {
         return registry.stream().filter(o -> registry.getKey(o).getNamespace().equals(MOD_ID));
     }
 
+    public static boolean allowClimbing(Player player) {
+       // boolean horizontalCollision = player.horizontalCollision;
+        boolean b = AbilityUtils.getDataAttachment(player,CommonDataAttachments.CLIMBING);
+   //     System.out.println(player.level().isClientSide +":"+b);
+        return b;
+    }
+
 
     //return true to block attack
     public static boolean onAttack(Player player, Entity target) {
@@ -507,6 +516,19 @@ public class ZomboAbilities {
                 }
             }
         }
+
+        FluidState fluidState = blockStateBase.getFluidState();
+        if (!fluidState.is(Fluids.EMPTY)) {
+            if (context instanceof EntityCollisionContext entityCollisionContext) {
+                Entity entity = entityCollisionContext.getEntity();
+                if (entity instanceof LivingEntity living && living.hasEffect(ModMobEffects.HYPER_SPEED)) {
+                    double speedSqr = living.getDeltaMovement().lengthSqr();
+                    // System.out.println(speedSqr +":"+living.level().isClientSide);
+                    return Optional.of(Shapes.block());
+                }
+            }
+        }
+
         return Optional.empty();
     }
 }

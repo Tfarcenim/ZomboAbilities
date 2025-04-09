@@ -27,7 +27,7 @@ public enum DangerSense {
 
     @Nullable
     public static DangerSense getSense(Player player,LivingEntity check) {
-        if (AbilityUtils.getDataAttachment(player, CommonDataAttachments.IGNORE_PLAYERS).contains(check.getUUID())) {
+        if (player == check || AbilityUtils.getDataAttachment(player, CommonDataAttachments.IGNORE_PLAYERS).contains(check.getUUID())) {
             return null;
         }
         for (DangerSense sense : DangerSense.values()) {

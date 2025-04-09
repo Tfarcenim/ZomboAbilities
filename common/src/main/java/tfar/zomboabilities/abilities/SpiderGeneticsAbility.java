@@ -2,10 +2,22 @@ package tfar.zomboabilities.abilities;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import tfar.zomboabilities.attachments.CommonDataAttachments;
+import tfar.zomboabilities.init.ModMobEffects;
+import tfar.zomboabilities.utils.AbilityUtils;
 import tfar.zomboabilities.utils.DangerSense;
 
 import java.util.List;
@@ -25,7 +37,10 @@ import java.util.List;
 public class SpiderGeneticsAbility extends Ability{
     @Override
     public void primary(ServerPlayer player) {
-        EntityType.SPIDER.spawn(player.serverLevel(),player.blockPosition(), MobSpawnType.EVENT);
+        BlockHitResult pick = (BlockHitResult) player.pick(player.blockInteractionRange(),1,false);
+        BlockItem sandBlock = (BlockItem) Items.COBWEB;
+        sandBlock.place(new BlockPlaceContext(player, InteractionHand.MAIN_HAND,sandBlock.getDefaultInstance(), pick));
+
     }
 
     @Override
@@ -56,5 +71,26 @@ public class SpiderGeneticsAbility extends Ability{
         if (sense != null) {
             player.displayClientMessage(Component.literal("Danger!").withStyle(sense.chatFormatting),true);
         }
+        //this is never true on the server
+      //  System.out.println(player.horizontalCollision);
+     //   AbilityUtils.setDataAttachment(player, CommonDataAttachments.CLIMBING,player.horizontalCollision);
+    }
+
+    @Override
+    public boolean isFriendly(Mob aggressor) {
+        return aggressor instanceof Spider;
+    }
+
+    @Override
+    public void onAdded(ServerPlayer player) {
+        super.onAdded(player);
+        player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION,MobEffectInstance.INFINITE_DURATION,0,false,false));
+    }
+
+    @Override
+    public void onRemoved(ServerPlayer player) {
+        super.onRemoved(player);
+        AbilityUtils.defaultDataAttachment(player, CommonDataAttachments.CLIMBING);
+        player.removeEffect(MobEffects.NIGHT_VISION);
     }
 }

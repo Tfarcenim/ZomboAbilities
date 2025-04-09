@@ -5,17 +5,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.component.ResolvableProfile;
+import tfar.zomboabilities.attachments.CommonDataAttachments;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
 import tfar.zomboabilities.init.ModEntityTypes;
 import tfar.zomboabilities.network.C2SUseAbilityPacket;
 import tfar.zomboabilities.network.C2SHoldAbilityPacket;
 import tfar.zomboabilities.platform.Services;
+import tfar.zomboabilities.utils.AbilityUtils;
 
 import java.util.Map;
 
@@ -38,24 +41,27 @@ public class ModClient {
     }
 
     public static void clientTick() {
-        if (Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused()) {
-            boolean holding_p = ModKeybinds.BIND_1.isDown();
-            boolean holding_s = ModKeybinds.BIND_2.isDown();
-            boolean holding_t = ModKeybinds.BIND_3.isDown();
-            boolean holding_q = ModKeybinds.BIND_4.isDown();
-            while (ModKeybinds.BIND_1.consumeClick()) {
-                Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(0));
+        if (Minecraft.getInstance().level != null) {
+            if (!Minecraft.getInstance().isPaused()) {
+                boolean holding_p = ModKeybinds.BIND_1.isDown();
+                boolean holding_s = ModKeybinds.BIND_2.isDown();
+                boolean holding_t = ModKeybinds.BIND_3.isDown();
+                boolean holding_q = ModKeybinds.BIND_4.isDown();
+                while (ModKeybinds.BIND_1.consumeClick()) {
+                    Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(0));
+                }
+                while (ModKeybinds.BIND_2.consumeClick()) {
+                    Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(1));
+                }
+                while (ModKeybinds.BIND_3.consumeClick()) {
+                    Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(2));
+                }
+                while (ModKeybinds.BIND_4.consumeClick()) {
+                    Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(3));
+                }
+                Services.PLATFORM.sendToServer(new C2SHoldAbilityPacket(holding_p, holding_s, holding_t, holding_q));
+                AbilityUtils.setDataAttachment(Minecraft.getInstance().player, CommonDataAttachments.CLIMBING,Minecraft.getInstance().player.horizontalCollision);
             }
-            while (ModKeybinds.BIND_2.consumeClick()) {
-                Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(1));
-            }
-            while (ModKeybinds.BIND_3.consumeClick()) {
-                Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(2));
-            }
-            while (ModKeybinds.BIND_4.consumeClick()) {
-                Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(3));
-            }
-            Services.PLATFORM.sendToServer(new C2SHoldAbilityPacket(holding_p, holding_s, holding_t, holding_q));
         }
     }
 
@@ -66,6 +72,7 @@ public class ModClient {
     public static<T extends Entity> void registerRenderers() {
         EntityRenderers.register(ModEntityTypes.FIRE_BREATH, FireBreathRenderer::new);
         EntityRenderers.register(ModEntityTypes.ICE_SPIKE, IceSpikeRenderer::new);
+        EntityRenderers.register(ModEntityTypes.FAST_FALLING_BLOCK, FallingBlockRenderer::new);
     }
 
 

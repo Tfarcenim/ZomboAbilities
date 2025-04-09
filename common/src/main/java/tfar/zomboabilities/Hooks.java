@@ -25,22 +25,21 @@ public class Hooks {
         }
     }
 
-    static Predicate<LivingEntity> MERMAN = living -> living instanceof Player player && isMerman(player);
+    public static Predicate<LivingEntity> MERMAN = living -> living instanceof Player player && isMerman(player);
 
     public static<T extends LivingEntity> void modifyGoal(TargetingConditions conditions,Mob mob, Class<T> targetType, int randomInterval, boolean mustSee, boolean mustReach, Predicate<T> targetPredicate) {
-        if (isMermanFriendly(mob)) {
             if (targetType == Player.class || targetType == ServerPlayer.class || targetType == LivingEntity.class) {
-                Predicate<T> existing = (Predicate<T>) conditions.selector;
+                Predicate<LivingEntity> existing = conditions.selector;
+                Predicate<LivingEntity> stack = livingEntity -> !AbilityUtils.getAbility(livingEntity).isFriendly(mob);
                 if (existing == null) {
-                    conditions.selector(MERMAN.negate());
+                    conditions.selector(stack);
                 } else {
-                    conditions.selector((Predicate<LivingEntity>) existing.and(MERMAN.negate()));
+                    conditions.selector(existing.and(stack));
                 }
-            }
         }
     }
 
-    static boolean isMermanFriendly(Mob mob) {
+    public static boolean isMermanFriendly(Mob mob) {
         return mob.getType().is(ModTags.EntityTypes.MERMAN_FRIENDLY);
     }
 

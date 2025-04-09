@@ -527,7 +527,6 @@ public class info {
 //
 //-
 //
-////////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
 //
@@ -543,7 +542,6 @@ public class info {
 //
 //Danger sense - When any hostile mob spots the player, near the players hotbar, it will say Danger! When it says Danger in Yellow That means a Mob has spotted it, When it says Danger in Blue, that Means a Warden, Wither, When it says Danger in Red, A unknown Player has entered a 100 Blocks within you, to not get this danger sense from a speicfic player the player can do /Dangersafe [Username}, make this so this saves even after death.
 //
-//
 //-
 //
 //Super strength
@@ -555,7 +553,6 @@ public class info {
 //
 //Passive - Player will have Strength 2
 //
-//-
 //
 //Super Sight
 //
@@ -567,7 +564,6 @@ public class info {
 //Player can Xray
 //Player will also have a bow hit indicator, basically a Green indicator for when you are Guarnteed to hit a target.
 //
-//-
 //
 //Super Speed
 //
@@ -579,7 +575,6 @@ public class info {
 //
 //
 //
-//-
 //
 //Telekensis
 //
@@ -593,7 +588,7 @@ public class info {
 //Pressing R - The Player can Stop time aka ./Tick for 10 seconds, This will only work in the Dimension the player is in.
 //Cooldown - 6 Minutes
 //
-//-
+//-//-//-//-//////////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Acid
 //

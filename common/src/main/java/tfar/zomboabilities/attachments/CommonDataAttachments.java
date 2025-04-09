@@ -8,6 +8,7 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -131,8 +132,18 @@ public class CommonDataAttachments {
 
     public static final CommonDataAttachment<Set<UUID>> IGNORE_PLAYERS = register(CommonDataAttachment.<Set<UUID>>create(o -> Sets.newHashSet())
             .codec(UUIDUtil.CODEC_SET)
+            .copyOnDeath()
             .build("ignore_players")
     );
+
+    public static final CommonDataAttachment<Boolean> CLIMBING = register(CommonDataAttachment.create(o -> false)
+            //.networkSynchronized(ByteBufCodecs.BOOL)
+            //.autoSync()
+            .build("climbing")
+    );
+
+    public static final CommonDataAttachment<FallingBlockEntity> TELEKINESIS = register(CommonDataAttachment.<FallingBlockEntity>create()
+            .build("telekinesis"));
 
 
     public static CommonDataAttachment<?> lookup(ResourceLocation location) {

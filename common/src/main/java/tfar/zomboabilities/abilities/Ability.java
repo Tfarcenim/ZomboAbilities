@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -60,7 +61,6 @@ public abstract class Ability {
     }
 
     public void onRemoved(ServerPlayer player) {
-
     }
 
     public final void tick(ServerPlayer player) {
@@ -113,6 +113,10 @@ public abstract class Ability {
      * @param player
      */
     public abstract void quaternary(ServerPlayer player);
+
+    public boolean isFriendly(Mob aggressor) {
+        return false;
+    }
 
     protected void applyCooldown(int slot, int amount, ServerPlayer player) {
         AbilityUtils.getCooldowns(player)[slot] = amount;

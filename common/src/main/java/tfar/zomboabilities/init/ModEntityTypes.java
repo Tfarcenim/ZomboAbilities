@@ -5,6 +5,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.entity.*;
 
@@ -16,6 +17,8 @@ public class ModEntityTypes {
 
     public static final EntityType<FireBreathEntity> FIRE_BREATH = register("fire_breath",EntityType.Builder.<FireBreathEntity>of(FireBreathEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F));
     public static final EntityType<IceSpikeEntity> ICE_SPIKE = register("ice_spike",EntityType.Builder.of(IceSpikeEntity::new, MobCategory.MISC).sized(0.5F, 2F));
+
+    public static final EntityType<FallingBlockEntity> FAST_FALLING_BLOCK = register("fast_falling_block",EntityType.Builder.of(FallingBlockEntity::new, MobCategory.MISC).sized(0.98F, 0.98F).clientTrackingRange(10).updateInterval(1));
 
     private static <T extends Entity> EntityType<T> register(String key, EntityType.Builder<T> builder) {
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, ZomboAbilities.id(key), builder.build(key));
