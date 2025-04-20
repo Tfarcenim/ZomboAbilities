@@ -12,6 +12,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 public class Utils {
 
@@ -45,6 +46,7 @@ public class Utils {
         return false;
     }
 
+    @Nullable
     public static EntityHitResult pickEntity(Entity pEntity, double pBlockInteractionRange, double pEntityInteractionRange, float pPartialTick) {
         double d0 = Math.max(pBlockInteractionRange, pEntityInteractionRange);
         double d1 = Mth.square(d0);

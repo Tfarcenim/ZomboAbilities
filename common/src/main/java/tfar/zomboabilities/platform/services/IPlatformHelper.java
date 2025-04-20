@@ -1,5 +1,6 @@
 package tfar.zomboabilities.platform.services;
 
+import dev.architectury.core.fluid.ArchitecturyFluidAttributes;
 import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
@@ -82,4 +84,7 @@ public interface IPlatformHelper {
     void morph(ServerPlayer player, LivingEntity livingEntity);
 
     @Nullable LivingEntity getMorph(Player player);
+    FlowingFluid flowingAcidFluid(ArchitecturyFluidAttributes attributes);
+    FlowingFluid sourceAcidFluid(ArchitecturyFluidAttributes attributes);
+    boolean isInAcid(Entity entity);
 }

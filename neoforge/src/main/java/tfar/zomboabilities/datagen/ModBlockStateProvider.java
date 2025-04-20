@@ -30,5 +30,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
             return ConfiguredModel.builder().modelFile(file).build();
         });
 
+        simpleBlock(ModBlocks.ACID,
+                ConfiguredModel.builder().modelFile(models().getBuilder("acid")
+                        .texture("particle", mcLoc("block/water_still"))).build());
+
     }
 }

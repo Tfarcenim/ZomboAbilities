@@ -50,6 +50,9 @@ public class Abilities {
     public static final Ability SUPER_STRENGTH = register(new SuperStrengthAbility(),"super_strength");
     public static final Ability SUPER_SPEED = register(new SuperSpeedAbility(),"super_speed");
     public static final Ability TELEKINESIS = register(new TelekinesisAbility(),"telekinesis");
+    public static final Ability ACID = register(new AcidAbility(),"acid");
+    public static final Ability INVISIBLE_CLEAVES = register(new InvisibleCleavesAbility(),"invisible_cleaves");
+
 
     static Ability register(Ability ability,String name) {
         ability.setName(name);

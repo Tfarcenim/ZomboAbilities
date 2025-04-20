@@ -1,4 +1,5 @@
 {
+  "block.zomboabilities.acid": "Acid",
   "block.zomboabilities.force_field": "Force Field",
   "block.zomboabilities.pocket_dimension_portal": "Pocket Dimension Portal",
   "block.zomboabilities.pointed_ice": "Pointed Ice",
@@ -6,7 +7,9 @@
   "effect.zomboabilities.flight": "Flight",
   "effect.zomboabilities.floating_items": "Floating Items",
   "effect.zomboabilities.floating_touch": "Floating Touch",
+  "effect.zomboabilities.hyper_speed": "Hyper Speed",
   "effect.zomboabilities.intangibility": "Intangibility",
+  "effect.zomboabilities.knockback": "Knockback",
   "effect.zomboabilities.quiet_step": "Quiet Step",
   "effect.zomboabilities.wither_touch": "Wither Touch",
   "item.zomboabilities.force_shield": "Force Shield",

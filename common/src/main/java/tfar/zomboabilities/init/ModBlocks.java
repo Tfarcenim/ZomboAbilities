@@ -1,17 +1,16 @@
 package tfar.zomboabilities.init;
 
+import dev.architectury.core.block.ArchitecturyLiquidBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.PointedDripstoneBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import tfar.zomboabilities.ZomboAbilities;
@@ -48,7 +47,17 @@ public class ModBlocks {
             .isValidSpawn(ModBlocks::never)
             .isRedstoneConductor(ModBlocks::never)));
 
-    public static Block register(String key, Block block) {
+    public static final LiquidBlock ACID = register("acid",new ArchitecturyLiquidBlock(() -> (FlowingFluid) ModFluids.FLOWING_ACID,BlockBehaviour.Properties.of()
+            .mapColor(MapColor.WATER)
+            .replaceable()
+            .noCollission()
+            .strength(100.0F)
+            .pushReaction(PushReaction.DESTROY)
+            .noLootTable()
+            .liquid()
+            .sound(SoundType.EMPTY)));
+
+    public static <B extends Block> B register(String key, B block) {
         return Registry.register(BuiltInRegistries.BLOCK, ZomboAbilities.id(key), block);
     }
 

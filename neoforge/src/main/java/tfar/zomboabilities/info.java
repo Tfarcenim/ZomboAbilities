@@ -588,21 +588,20 @@ public class info {
 //Pressing R - The Player can Stop time aka ./Tick for 10 seconds, This will only work in the Dimension the player is in.
 //Cooldown - 6 Minutes
 //
-//-//-//-//-//////////todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
 //
 //Acid
 //
 //Pressing R - The Player will be able to summon a Green water that is basically lava, it will burn any item dropped into it and damage any player in it, it will also slowly eat through blocks.
 //Cooldown - 20 Seconds
 //
-//-
+//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Invisible Cleaves
 //
 //Pressing R - This Ability allows you to basically hit someone with an invisible sword, it will do as much as an iron sword, it wont even show the player moving there hands, Your basically Sukuna.
 //
 //-
-//
 //
 //
 // Time Acceleration

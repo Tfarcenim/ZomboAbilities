@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
@@ -503,6 +504,11 @@ public class ZomboAbilities {
                 }
 
                 AbilityUtils.setZombificationTimer(villager,timer);
+            }
+        }
+        if (Services.PLATFORM.isInAcid(entity)) {
+            if (entity.hurt(entity.damageSources().source(ModDamageTypes.ACID,null,null), 4.0F)) {
+                entity.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + entity.getRandom().nextFloat() * 0.4F);
             }
         }
     }

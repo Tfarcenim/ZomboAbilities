@@ -6,10 +6,13 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.damagesource.DamageEffects;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import tfar.zomboabilities.ZomboAbilities;
+import tfar.zomboabilities.init.ModDamageTypes;
 import tfar.zomboabilities.init.ModDimensionTypes;
 
 import java.util.OptionalLong;
@@ -19,11 +22,16 @@ import java.util.concurrent.CompletableFuture;
 public class ModDataPackProvider extends DatapackBuiltinEntriesProvider {
 
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(Registries.DIMENSION_TYPE, ModDataPackProvider::dimensionType);
+            .add(Registries.DIMENSION_TYPE, ModDataPackProvider::dimensionType)
+            .add(Registries.DAMAGE_TYPE,ModDataPackProvider::damageType);
 
 
     public ModDataPackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of(ZomboAbilities.MOD_ID));
+    }
+
+    public static void damageType(BootstrapContext<DamageType> context) {
+        context.register(ModDamageTypes.ACID,new DamageType("acid", 0.1F, DamageEffects.HURT));
     }
 
     public static void dimensionType(BootstrapContext<DimensionType> context) {

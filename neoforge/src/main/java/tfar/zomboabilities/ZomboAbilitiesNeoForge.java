@@ -2,6 +2,7 @@ package tfar.zomboabilities;
 
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -176,12 +177,18 @@ public class ZomboAbilitiesNeoForge {
     }
 
     public void registerObjs(RegisterEvent event) {
-        ModMobEffects.boot();
-        CommonDataAttachments.init();
-        ModBlocks.init();
-        ModItems.init();
-        ModEntityTypes.init();
-        ModRecipeSerializers.init();
+        if (event.getRegistry() == BuiltInRegistries.BLOCK) {
+            ModMobEffects.boot();
+            CommonDataAttachments.init();
+            ModBlocks.init();
+            ModItems.init();
+            ModEntityTypes.init();
+            ModRecipeSerializers.init();
+            ModFluids.init();
+        }
+
+        event.register(NeoForgeRegistries.FLUID_TYPES.key(),ZomboAbilities.id("acid"), ModFluids.ACID::getFluidType);
+
         event.register(NeoForgeRegistries.ENTITY_DATA_SERIALIZERS.key(),ZomboAbilities.id("resolvable_profile"),() -> ModEntityDataSerializers.RESOLVABLE_PROFILE);
     }
 }

@@ -1,5 +1,6 @@
 package tfar.zomboabilities.client;
 
+import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -10,13 +11,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import net.neoforged.neoforge.client.event.RenderPlayerEvent;
+import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import tfar.zomboabilities.PlayerDuck;
 import tfar.zomboabilities.init.ModBlocks;
+import tfar.zomboabilities.init.ModFluids;
 import tfar.zomboabilities.init.ModItems;
 
 public class ModClientNeoForge {
@@ -26,6 +26,8 @@ public class ModClientNeoForge {
         bus.addListener(ModClientNeoForge::layers);
         bus.addListener(ModClientNeoForge::renderers);
         bus.addListener(ModClientNeoForge::setup);
+        bus.addListener(ModClientNeoForge::blockColors);
+        bus.addListener(ModClientNeoForge::extensions);
         NeoForge.EVENT_BUS.addListener(((ClientTickEvent.Post event) -> ModClient.clientTick()));
         NeoForge.EVENT_BUS.addListener(ModClientNeoForge::renderAfter);
     }
@@ -37,6 +39,11 @@ public class ModClientNeoForge {
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.FORCE_FIELD, RenderType.translucent());
     }
 
+    static void blockColors(RegisterColorHandlersEvent.Block event) {
+        BlockColors blockColors = event.getBlockColors();
+        blockColors.register((state, level, pos, tintIndex) -> 0x77ff00,ModBlocks.ACID);
+    }
+
     public static void renderers(EntityRenderersEvent.RegisterRenderers event) {
         ModClient.registerRenderers();
     }
@@ -46,6 +53,11 @@ public class ModClientNeoForge {
             PlayerRenderer renderer = event.getSkin(skin);
             renderer.addLayer(new ForceFieldRenderLayer(event.getContext(),renderer));
         }
+    }
+
+    static void extensions(RegisterClientExtensionsEvent event) {
+        //event.registerFluidType();
+
     }
 
     static void keybinds(RegisterKeyMappingsEvent event) {
