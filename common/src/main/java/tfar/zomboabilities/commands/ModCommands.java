@@ -8,11 +8,16 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.GameType;
 import org.jetbrains.annotations.NotNull;
 import tfar.zomboabilities.Abilities;
 import tfar.zomboabilities.attachments.CommonDataAttachments;
+import tfar.zomboabilities.init.ModLevels;
 import tfar.zomboabilities.utils.AbilityUtils;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.abilities.Ability;
@@ -65,6 +70,15 @@ public class ModCommands {
                         .then(Commands.argument("player", EntityArgument.player())
                                 .executes(ModCommands::getLives)
                         ).executes(ModCommands::getSelfLives)
+                )
+        );
+
+        dispatcher.register(Commands.literal("revive")
+                .requires(commandSourceStack -> commandSourceStack.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .then(Commands.argument("lives", IntegerArgumentType.integer())
+                        .then(Commands.argument("players", EntityArgument.players())
+                                        .executes(ModCommands::revive)
+                                )
                 )
         );
 
@@ -135,6 +149,26 @@ public class ModCommands {
             updateAbility(player,previous,Abilities.NONE);
         }
         return players.size();
+    }
+
+    static int revive(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        Collection<ServerPlayer> players = EntityArgument.getPlayers(context, "players");
+        int lives = IntegerArgumentType.getInteger(context, "lives");
+        int count = 0;
+        for (ServerPlayer player : players) {
+            if (LivesUtils.getLives(player) <=0) {
+                LivesUtils.setLives(player, lives);
+                MinecraftServer server = player.server;
+                ServerLevel level = server.overworld();
+                player.setRespawnPosition(ServerLevel.OVERWORLD,null,0,false,false);
+                BlockPos spawn = level.getSharedSpawnPos();
+                player.teleportTo( level,spawn.getX() + 0.5, spawn.getY() + 1, spawn.getZ() + 0.5,
+                        level.getSharedSpawnAngle(), 0);
+                player.setGameMode(GameType.SURVIVAL);
+                AbilityUtils.removeAbility(player);
+            }
+        }
+        return count;
     }
 
 

@@ -388,10 +388,6 @@ public class ZomboAbilities {
             }
         }
 
-        if (entity instanceof Player player) {
-            return AbilityUtils.hasAbility(player,Abilities.FIRE_MANIPULATION) && source.is(DamageTypeTags.IS_FIRE);
-        }
-
         return false;
     }
 

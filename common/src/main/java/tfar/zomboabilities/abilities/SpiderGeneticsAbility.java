@@ -82,15 +82,8 @@ public class SpiderGeneticsAbility extends Ability{
     }
 
     @Override
-    public void onAdded(ServerPlayer player) {
-        super.onAdded(player);
-        player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION,MobEffectInstance.INFINITE_DURATION,0,false,false));
-    }
-
-    @Override
     public void onRemoved(ServerPlayer player) {
         super.onRemoved(player);
         AbilityUtils.defaultDataAttachment(player, CommonDataAttachments.CLIMBING);
-        player.removeEffect(MobEffects.NIGHT_VISION);
     }
 }

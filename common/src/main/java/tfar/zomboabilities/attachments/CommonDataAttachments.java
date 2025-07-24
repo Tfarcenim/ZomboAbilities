@@ -32,6 +32,8 @@ public class CommonDataAttachments {
     public static final CommonDataAttachment<Ability> ABILITY = register(CommonDataAttachment.create(o -> Abilities.NONE)
             .codec(Ability.CODEC)
             .copyOnDeath()
+            .networkSynchronized(Ability.STREAM_CODEC)
+            .autoSync()
             .build("ability"));
 
     public static final CommonDataAttachment<int[]> COOLDOWNS = register(CommonDataAttachment
@@ -145,6 +147,7 @@ public class CommonDataAttachments {
     public static final CommonDataAttachment<FallingBlockEntity> TELEKINESIS = register(CommonDataAttachment.<FallingBlockEntity>create()
             .build("telekinesis"));
 
+    public static final CommonDataAttachment<Boolean> IRON_SKIN = register(CommonDataAttachment.create(o -> false).build("iron_skin"));
 
     public static CommonDataAttachment<?> lookup(ResourceLocation location) {
         return MAP.get(location);

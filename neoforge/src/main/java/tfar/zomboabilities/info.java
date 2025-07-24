@@ -595,7 +595,6 @@ public class info {
 //Pressing R - The Player will be able to summon a Green water that is basically lava, it will burn any item dropped into it and damage any player in it, it will also slowly eat through blocks.
 //Cooldown - 20 Seconds
 //
-//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //Invisible Cleaves
 //
@@ -610,7 +609,6 @@ public class info {
 //
 //Pressing Y - Anything Currently in your hand will rapidly age, for example, Cobble stone will become moss cobble stone, Any Tool like sword, pickaxe, flint and steel, that has durability, the durability will slowly go down, copper block will turn into moss block, etc.
 //
-//-
 //
 //Water Manipulation (Be creative with this one you got it)
 //
@@ -632,7 +630,7 @@ public class info {
 //Pressing R - This ability allows you to skip time forward 10 seconds within a 300 Block radius, everything that would of happened in-game for 10 seconds, is skip forward, All players will just randomly teleport nearby there area, This Ability is Inspired by King crimson from Jojo’s.
 //
 //-
-//
+////-//todo //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Iron skin
 //
 //Pressing R - By Pressing R, this ability allows you to become invincible, anything that hits you will do nothing and make a steel sort of anvil sound, The only die sound is that, you will have slowness 1 while this is active, You’ll be extra weak to Fire, Although if you are hit with anything of Pickaxe you with take damage depending on the pickaxe.Player will make a anvil dropping sound when they fall down from a big height

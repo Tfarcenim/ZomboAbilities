@@ -2,6 +2,7 @@ package tfar.zomboabilities.client;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -12,6 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.component.ResolvableProfile;
+import tfar.zomboabilities.Abilities;
+import tfar.zomboabilities.abilities.Ability;
 import tfar.zomboabilities.attachments.CommonDataAttachments;
 import tfar.zomboabilities.entity.ClonePlayerEntity;
 import tfar.zomboabilities.init.ModEntityTypes;
@@ -60,7 +63,9 @@ public class ModClient {
                     Services.PLATFORM.sendToServer(new C2SUseAbilityPacket(3));
                 }
                 Services.PLATFORM.sendToServer(new C2SHoldAbilityPacket(holding_p, holding_s, holding_t, holding_q));
-                AbilityUtils.setDataAttachment(Minecraft.getInstance().player, CommonDataAttachments.CLIMBING,Minecraft.getInstance().player.horizontalCollision);
+                LocalPlayer player = Minecraft.getInstance().player;
+                boolean shouldClimb = player.horizontalCollision && AbilityUtils.hasAbility(player, Abilities.SPIDER_GENETICS);
+                AbilityUtils.setDataAttachment(player, CommonDataAttachments.CLIMBING,shouldClimb);
             }
         }
     }

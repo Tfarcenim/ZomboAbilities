@@ -34,7 +34,7 @@ public class AbilityUtils {
 
     public static void setAbility(Entity entity,@NotNull Ability ability) {
         Objects.requireNonNull(ability);
-        setDataAttachment(entity,CommonDataAttachments.ABILITY,ability);
+                setDataAttachment(entity,CommonDataAttachments.ABILITY,ability);
     }
 
     public static void removeAbility(Entity entity) {

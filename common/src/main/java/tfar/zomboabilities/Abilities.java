@@ -1,5 +1,7 @@
 package tfar.zomboabilities;
 
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import tfar.zomboabilities.abilities.*;
 
 import java.util.HashMap;
@@ -19,7 +21,8 @@ public class Abilities {
     public static final Ability DUPLICATE_CLONES = register(new DuplicateClonesAbility(),"duplicate_clones");
     public static final Ability ENDERMAN_GENETICS = register(new EndermanGeneticsAbility().hurtByWater(),"enderman_genetics");
     public static final Ability EXPLOSION = register(new ExplosionAbility(),"explosion");
-    public static final Ability FIRE_MANIPULATION = register(new FireManipulationAbility(),"fire_manipulation");
+    public static final Ability FIRE_MANIPULATION = register(new FireManipulationAbility()
+            .withEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE,MobEffectInstance.INFINITE_DURATION,0,false,false)),"fire_manipulation");
     public static final Ability FLIGHT = register(new FlightAbility(),"flight");
     public static final Ability FORCE_FIELD = register(new ForceFieldAbility(),"force_field");
     public static final Ability GENIUS = register(new GeniusAbility(),"genius");
@@ -46,13 +49,19 @@ public class Abilities {
     public static final Ability SAND_BODY = register(new SandBodyAbility().hurtByWater(),"sand_body");
     public static final Ability SHRINK = register(new ShrinkAbility(),"shrink");
     public static final Ability SLIME_GENETICS = register(new SlimeGenenticsAbility(),"slime_genetics");
-    public static final Ability SPIDER_GENETICS = register(new SpiderGeneticsAbility(),"spider_genetics");
+    public static final Ability SPIDER_GENETICS = register(new SpiderGeneticsAbility()
+            .withEffect(new MobEffectInstance(MobEffects.NIGHT_VISION,MobEffectInstance.INFINITE_DURATION,0,false,false)),"spider_genetics");
     public static final Ability SUPER_STRENGTH = register(new SuperStrengthAbility(),"super_strength");
     public static final Ability SUPER_SPEED = register(new SuperSpeedAbility(),"super_speed");
     public static final Ability TELEKINESIS = register(new TelekinesisAbility(),"telekinesis");
     public static final Ability ACID = register(new AcidAbility(),"acid");
     public static final Ability INVISIBLE_CLEAVES = register(new InvisibleCleavesAbility(),"invisible_cleaves");
+    public static final Ability IRON_SKIN = register(new IronSkinAbility()
+            .withEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,MobEffectInstance.INFINITE_DURATION,0,false,false)),"iron_skin");
 
+    public static final Ability LUCK_ABILITY = register(new LuckAbility()
+            .withEffect(new MobEffectInstance(MobEffects.LUCK,MobEffectInstance.INFINITE_DURATION,3,false,false))
+            .withEffect(new MobEffectInstance(MobEffects.HERO_OF_THE_VILLAGE,MobEffectInstance.INFINITE_DURATION,0,false,false)),"luck");
 
     static Ability register(Ability ability,String name) {
         ability.setName(name);

@@ -2,8 +2,12 @@ package tfar.zomboabilities.abilities;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -15,11 +19,20 @@ import tfar.zomboabilities.Abilities;
 import tfar.zomboabilities.ZomboAbilities;
 import tfar.zomboabilities.utils.AbilityUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Ability {
 
     public static final Codec<Ability> CODEC = Codec.STRING.xmap(Abilities.ABILITIES_BY_NAME::get, Ability::getName);
 
+    //    public static final StreamCodec<RegistryFriendlyByteBuf, C2SUseAbilityPacket> STREAM_CODEC =
+    //            StreamCodec.composite(ByteBufCodecs.INT, C2SUseAbilityPacket::key, C2SUseAbilityPacket::new);
+    //ability -> string, string -> ability
+    public static final StreamCodec<FriendlyByteBuf, Ability> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.STRING_UTF8,Ability::getName,Abilities.ABILITIES_BY_NAME::get);
+
     private String name;
+    protected final List<MobEffectInstance> effects = new ArrayList<>();
     boolean hurtByWater;
 
     public Ability() {
@@ -31,6 +44,11 @@ public abstract class Ability {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Ability withEffect(MobEffectInstance effect) {
+        effects.add(effect);
+        return this;
     }
 
     public Ability hurtByWater() {
@@ -57,10 +75,11 @@ public abstract class Ability {
     }
 
     public void onAdded(ServerPlayer player) {
-
+        effects.forEach(player::addEffect);
     }
 
     public void onRemoved(ServerPlayer player) {
+        effects.forEach(instance -> player.removeEffect(instance.getEffect()));
     }
 
     public final void tick(ServerPlayer player) {
